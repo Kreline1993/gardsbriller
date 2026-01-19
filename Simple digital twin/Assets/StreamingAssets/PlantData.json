@@ -1,0 +1,97 @@
+{
+  "rows": [
+    {
+      "rowId": "row_A",
+      "location": {
+        "x": 0,
+        "z": 0
+      },
+      "size": {
+        "width": 10,
+        "length": 10
+      },
+      "plants": [
+        {
+          "plantId": "plant_001",
+          "species": "Tomato",
+          "position": {
+            "x": 1,
+            "y": 0,
+            "z": 1
+          }
+        },
+        {
+          "plantId": "plant_002",
+          "species": "Tomato",
+          "position": {
+            "x": 1,
+            "y": 0,
+            "z": 2
+          }
+        }
+      ]
+    },
+    {
+      "rowId": "row_B",
+      "location": {
+        "x": 15,
+        "z": 0
+      },
+      "size": {
+        "width": 10,
+        "length": 10
+      },
+      "plants": [
+        {
+          "plantId": "plant_003",
+          "species": "Bell Pepper",
+          "position": {
+            "x": 2,
+            "y": 0,
+            "z": 1
+          }
+        },
+        {
+          "plantId": "plant_004",
+          "species": "Bell Pepper",
+          "position": {
+            "x": 2,
+            "y": 0,
+            "z": 2
+          }
+        }
+      ]
+    },
+    {
+      "rowId": "row_C",
+      "location": {
+        "x": 30,
+        "z": 0
+      },
+      "size": {
+        "width": 10,
+        "length": 10
+      },
+      "plants": [
+        {
+          "plantId": "plant_005",
+          "species": "Lettuce",
+          "position": {
+            "x": 3,
+            "y": 0,
+            "z": 1
+          }
+        },
+        {
+          "plantId": "plant_006",
+          "species": "Lettuce",
+          "position": {
+            "x": 3,
+            "y": 0,
+            "z": 2
+          }
+        }
+      ]
+    }
+  ]
+}
