@@ -11,6 +11,32 @@ public class FarmFieldGenerator : MonoBehaviour
         GenerateField();
     }
 
+    void OnDrawGizmos()
+    {
+        // This allows you to see the positions in the editor even when not playing
+        if (Application.isPlaying) return; 
+
+        // Re-calculating logic just for visualization in Editor
+        string path = System.IO.Path.Combine(Application.streamingAssetsPath, "PlantData.json");
+        if (!System.IO.File.Exists(path)) return;
+
+        string jsonString = System.IO.File.ReadAllText(path);
+        FarmData data = JsonUtility.FromJson<FarmData>(jsonString);
+
+        if (data == null) return;
+
+        Gizmos.color = Color.green;
+        foreach (Row row in data.rows)
+        {
+            Vector3 rowBase = transform.position + new Vector3(row.location.x, 0, row.location.z) * scaleFactor;
+            foreach (Plant p in row.plants)
+            {
+                Vector3 pPos = rowBase + new Vector3(p.position.x, p.position.y, p.position.z) * scaleFactor;
+                Gizmos.DrawWireSphere(pPos, 0.2f); // Draws a small sphere at each plant
+            }
+        }
+    }
+
     void GenerateField()
     {
         string path = System.IO.Path.Combine(Application.streamingAssetsPath, "PlantData.json");
@@ -35,8 +61,7 @@ public class FarmFieldGenerator : MonoBehaviour
 
             foreach (Plant p in row.plants)
             {
-                // Refactored: Using x and z directly from the plant position
-                Vector3 localPos = new Vector3(p.position.x, 0, p.position.z) * scaleFactor;
+                Vector3 localPos = new Vector3(p.position.x, p.position.y, p.position.z) * scaleFactor;
                 Vector3 worldPos = rowBasePos + localPos;
 
                 GameObject ghostPlant = Instantiate(interactionPrefab, worldPos, Quaternion.identity, this.transform);
