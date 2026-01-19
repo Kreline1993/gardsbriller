@@ -28,7 +28,7 @@ public class FarmFieldGenerator : MonoBehaviour
         Gizmos.color = Color.green;
         foreach (Row row in data.rows)
         {
-            Vector3 rowBase = transform.position + new Vector3(row.location.x, 0, row.location.z) * scaleFactor;
+            Vector3 rowBase = transform.position + new Vector3(row.location.x, row.location.y, row.location.z) * scaleFactor;
             foreach (Plant p in row.plants)
             {
                 Vector3 pPos = rowBase + new Vector3(p.position.x, p.position.y, p.position.z) * scaleFactor;
@@ -57,7 +57,7 @@ public class FarmFieldGenerator : MonoBehaviour
         foreach (Row row in data.rows)
         {
             // Row position in world space
-            Vector3 rowBasePos = new Vector3(row.location.x, 0, row.location.z) * scaleFactor;
+            Vector3 rowBasePos = new Vector3(row.location.x, row.location.y, row.location.z) * scaleFactor;
 
             foreach (Plant p in row.plants)
             {

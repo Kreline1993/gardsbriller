@@ -2,30 +2,24 @@ using UnityEngine;
 
 namespace FarmSystem.Models 
 {
-    [System.Serializable]
-    public class LocationData {
-        public float x;
-        public float z;
-    }
-
-    [System.Serializable]
-    public class PositionData {
+[System.Serializable]
+    public class Vector3Data {
         public float x;
         public float y;
-        public float z; 
+        public float z;
     }
 
     [System.Serializable]
     public class Plant {
         public string plantId;
         public string species;
-        public PositionData position;
+        public Vector3Data position;
     }
 
     [System.Serializable]
     public class Row {
         public string rowId;
-        public LocationData location;
+        public Vector3Data location;
         public Plant[] plants;
     }
 
