@@ -13,7 +13,7 @@ public class HoverHighlight : MonoBehaviour
         _interactable = GetComponent<XRSimpleInteractable>();
         _outline = GetComponent<Outline>();
 
-        // Ensure outline is off at the start
+        // Outline is off at the start
         if (_outline != null) _outline.enabled = false;
     }
 
