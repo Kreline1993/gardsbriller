@@ -11,6 +11,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/SimpleDigitalTwin.unity
     guid: 0ff8fce400700a04587ce43cf1409947
+  - enabled: 0
+    path: Assets/Samples/XR Interaction Toolkit/3.3.1/Hands Interaction Demo/HandsDemoScene.unity
+    guid: 3ff35cecbcc52cc42945cf531638a60a
   m_configObjects:
     Unity.XR.Oculus.Settings: {fileID: 11400000, guid: bfa1182bd221b4ca89619141f66f1260, type: 2}
     Unity.XR.WindowsMR.Settings: {fileID: 11400000, guid: dc5a169419fa04987b057f65238cf3ba, type: 2}
