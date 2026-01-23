@@ -1,5 +1,8 @@
 using UnityEngine;
 using FarmSystem.Models;
+using UnityEngine.Networking; // Required for UnityWebRequest
+using System.Collections;    // Required for IEnumerator
+using System.IO;
 
 public class FarmFieldGenerator : MonoBehaviour
 {
@@ -8,45 +11,47 @@ public class FarmFieldGenerator : MonoBehaviour
 
     void Start()
     {
-        GenerateField();
+        // We now call this as a Coroutine
+        StartCoroutine(GenerateFieldRoutine());
     }
 
-    void OnDrawGizmos()
+    IEnumerator GenerateFieldRoutine()
     {
-        // This allows you to see the positions in the editor even when not playing
-        if (Application.isPlaying) return; 
+        string path = Path.Combine(Application.streamingAssetsPath, "PlantData.json");
+        string jsonString = "";
 
-        // Re-calculating logic just for visualization in Editor
-        string path = System.IO.Path.Combine(Application.streamingAssetsPath, "PlantData.json");
-        if (!System.IO.File.Exists(path)) return;
-
-        string jsonString = System.IO.File.ReadAllText(path);
-        FarmData data = JsonUtility.FromJson<FarmData>(jsonString);
-
-        if (data == null) return;
-
-        Gizmos.color = Color.green;
-        foreach (Row row in data.rows)
+        // Check if we are on Android/Quest
+        if (path.Contains("://") || path.Contains(":///"))
         {
-            Vector3 rowBase = transform.position + new Vector3(row.location.x, row.location.y, row.location.z) * scaleFactor;
-            foreach (Plant p in row.plants)
+            using (UnityWebRequest webRequest = UnityWebRequest.Get(path))
             {
-                Vector3 pPos = rowBase + new Vector3(p.position.x, p.position.y, p.position.z) * scaleFactor;
-                Gizmos.DrawWireSphere(pPos, 0.2f); // Draws a small sphere at each plant
+                yield return webRequest.SendWebRequest();
+
+                if (webRequest.result != UnityWebRequest.Result.Success)
+                {
+                    Debug.LogError($"[FarmGenerator] Error loading JSON from APK: {webRequest.error}");
+                    yield break; // Exit the coroutine
+                }
+                jsonString = webRequest.downloadHandler.text;
             }
         }
-    }
-
-    void GenerateField()
-    {
-        string path = System.IO.Path.Combine(Application.streamingAssetsPath, "PlantData.json");
-        
-        if (!System.IO.File.Exists(path)) {
-            Debug.LogError($"[FarmGenerator] JSON not found at: {path}");
-            return;
+        else
+        {
+            // Standard PC/Editor loading
+            if (!File.Exists(path))
+            {
+                Debug.LogError($"[FarmGenerator] JSON not found at: {path}");
+                yield break;
+            }
+            jsonString = File.ReadAllText(path);
         }
 
-        string jsonString = System.IO.File.ReadAllText(path);
+        // Now that we have the string, parse it
+        ParseAndGenerate(jsonString);
+    }
+
+    void ParseAndGenerate(string jsonString)
+    {
         FarmData data = JsonUtility.FromJson<FarmData>(jsonString);
 
         if (data == null || data.rows == null) {
@@ -56,17 +61,15 @@ public class FarmFieldGenerator : MonoBehaviour
 
         foreach (Row row in data.rows)
         {
-            // Row position in world space
             Vector3 rowBasePos = new Vector3(row.location.x, row.location.y, row.location.z) * scaleFactor;
 
             foreach (Plant p in row.plants)
             {
                 Vector3 localPos = new Vector3(p.position.x, p.position.y, p.position.z) * scaleFactor;
-                Vector3 worldPos = rowBasePos + localPos;
+                Vector3 worldPos = transform.position + rowBasePos + localPos;
 
                 GameObject ghostPlant = Instantiate(interactionPrefab, worldPos, Quaternion.identity, this.transform);
                 
-                // Assign ID
                 PlantIdentity identity = ghostPlant.GetComponent<PlantIdentity>();
                 if (identity != null) {
                     identity.plantId = p.plantId;
@@ -76,5 +79,29 @@ public class FarmFieldGenerator : MonoBehaviour
             }
         }
         Debug.Log("[FarmGenerator] Field generation complete.");
+    }
+
+    void OnDrawGizmos()
+    {
+        // Gizmos ONLY run in the Editor, so File.ReadAllText is still fine here.
+        if (Application.isPlaying) return; 
+
+        string path = Path.Combine(Application.streamingAssetsPath, "PlantData.json");
+        if (!File.Exists(path)) return;
+
+        string jsonString = File.ReadAllText(path);
+        FarmData data = JsonUtility.FromJson<FarmData>(jsonString);
+        if (data == null) return;
+
+        Gizmos.color = Color.green;
+        foreach (Row row in data.rows)
+        {
+            Vector3 rowBase = transform.position + new Vector3(row.location.x, row.location.y, row.location.z) * scaleFactor;
+            foreach (Plant p in row.plants)
+            {
+                Vector3 pPos = rowBase + new Vector3(p.position.x, p.position.y, p.position.z) * scaleFactor;
+                Gizmos.DrawWireSphere(pPos, 0.2f);
+            }
+        }
     }
 }
