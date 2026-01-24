@@ -18,7 +18,7 @@ GameObject:
   - component: {fileID: -463606657192438615}
   - component: {fileID: 6455933585283455699}
   m_Layer: 0
-  m_Name: PanelInteractionObject
+  m_Name: PlantRepresentationInteractable
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
