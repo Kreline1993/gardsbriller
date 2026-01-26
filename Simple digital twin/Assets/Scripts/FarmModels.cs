@@ -1,7 +1,6 @@
 using UnityEngine;
 
-namespace FarmSystem.Models 
-{
+
 [System.Serializable]
     public class Vector3Data {
         public float x;
@@ -27,4 +26,3 @@ namespace FarmSystem.Models
     public class FarmData {
         public Row[] rows;
     }
-}

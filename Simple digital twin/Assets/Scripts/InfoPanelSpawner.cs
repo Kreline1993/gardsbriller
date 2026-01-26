@@ -1,6 +1,5 @@
 using UnityEngine;
 using TMPro;
-using FarmSystem.Models;
 
 public class InfoPanelSpawner : MonoBehaviour
 {
@@ -11,9 +10,22 @@ public class InfoPanelSpawner : MonoBehaviour
     {
         if (spawnedPanel == null)
         {
-            // 1. Identify which plant this is
-            string id = GetComponent<PlantIdentity>().plantId;
-            Plant data = DataService.GetPlantById(id);
+            // 1) Identify plant
+            var identity = GetComponent<PlantIdentity>();
+            if (identity == null)
+            {
+                Debug.LogError("[InfoPanelSpa>wner] Missing PlantIdentity component on this plant prefab.");
+                return;
+            }
+
+            if (FarmDatabase.Instance == null)
+            {
+                Debug.LogError("[InfoPanelSpawner] FarmDatabase.Instance is null. Add FarmDatabase to a Services GameObject in the scene.");
+                return;
+            }
+
+            string id = identity.plantId;
+            Plant data = FarmDatabase.Instance.GetPlantById(id);
 
             // 2. Position logic
             Vector3 directionToPlayer = (Camera.main.transform.position - transform.position).normalized;

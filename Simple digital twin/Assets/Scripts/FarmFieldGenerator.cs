@@ -1,17 +1,17 @@
 using UnityEngine;
-using FarmSystem.Models;
-using UnityEngine.Networking; // Required for UnityWebRequest
-using System.Collections;    // Required for IEnumerator
-using System.IO;
+using UnityEngine.Networking;
+using System.Collections;
+using System.IO; // Delete when removing pc only read
 
 public class FarmFieldGenerator : MonoBehaviour
 {
-    public GameObject interactionPrefab; 
+    public GameObject interactionPrefab;
     public float scaleFactor = 1.0f;
+
+    public FarmData FarmData { get; private set; }
 
     void Start()
     {
-        // We now call this as a Coroutine
         StartCoroutine(GenerateFieldRoutine());
     }
 
@@ -20,7 +20,7 @@ public class FarmFieldGenerator : MonoBehaviour
         string path = Path.Combine(Application.streamingAssetsPath, "PlantData.json");
         string jsonString = "";
 
-        // Check if we are on Android/Quest
+        // Check if using Android/Quest
         if (path.Contains("://") || path.Contains(":///"))
         {
             using (UnityWebRequest webRequest = UnityWebRequest.Get(path))
@@ -30,14 +30,14 @@ public class FarmFieldGenerator : MonoBehaviour
                 if (webRequest.result != UnityWebRequest.Result.Success)
                 {
                     Debug.LogError($"[FarmGenerator] Error loading JSON from APK: {webRequest.error}");
-                    yield break; // Exit the coroutine
+                    yield break;
                 }
                 jsonString = webRequest.downloadHandler.text;
             }
         }
         else
         {
-            // Standard PC/Editor loading
+            // Standard PC/Editor loading - Delete when testing finished
             if (!File.Exists(path))
             {
                 Debug.LogError($"[FarmGenerator] JSON not found at: {path}");
@@ -46,15 +46,16 @@ public class FarmFieldGenerator : MonoBehaviour
             jsonString = File.ReadAllText(path);
         }
 
-        // Now that we have the string, parse it
         ParseAndGenerate(jsonString);
     }
 
     void ParseAndGenerate(string jsonString)
     {
-        FarmData data = JsonUtility.FromJson<FarmData>(jsonString);
+        FarmData = JsonUtility.FromJson<FarmData>(jsonString);
+        FarmData data = FarmData;
 
-        if (data == null || data.rows == null) {
+        if (data == null || data.rows == null)
+        {
             Debug.LogError("[FarmGenerator] Failed to parse JSON. Check your structure!");
             return;
         }
@@ -69,12 +70,13 @@ public class FarmFieldGenerator : MonoBehaviour
                 Vector3 worldPos = transform.position + rowBasePos + localPos;
 
                 GameObject ghostPlant = Instantiate(interactionPrefab, worldPos, Quaternion.identity, this.transform);
-                
+
                 PlantIdentity identity = ghostPlant.GetComponent<PlantIdentity>();
-                if (identity != null) {
+                if (identity != null)
+                {
                     identity.plantId = p.plantId;
                 }
-                
+
                 ghostPlant.name = $"Trigger_{p.species}_{p.plantId}";
             }
         }
@@ -83,8 +85,8 @@ public class FarmFieldGenerator : MonoBehaviour
 
     void OnDrawGizmos()
     {
-        // Gizmos ONLY run in the Editor, so File.ReadAllText is still fine here.
-        if (Application.isPlaying) return; 
+        // Draw Gizmos in live editior to see plants -- Delete after testing
+        if (Application.isPlaying) return;
 
         string path = Path.Combine(Application.streamingAssetsPath, "PlantData.json");
         if (!File.Exists(path)) return;
