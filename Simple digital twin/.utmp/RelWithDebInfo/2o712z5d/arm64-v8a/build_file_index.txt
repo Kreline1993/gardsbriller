@@ -1,0 +1,2 @@
+C:\Users\natas_66rrbh2\source\gardsbriller\Simple digital twin\Library\Bee\Android\Prj\IL2CPP\Gradle\unityLibrary\src\main\cpp\CMakeLists.txt
+C:\Users\natas_66rrbh2\source\gardsbriller\Simple digital twin\Library\Bee\Android\Prj\IL2CPP\Gradle\unityLibrary\src\main\cpp\GameActivity\CMakeLists.txt
