@@ -3,64 +3,154 @@
     {
       "rowId": "row_A",
       "location": {
-        "x": 0.5,
+        "x": 0,
         "y": 0,
         "z": 0
       },
       "size": {
-        "width": 10,
-        "length": 10
+        "width": 0.75,
+        "length": 4.033
       },
       "plants": [
         {
           "plantId": "plant_001",
           "species": "Tomato",
           "position": {
-            "x": 0,
-            "y": 1,
-            "z": 1
+            "x": 0.325,
+            "y": 0.1,
+            "z": 0.57
+            
+          }, 
+          "size": { 
+            "Diameter": 0.13
           }
         },
         {
           "plantId": "plant_002",
           "species": "Tomato",
           "position": {
-            "x": 0,
-            "y": 1,
-            "z": 3
+            "x": 0.325,
+            "y": 0.1,
+            "z": 1.50
+          }, 
+          "size": {
+            "Diameter": 0.13
           }
+        }, 
+        {
+          "plantId": "plant_003",
+          "species": "Tomato",
+          "position": {
+            "x": 0.325,
+            "y": 0.1,
+            "z": 2.40
+          }
+          , 
+          "size": {
+            "Diameter": 0.13
         }
+      },
+        
+        {
+          "plantId": "plant_004",
+          "species": "Tomato",
+          "position": {
+            "x": 0.325,
+            "y": 0.1,
+            "z": 3.30
+          }
+          , 
+          "size": {
+            "Diameter": 0.13
+        }
+      }
+
+    
       ]
     },
     {
       "rowId": "row_B",
       "location": {
-        "x": 1.75,
+        "x": 1.50,
         "y": 0,
         "z": 0
       },
       "size": {
-        "width": 10,
-        "length": 10
+        "width": 0.75,
+        "length": 4.033
       },
       "plants": [
         {
-          "plantId": "plant_003",
-          "species": "Bell Pepper",
+          "plantId": "plant_005",
+          "species": "Leek",
           "position": {
-            "x": 1,
-            "y": 1,
-            "z": 1
+            "x": 1.825,
+            "y": 0,
+            "z": 0.575
           }
+          , 
+          "size": {
+            "x": 0.09,
+            "z": 0.09
+        }
         },
         {
-          "plantId": "plant_004",
-          "species": "Bell Pepper",
+          "plantId": "plant_006",
+          "species": "Leek",
           "position": {
-            "x": 1,
-            "y": 1,
-            "z": 3
+            "x": 1.825,
+            "y": 0,
+            "z": 0.85
           }
+          , 
+          "size": {
+            "x": 0.09,
+            "z": 0.09
+        }
+        
+        },
+         {
+          "plantId": "plant_007",
+          "species": "Leek",
+          "position": {
+            "x": 1.825,
+            "y": 0,
+            "z": 1.13
+          }
+          , 
+          "size": {
+            "x": 0.09,
+            "z": 0.09
+        }
+        
+        },
+         {
+          "plantId": "plant_008",
+          "species": "Tomato",
+          "position": {
+            "x": 1.825,
+            "y": 0,
+            "z": 1.55
+          }
+          , 
+          "size": {
+            "Diameter": 0.115
+        }
+        
+        },
+         {
+          "plantId": "plant_009",
+          "species": "Tomato",
+          "position": {
+            "x": 1.825,
+            "y": 0,
+            "z": 1.90
+          }
+          , 
+          "size": {
+            "Diameter": 0.115
+        }
+        
         }
       ]
     },
@@ -72,27 +162,132 @@
         "z": 0
       },
       "size": {
-        "width": 10,
-        "length": 10
+        "width": 0.722,
+        "length": 4.033
       },
       "plants": [
         {
-          "plantId": "plant_005",
-          "species": "Lettuce",
+          "plantId": "plant_010",
+          "species": "Radish",
           "position": {
-            "x": 2,
-            "y": 1,
-            "z": 1
+            "x": 3.425,
+            "y": 0,
+            "z": 0.33
           }
+          , 
+          "size": {
+            "x": 0.065,
+            "z": 0.065
+        }
         },
         {
-          "plantId": "plant_006",
-          "species": "Lettuce",
+          "plantId": "plant_011",
+          "species": "Radish",
           "position": {
-            "x": 2,
-            "y": 1,
-            "z": 3
+            "x": 3.335,
+            "y": 0,
+            "z": 0.33
           }
+           , 
+          "size": {
+            "x": 0.065,
+            "z": 0.065
+        }
+        },
+        {
+          "plantId": "plant_012",
+          "species": "Radish",
+          "position": {
+            "x": 3.25,
+            "y": 0,
+            "z": 0.33
+          }
+           , 
+          "size": {
+            "x": 0.065,
+            "z": 0.065
+        }
+        },
+        {
+          "plantId": "plant_013",
+          "species": "Radish",
+          "position": {
+            "x": 3.343,
+            "y": 0,
+            "z": 0.72
+          }
+           , 
+          "size": {
+            "Diameter": 0.10
+        }
+        },
+        {
+          "plantId": "plant_014",
+          "species": "Radish",
+          "position": {
+            "x": 3.37,
+            "y": 0,
+            "z": 0.84
+          }
+           , 
+          "size": {
+            "Diameter": 0.10
+        }
+        },
+        {
+          "plantId": "plant_015",
+          "species": "Radish",
+          "position": {
+            "x": 3.31,
+            "y": 0,
+            "z": 0.72
+          }
+           , 
+          "size": {
+            "Diameter": 0.10
+        }
+        },
+        {
+          "plantId": "plant_016",
+          "species": "Leek",
+          "position": {
+            "x": 3.16,
+            "y": 0,
+            "z": 1.60
+          }
+           , 
+          "size": {
+            "Diameter": 0.10
+        }
+        },
+        {
+          "plantId": "plant_017",
+          "species": "Leek",
+          "position": {
+            "x": 3.275,
+            "y": 0,
+            "z": 1.60
+          }
+           , 
+          "size": {
+            "x": 0.09,
+            "y": 0.09
+        }
+        
+        },
+        {
+          "plantId": "plant_017",
+          "species": "Leek",
+          "position": {
+            "x": 3.213,
+            "y": 0,
+            "z": 1.72
+          }
+           , 
+          "size": {
+            "Diameter": 0.115
+        }
+        
         }
       ]
     }

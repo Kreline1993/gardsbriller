@@ -6,7 +6,7 @@ using System.IO; // Delete when removing pc only read
 public class FarmFieldGenerator : MonoBehaviour
 {
     public GameObject interactionPrefab;
-    public float scaleFactor = 1.0f;
+    public float scaleFactor = 10.0f;
 
     public FarmData FarmData { get; private set; }
 
@@ -52,22 +52,20 @@ public class FarmFieldGenerator : MonoBehaviour
     void ParseAndGenerate(string jsonString)
     {
         FarmData = JsonUtility.FromJson<FarmData>(jsonString);
-        FarmData data = FarmData;
+        if (FarmData == null || FarmData.rows == null) return;
 
-        if (data == null || data.rows == null)
+        foreach (Row row in FarmData.rows)
         {
-            Debug.LogError("[FarmGenerator] Failed to parse JSON. Check your structure!");
-            return;
-        }
-
-        foreach (Row row in data.rows)
-        {
-            Vector3 rowBasePos = new Vector3(row.location.x, row.location.y, row.location.z) * scaleFactor;
-
+            // We still iterate through rows to get the plants, 
+            // but we ignore row.location for the plant placement.
             foreach (Plant p in row.plants)
             {
-                Vector3 localPos = new Vector3(p.position.x, p.position.y, p.position.z) * scaleFactor;
-                Vector3 worldPos = transform.position + rowBasePos + localPos;
+                // Calculate position relative ONLY to world 0,0,0 plus scale
+                Vector3 worldPos = new Vector3(
+                    p.position.x * scaleFactor,
+                    p.position.y * scaleFactor,
+                    p.position.z * scaleFactor
+                );
 
                 GameObject ghostPlant = Instantiate(interactionPrefab, worldPos, Quaternion.identity, this.transform);
 
@@ -76,34 +74,60 @@ public class FarmFieldGenerator : MonoBehaviour
                 {
                     identity.plantId = p.plantId;
                 }
-
                 ghostPlant.name = $"Trigger_{p.species}_{p.plantId}";
             }
         }
-        Debug.Log("[FarmGenerator] Field generation complete.");
     }
 
     void OnDrawGizmos()
     {
-        // Draw Gizmos in live editior to see plants -- Delete after testing
         if (Application.isPlaying) return;
 
         string path = Path.Combine(Application.streamingAssetsPath, "PlantData.json");
         if (!File.Exists(path)) return;
 
-        string jsonString = File.ReadAllText(path);
-        FarmData data = JsonUtility.FromJson<FarmData>(jsonString);
-        if (data == null) return;
-
-        Gizmos.color = Color.green;
-        foreach (Row row in data.rows)
+        try
         {
-            Vector3 rowBase = transform.position + new Vector3(row.location.x, row.location.y, row.location.z) * scaleFactor;
-            foreach (Plant p in row.plants)
+            string jsonString = File.ReadAllText(path);
+            FarmData data = JsonUtility.FromJson<FarmData>(jsonString);
+
+            if (data == null || data.rows == null) return;
+
+            foreach (Row row in data.rows)
             {
-                Vector3 pPos = rowBase + new Vector3(p.position.x, p.position.y, p.position.z) * scaleFactor;
-                Gizmos.DrawWireSphere(pPos, 0.2f);
+                // 1. Position calculation
+                Vector3 rowBase = transform.position + new Vector3(row.location.x, row.location.y, row.location.z) * scaleFactor;
+
+                // 2. Dimensions - Added a fallback to ensure size isn't 0
+                float w = (row.size != null ? row.size.width : 1f) * scaleFactor;
+                float l = (row.size != null ? row.size.length : 1f) * scaleFactor;
+                float h = 0.2f;
+
+                // 3. Center calculation (Unity draws from center, JSON usually provides corner)
+                Vector3 rowCenter = rowBase + new Vector3(w / 2f, h / 2f, l / 2f);
+
+                // --- DRAWING ---
+                // Draw Row Outline
+                Gizmos.color = Color.cyan;
+                Gizmos.DrawWireCube(rowCenter, new Vector3(w, h, l));
+
+                // Draw semi-transparent floor so it's easier to see
+                Gizmos.color = new Color(0, 1, 1, 0.2f);
+                Gizmos.DrawCube(rowCenter, new Vector3(w, h, l));
+
+                // Draw Plants
+                if (row.plants != null)
+                {
+                    Gizmos.color = Color.green;
+                    foreach (Plant p in row.plants)
+                    {
+                        // Match the ParseAndGenerate logic: ignore rowBase
+                        Vector3 pPos = new Vector3(p.position.x, p.position.y, p.position.z) * scaleFactor;
+                        Gizmos.DrawWireSphere(pPos, 0.1f * scaleFactor);
+                    }
+                }
             }
         }
+        catch (System.Exception) { /* Fail silently */ }
     }
 }
