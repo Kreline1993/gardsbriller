@@ -14,6 +14,7 @@
       "plants": [
         {
           "plantId": "plant_001",
+          "plantName": "Tomato Plant 1",
           "species": "Tomato",
           "position": {
             "x": 0.325,
@@ -27,6 +28,7 @@
         },
         {
           "plantId": "plant_002",
+          "plantName": "Tomato Plant 2",
           "species": "Tomato",
           "position": {
             "x": 0.325,
@@ -39,6 +41,7 @@
         }, 
         {
           "plantId": "plant_003",
+          "plantName": "Tomato Plant 3",
           "species": "Tomato",
           "position": {
             "x": 0.325,
@@ -53,6 +56,7 @@
         
         {
           "plantId": "plant_004",
+          "plantName": "Tomato Plant 4",
           "species": "Tomato",
           "position": {
             "x": 0.325,
@@ -82,6 +86,7 @@
       "plants": [
         {
           "plantId": "plant_005",
+          "plantName": "Leek Plant 1",
           "species": "Leek",
           "position": {
             "x": 1.825,
@@ -96,9 +101,10 @@
         },
         {
           "plantId": "plant_006",
+          "plantName": "Leek Plant 2",
           "species": "Leek",
           "position": {
-            "x": 1.825,
+            "x": 1.834,
             "y": 0,
             "z": 0.85
           }
@@ -111,6 +117,7 @@
         },
          {
           "plantId": "plant_007",
+          "plantName": "Leek Plant 3",
           "species": "Leek",
           "position": {
             "x": 1.825,
@@ -126,6 +133,7 @@
         },
          {
           "plantId": "plant_008",
+          "plantName": "Tomato Plant 5",
           "species": "Tomato",
           "position": {
             "x": 1.825,
@@ -140,6 +148,7 @@
         },
          {
           "plantId": "plant_009",
+          "plantName": "Tomato Plant 6",
           "species": "Tomato",
           "position": {
             "x": 1.825,
@@ -168,9 +177,10 @@
       "plants": [
         {
           "plantId": "plant_010",
+          "plantName": "Radish Plant 1",
           "species": "Radish",
           "position": {
-            "x": 3.425,
+            "x": 3.465,
             "y": 0,
             "z": 0.33
           }
@@ -182,9 +192,10 @@
         },
         {
           "plantId": "plant_011",
+          "plantName": "Radish Plant 2",
           "species": "Radish",
           "position": {
-            "x": 3.335,
+            "x": 3.395,
             "y": 0,
             "z": 0.33
           }
@@ -196,9 +207,10 @@
         },
         {
           "plantId": "plant_012",
+          "plantName": "Radish Plant 3",
           "species": "Radish",
           "position": {
-            "x": 3.25,
+            "x": 3.31,
             "y": 0,
             "z": 0.33
           }
@@ -210,6 +222,7 @@
         },
         {
           "plantId": "plant_013",
+          "plantName": "Radish Plant 4",
           "species": "Radish",
           "position": {
             "x": 3.343,
@@ -223,11 +236,12 @@
         },
         {
           "plantId": "plant_014",
+          "plantName": "Radish Plant 5 & 6",
           "species": "Radish",
           "position": {
-            "x": 3.37,
+            "x": 3.256,
             "y": 0,
-            "z": 0.84
+            "z": 0.898
           }
            , 
           "size": {
@@ -236,11 +250,12 @@
         },
         {
           "plantId": "plant_015",
+          "plantName": "Radish Plant 7 & 8",
           "species": "Radish",
           "position": {
-            "x": 3.31,
+            "x": 3.486,
             "y": 0,
-            "z": 0.72
+            "z": 0.865
           }
            , 
           "size": {
@@ -249,6 +264,7 @@
         },
         {
           "plantId": "plant_016",
+          "plantName": "Leek Plant 4 & 5",
           "species": "Leek",
           "position": {
             "x": 3.16,
@@ -262,6 +278,7 @@
         },
         {
           "plantId": "plant_017",
+          "plantName": "Leek Plant 6 & 7",
           "species": "Leek",
           "position": {
             "x": 3.275,
@@ -277,7 +294,8 @@
         },
         {
           "plantId": "plant_017",
-          "species": "Leek",
+          "plantName": "Tomato Plant 7",
+          "species": "Tomato",
           "position": {
             "x": 3.213,
             "y": 0,
