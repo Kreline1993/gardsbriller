@@ -1,10 +1,19 @@
 # ninja log v5
-49	4841	7900841440227165	GameActivity/CMakeFiles/game.dir/UGAInputKeyEvent.cpp.o	70255389354135d8
-73	4881	7900841441001658	GameActivity/CMakeFiles/game.dir/UGAEntry.cpp.o	882a302c9162867
-35	4973	7900841441581305	GameActivity/CMakeFiles/game.dir/UGAConfiguration.cpp.o	1c00cdd162f17111
-144	5031	7900841442485554	GameActivity/CMakeFiles/game.dir/UGAInputMotionEvent.cpp.o	f99fb3849bb3ccb8
-20	5165	7900841443899172	GameActivity/CMakeFiles/game.dir/UGADebug.cpp.o	fbe2fc206ca09af6
-100	5646	7900841448849304	GameActivity/CMakeFiles/game.dir/UGAInput.cpp.o	f0ad5c21f36e5914
-127	5778	7900841450237296	GameActivity/CMakeFiles/game.dir/UGASoftKeyboard.cpp.o	5d0d0fae064d1b21
-2	5877	7900841451159443	GameActivity/CMakeFiles/game.dir/UGAApplication.cpp.o	aa34e792aad6fc66
-5878	6168	7900841454204253	C:/Users/natas_66rrbh2/source/gardsbriller/Simple digital twin/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/build/intermediates/cxx/RelWithDebInfo/2o712z5d/obj/arm64-v8a/libgame.so	9775cd94f6f18dbc
+52	3068	7919071377505300	GameActivity/CMakeFiles/game.dir/UGAInputKeyEvent.cpp.o	70255389354135d8
+3831	4104	7919071388252371	C:/Users/natas_66rrbh2/source/gardsbriller/Simple digital twin/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/build/intermediates/cxx/RelWithDebInfo/2o712z5d/obj/arm64-v8a/libgame.so	9775cd94f6f18dbc
+31	3097	7919071377490206	GameActivity/CMakeFiles/game.dir/UGAEntry.cpp.o	882a302c9162867
+63	3574	7919071382787802	GameActivity/CMakeFiles/game.dir/UGASoftKeyboard.cpp.o	5d0d0fae064d1b21
+21	3108	7919071378090575	GameActivity/CMakeFiles/game.dir/UGAConfiguration.cpp.o	1c00cdd162f17111
+12	3279	7919071380010764	GameActivity/CMakeFiles/game.dir/UGADebug.cpp.o	fbe2fc206ca09af6
+74	3129	7919071378413389	GameActivity/CMakeFiles/game.dir/UGAInputMotionEvent.cpp.o	f99fb3849bb3ccb8
+41	3606	7919071383213322	GameActivity/CMakeFiles/game.dir/UGAInput.cpp.o	f0ad5c21f36e5914
+1	3830	7919071385401164	GameActivity/CMakeFiles/game.dir/UGAApplication.cpp.o	aa34e792aad6fc66
+70	3872	7919081023870743	GameActivity/CMakeFiles/game.dir/UGAEntry.cpp.o	882a302c9162867
+98	3977	7919081025204133	GameActivity/CMakeFiles/game.dir/UGAInputKeyEvent.cpp.o	70255389354135d8
+33	4034	7919081025915245	GameActivity/CMakeFiles/game.dir/UGAConfiguration.cpp.o	1c00cdd162f17111
+85	4101	7919081026661064	GameActivity/CMakeFiles/game.dir/UGAInputMotionEvent.cpp.o	f99fb3849bb3ccb8
+51	4137	7919081027095314	GameActivity/CMakeFiles/game.dir/UGADebug.cpp.o	fbe2fc206ca09af6
+116	4601	7919081031769697	GameActivity/CMakeFiles/game.dir/UGAInput.cpp.o	f0ad5c21f36e5914
+130	4620	7919081032010183	GameActivity/CMakeFiles/game.dir/UGASoftKeyboard.cpp.o	5d0d0fae064d1b21
+17	4728	7919081033078722	GameActivity/CMakeFiles/game.dir/UGAApplication.cpp.o	aa34e792aad6fc66
+4728	4995	7919081035835509	C:/Users/natas_66rrbh2/source/gardsbriller/Simple digital twin/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/build/intermediates/cxx/RelWithDebInfo/2o712z5d/obj/arm64-v8a/libgame.so	9775cd94f6f18dbc
