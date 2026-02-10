@@ -28,7 +28,7 @@ public class QRCodePlacementByManualOffset : MonoBehaviour
             trackable.transform.rotation
         );
 
-        go.transform.SetParent(trackable.transform, worldPositionStays: true); // Comment this out to keep the prefab at its initial position
+        //go.transform.SetParent(trackable.transform, worldPositionStays: true); // Comment this out to keep the prefab at its initial position
 
         spawnedPrefabs.Add(trackable, go);
     }
