@@ -5,6 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using TMPro;
 
 // --- Data models for JSON deserialization ---
 
@@ -41,6 +42,53 @@ public class QRManager : MonoBehaviour
     private Quaternion computedRotation;
     private Vector3 computedTranslation;
     private bool transformComputed = false;
+
+    [Header("UI Display")]
+[SerializeField] private TextMeshProUGUI debugTextMesh;
+[SerializeField] private GameObject debugPanel; // The Canvas object
+
+public void UpdateVisualDisplay()
+{
+    if (!transformComputed)
+    {
+        debugTextMesh.text = "Transformation not yet computed.\nScan 2 markers.";
+        return;
+    }
+
+    // Get the user's current head position (tracking space)
+    Vector3 headPos = Camera.main.transform.position;
+    
+    // Convert to Digital Twin space using your existing method
+    if (TryTransformToDigitalTwin(headPos, out Vector3 dtPos))
+    {
+        debugTextMesh.text = $"<b>Digital Twin Position:</b>\n" +
+                             $"X: {dtPos.x:F3}\n" +
+                             $"Y: {dtPos.y:F3}\n" +
+                             $"Z: {dtPos.z:F3}\n" +
+                             $"<color=green>System Calibrated</color>";
+    }
+}
+
+public void ToggleDebugUI()
+{
+    bool isActive = !debugPanel.activeSelf;
+    debugPanel.SetActive(isActive);
+
+    if (isActive)
+    {
+        // Move the panel 1 meter in front of the camera
+        Transform cam = Camera.main.transform;
+        debugPanel.transform.position = cam.position + (cam.forward * 1.0f);
+        debugPanel.transform.rotation = Quaternion.LookRotation(debugPanel.transform.position - cam.position);
+        Debug.Log("[QRManager] Displaying debug panel");
+        
+        UpdateVisualDisplay();
+    }
+    else
+    {
+        Debug.Log("[QRManager] Hiding debug panel");
+    }
+}
 
     void Start()
     {
