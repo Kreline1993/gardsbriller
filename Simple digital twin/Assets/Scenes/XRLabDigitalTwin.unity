@@ -256,11 +256,35 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+        - m_Target: {fileID: 2132424410}
+          m_TargetAssemblyTypeName: QRManager, Assembly-CSharp
+          m_MethodName: OnTrackableAdded
+          m_Mode: 0
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
     <TrackableRemoved>k__BackingField:
       m_PersistentCalls:
         m_Calls:
         - m_Target: {fileID: 2132424408}
           m_TargetAssemblyTypeName: QRCodeTest, Assembly-CSharp
+          m_MethodName: OnTrackableRemoved
+          m_Mode: 0
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+        - m_Target: {fileID: 2132424410}
+          m_TargetAssemblyTypeName: QRManager, Assembly-CSharp
           m_MethodName: OnTrackableRemoved
           m_Mode: 0
           m_Arguments:
@@ -442,7 +466,13 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 657184242118504722, guid: d6878e1999eb4b44a9f5a263af86c185, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1272148043}
+    - targetCorrespondingSourceObject: {fileID: 657184242118504722, guid: d6878e1999eb4b44a9f5a263af86c185, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1272148044}
   m_SourcePrefab: {fileID: 100100000, guid: d6878e1999eb4b44a9f5a263af86c185, type: 3}
 --- !u!4 &1272148040 stripped
 Transform:
@@ -707,11 +737,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e2698219e3231e94c8765d49b9dd5cff, type: 3}
---- !u!4 &1477259837 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 5030734267259534325, guid: e2698219e3231e94c8765d49b9dd5cff, type: 3}
-  m_PrefabInstance: {fileID: 1477259836}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1516529228 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2218496723442559053, guid: d6878e1999eb4b44a9f5a263af86c185, type: 3}
@@ -915,6 +940,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2132424409}
   - component: {fileID: 2132424408}
+  - component: {fileID: 2132424410}
   m_Layer: 0
   m_Name: QR Manager
   m_TagString: Untagged
@@ -951,6 +977,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2132424410
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2132424407}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bb611d8cf3906d142abfe5e23f09b044, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::QRManager
+  markerDataFileName: QRMarkerData.json
 --- !u!4 &2143477701 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8518324294302271954, guid: 58d0a4ac86f2348deb02f3880c71378e, type: 3}
@@ -1119,3 +1158,4 @@ SceneRoots:
   - {fileID: 2970888878417928228}
   - {fileID: 2132424409}
   - {fileID: 881371436}
+  - {fileID: 1477259836}
