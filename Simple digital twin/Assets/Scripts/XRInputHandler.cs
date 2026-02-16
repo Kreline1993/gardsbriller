@@ -1,15 +1,20 @@
+using Meta.XR.MRUtilityKit;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR;
-using System.Collections.Generic;
-using Meta.XR.MRUtilityKit;
+using UnityEngine.XR.Interaction.Toolkit;
+using UnityEngine.XR.Interaction.Toolkit.Interactors;
 
 public class XRInputHandler : MonoBehaviour
 {
     public QRManager qrManager;
+    public MeasuringTool measuringTool;
+    public XRBaseInteractor leftInteractor;
+
     private InputDevice leftController;
     private bool wasPrimaryPressed = false;
     private bool wasSecondaryPressed = false;
-    public MeasuringTool measuringTool;
+    private bool wasTriggerPressed = false;
 
     void Start()
     {
@@ -17,92 +22,70 @@ public class XRInputHandler : MonoBehaviour
         {
             Debug.LogError("[XRInputHandler] QRManager reference is not assigned!");
         }
+
+        if (measuringTool == null)
+        {
+            Debug.LogError("[XRInputHandler] MeasuringTool reference is not assigned!");
+        }
+
         GetLeftController();
 
-        // Subscribe to room loaded event
         if (MRUK.Instance != null)
         {
             MRUK.Instance.RoomCreatedEvent.AddListener(OnRoomCreated);
             Debug.Log("[XRInputHandler] Subscribed to MRUK room events");
         }
-        else
-        {
-            Debug.LogWarning("[XRInputHandler] MRUK.Instance is null - room won't load");
-        }
     }
+
+
 
     void OnRoomCreated(MRUKRoom room)
     {
-        Debug.Log("[XRInputHandler] ? Room loaded successfully!");
+        Debug.Log("[XRInputHandler] Room loaded successfully!");
 
         var anchors = room.GetComponentsInChildren<MRUKAnchor>();
-        Debug.Log($"[XRInputHandler] Room has {anchors.Length} anchors");
 
         foreach (var anchor in anchors)
         {
             if (anchor.Label == MRUKAnchor.SceneLabels.FLOOR)
             {
-                Debug.Log("[XRInputHandler] Found FLOOR anchor!");
-                Debug.Log($"  Position: {anchor.transform.position}");
-                Debug.Log($"  Scale: {anchor.transform.localScale}");
-
-                // Check for mesh
                 MeshFilter meshFilter = anchor.GetComponent<MeshFilter>();
                 if (meshFilter != null && meshFilter.sharedMesh != null)
                 {
-                    Debug.Log($"  Has mesh with {meshFilter.sharedMesh.vertexCount} vertices");
-
-                    // Add/update mesh collider
                     MeshCollider mc = anchor.GetComponent<MeshCollider>();
                     if (mc == null)
                     {
                         mc = anchor.gameObject.AddComponent<MeshCollider>();
                     }
                     mc.sharedMesh = meshFilter.sharedMesh;
-                    Debug.Log("[XRInputHandler] ? Floor collider set up with mesh!");
                 }
-                else
+                else if (anchor.PlaneRect.HasValue)
                 {
-                    Debug.LogWarning("[XRInputHandler] Floor anchor has NO MESH! Need to generate plane bounds.");
+                    Vector2 size = anchor.PlaneRect.Value.size;
+                    Mesh planeMesh = CreatePlaneMesh(size);
 
-                    // Use plane bounds to create a simple quad mesh
-                    if (anchor.PlaneRect.HasValue)
-                    {
-                        Vector2 size = anchor.PlaneRect.Value.size;
-                        Debug.Log($"  Floor plane size: {size}");
+                    MeshFilter mf = anchor.gameObject.AddComponent<MeshFilter>();
+                    mf.sharedMesh = planeMesh;
 
-                        // Create a simple plane mesh
-                        Mesh planeMesh = CreatePlaneMesh(size);
-
-                        MeshFilter mf = anchor.gameObject.AddComponent<MeshFilter>();
-                        mf.sharedMesh = planeMesh;
-
-                        MeshCollider mc = anchor.gameObject.AddComponent<MeshCollider>();
-                        mc.sharedMesh = planeMesh;
-
-                        Debug.Log("[XRInputHandler] ? Created floor mesh and collider from plane bounds!");
-                    }
+                    MeshCollider mc = anchor.gameObject.AddComponent<MeshCollider>();
+                    mc.sharedMesh = planeMesh;
                 }
             }
         }
-
-        Collider[] colliders = FindObjectsOfType<Collider>();
-        Debug.Log($"[XRInputHandler] Total colliders: {colliders.Length}");
     }
 
     Mesh CreatePlaneMesh(Vector2 size)
     {
         Mesh mesh = new Mesh();
-
         float halfWidth = size.x / 2f;
         float halfHeight = size.y / 2f;
 
         Vector3[] vertices = new Vector3[]
         {
-        new Vector3(-halfWidth, 0, -halfHeight),
-        new Vector3(halfWidth, 0, -halfHeight),
-        new Vector3(-halfWidth, 0, halfHeight),
-        new Vector3(halfWidth, 0, halfHeight)
+            new Vector3(-halfWidth, 0, -halfHeight),
+            new Vector3(halfWidth, 0, -halfHeight),
+            new Vector3(-halfWidth, 0, halfHeight),
+            new Vector3(halfWidth, 0, halfHeight)
         };
 
         int[] triangles = new int[] { 0, 2, 1, 2, 3, 1 };
@@ -116,7 +99,6 @@ public class XRInputHandler : MonoBehaviour
 
     void Update()
     {
-        // Refresh controller if needed
         if (!leftController.isValid)
         {
             if (Time.frameCount % 60 == 0)
@@ -126,7 +108,7 @@ public class XRInputHandler : MonoBehaviour
             return;
         }
 
-        // Check for X button (primary button) press
+        // X button - Toggle debug UI
         if (leftController.TryGetFeatureValue(CommonUsages.primaryButton, out bool isPrimaryPressed))
         {
             if (isPrimaryPressed && !wasPrimaryPressed)
@@ -135,37 +117,47 @@ public class XRInputHandler : MonoBehaviour
                 {
                     qrManager.ToggleDebugUI();
                 }
-                else
-                {
-                    Debug.LogError("[XRInputHandler] Cannot toggle debug panel - QRManager is null!");
-                }
             }
             wasPrimaryPressed = isPrimaryPressed;
         }
 
-        // Check for Y button press
+        // In Update() method of XRInputHandler
+
+        // Trigger - Select digital twin using XR Interactor
+        if (leftController.TryGetFeatureValue(CommonUsages.triggerButton, out bool isTriggerPressed))
+        {
+            if (isTriggerPressed && !wasTriggerPressed)
+            {
+                Debug.Log("[XRInputHandler] TRIGGER PRESSED!");
+
+                if (measuringTool != null && leftInteractor != null)
+                {
+                    Debug.Log("[XRInputHandler] Calling SelectDigitalTwinFromInteractor");
+                    measuringTool.SelectDigitalTwinFromInteractor(leftInteractor);
+                }
+                else
+                {
+                    Debug.LogWarning($"[XRInputHandler] measuringTool is null: {measuringTool == null}, leftInteractor is null: {leftInteractor == null}"); // Add this
+                }
+            }
+            wasTriggerPressed = isTriggerPressed;
+        }
+
+        // Y button - Measure using XR Interactor
         if (leftController.TryGetFeatureValue(CommonUsages.secondaryButton, out bool isSecondaryPressed))
         {
             if (isSecondaryPressed && !wasSecondaryPressed)
             {
-                if (leftController.TryGetFeatureValue(CommonUsages.devicePosition, out Vector3 controllerPosition))
-                {
-                    if (leftController.TryGetFeatureValue(CommonUsages.deviceRotation, out Quaternion controllerRotation))
-                    {
-                        Vector3 rayDirection = controllerRotation * Vector3.forward;
-                        Ray ray = new Ray(controllerPosition, rayDirection);
+                Debug.Log("[XRInputHandler] Y BUTTON PRESSED!");
 
-                        if (Physics.Raycast(ray, out RaycastHit hit, maxDistance: 100f))
-                        {
-                            Debug.Log($"[XRInputHandler] Hit: {hit.collider.gameObject.name}");
-                            Debug.Log($"[XRInputHandler] Position: {hit.point}");
-                            Debug.Log($"[XRInputHandler] Distance: {hit.distance}m");
-                        }
-                        else
-                        {
-                            Debug.Log("[XRInputHandler] No surface hit");
-                        }
-                    }
+                if (measuringTool != null && leftInteractor != null)
+                {
+                    Debug.Log("[XRInputHandler] Calling MeasureAccuracyFromInteractor");
+                    measuringTool.MeasureAccuracyFromInteractor(leftInteractor);
+                }
+                else
+                {
+                    Debug.LogWarning($"[XRInputHandler] measuringTool is null: {measuringTool == null}, leftInteractor is null: {leftInteractor == null}"); // Add this
                 }
             }
             wasSecondaryPressed = isSecondaryPressed;
@@ -190,11 +182,6 @@ public class XRInputHandler : MonoBehaviour
                 Debug.Log($"[XRInputHandler] Found left controller: {leftController.name}");
                 return;
             }
-        }
-
-        if (!leftController.isValid)
-        {
-            Debug.LogWarning("[XRInputHandler] Left controller not found.");
         }
     }
 }
