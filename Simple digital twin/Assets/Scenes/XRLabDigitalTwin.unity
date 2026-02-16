@@ -232,7 +232,8 @@ MonoBehaviour:
   SceneSettings:
     DataSource: 0
     RoomIndex: -1
-    RoomPrefabs: []
+    RoomPrefabs:
+    - {fileID: 2796218292612847483, guid: ae7833b5391fbcc429e4f00c7049f898, type: 3}
     SceneJsons: []
     LoadSceneOnStartup: 1
     EnableHighFidelityScene: 0
