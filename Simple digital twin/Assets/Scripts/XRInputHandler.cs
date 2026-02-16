@@ -8,6 +8,9 @@ public class XRInputHandler : MonoBehaviour
 
     private InputDevice leftController;
     private bool wasPrimaryPressed = false;
+    private bool wasSecondaryPressed = false;
+
+    public MeasuringTool measuringTool;
 
     void Start()
     {
@@ -46,6 +49,28 @@ public class XRInputHandler : MonoBehaviour
                 }
             }
             wasPrimaryPressed = isPrimaryPressed;
+        }
+
+        // Check for Y button press
+        if (leftController.TryGetFeatureValue(CommonUsages.secondaryButton, out bool isSecondaryPressed))
+        {
+            if (isSecondaryPressed && !wasSecondaryPressed)
+            {
+                // Get controller position and rotation
+                if (leftController.TryGetFeatureValue(CommonUsages.devicePosition, out Vector3 controllerPosition))
+                {
+                    if (leftController.TryGetFeatureValue(CommonUsages.deviceRotation, out Quaternion controllerRotation))
+                    {
+                        Vector3 rayDirection = controllerRotation * Vector3.forward;
+
+                        // Point at a fixed distance (e.g., 10 units forward)
+                        Vector3 pointedPosition = controllerPosition + (rayDirection * 10f);
+
+                        Debug.Log($"[XRInputHandler] Pointing at position: {pointedPosition}");
+                    }
+                }
+            }
+            wasSecondaryPressed = isSecondaryPressed;
         }
     }
 
