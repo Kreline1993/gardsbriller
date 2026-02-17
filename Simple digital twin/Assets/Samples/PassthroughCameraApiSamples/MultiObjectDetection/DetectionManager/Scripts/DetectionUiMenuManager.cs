@@ -13,6 +13,7 @@ namespace PassthroughCameraSamples.MultiObjectDetection
     {
         [Header("Ui buttons")]
         [SerializeField] private OVRInput.RawButton m_actionButton = OVRInput.RawButton.A;
+        [SerializeField] private bool m_autoStartDetection = false;
 
         [Header("Ui elements ref.")]
         [SerializeField] private GameObject m_loadingPanel;
@@ -48,6 +49,10 @@ namespace PassthroughCameraSamples.MultiObjectDetection
                 yield return null;
             }
             OnInitialMenu();
+            if (m_autoStartDetection)
+            {
+                OnPauseMenu(false);
+            }
         }
 
         private void Update()
@@ -100,6 +105,11 @@ namespace PassthroughCameraSamples.MultiObjectDetection
             m_noPermissionPanel.SetActive(false);
 
             OnPause?.Invoke(visible);
+        }
+
+        public void SetPaused(bool paused)
+        {
+            OnPauseMenu(paused);
         }
         #endregion
 
