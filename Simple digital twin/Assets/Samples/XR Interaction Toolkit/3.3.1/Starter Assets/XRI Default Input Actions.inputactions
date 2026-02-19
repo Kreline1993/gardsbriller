@@ -470,7 +470,7 @@
                 {
                     "name": "first",
                     "id": "afdcfbff-e241-4fdd-a6d1-23b0bf273360",
-                    "path": "<XRController>{LeftHand}/pointerRotation",
+                    "path": "<XRController>/{GripRotation}",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -514,7 +514,7 @@
                 {
                     "name": "first",
                     "id": "abf752ec-feee-4d51-b530-f0870f48acc9",
-                    "path": "<XRController>{LeftHand}/pointerPosition",
+                    "path": "<XRController>/{GripPosition}",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -1563,7 +1563,7 @@
                 {
                     "name": "first",
                     "id": "3722d501-eb80-4f61-9361-08a5ea7a1394",
-                    "path": "<XRController>{RightHand}/pointerRotation",
+                    "path": "<XRController>/{GripRotation}",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -1607,7 +1607,7 @@
                 {
                     "name": "first",
                     "id": "9717e367-64a4-440a-9974-1e641d753eb2",
-                    "path": "<XRController>{RightHand}/pointerPosition",
+                    "path": "<XRController>/{GripPosition}",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
