@@ -8,9 +8,12 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/SampleScene.unity
     guid: 99c9720ab356a0642a771bea13969a05
-  - enabled: 1
+  - enabled: 0
     path: Assets/Samples/MultiSet Quest SDK/1.11.0/Sample Scenes/Localization/Localization.unity
     guid: 60c075d3181b7494089650d09106be01
+  - enabled: 1
+    path: Assets/Scenes/XRLabMultiset.unity
+    guid: a01c5dfd980b2d3459fa137853a27b36
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
     com.unity.xr.management.loader_settings: {fileID: 11400000, guid: e71262681d80b1c47a38243180e4010e, type: 2}
