@@ -1,0 +1,313 @@
+{
+  "rows": [
+    {
+      "rowId": "row_A",
+      "location": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "size": {
+        "width": 0.75,
+        "length": 4.033
+      },
+      "plants": [
+        {
+          "plantId": "plant_001",
+          "plantName": "Tomato Plant 1",
+          "species": "Tomato",
+          "position": {
+            "x": 0.325,
+            "y": 0.1,
+            "z": 0.57
+            
+          }, 
+          "size": { 
+            "Diameter": 0.13
+          }
+        },
+        {
+          "plantId": "plant_002",
+          "plantName": "Tomato Plant 2",
+          "species": "Tomato",
+          "position": {
+            "x": 0.325,
+            "y": 0.1,
+            "z": 1.50
+          }, 
+          "size": {
+            "Diameter": 0.13
+          }
+        }, 
+        {
+          "plantId": "plant_003",
+          "plantName": "Tomato Plant 3",
+          "species": "Tomato",
+          "position": {
+            "x": 0.325,
+            "y": 0.1,
+            "z": 2.40
+          }
+          , 
+          "size": {
+            "Diameter": 0.13
+        }
+      },
+        
+        {
+          "plantId": "plant_004",
+          "plantName": "Tomato Plant 4",
+          "species": "Tomato",
+          "position": {
+            "x": 0.325,
+            "y": 0.1,
+            "z": 3.30
+          }
+          , 
+          "size": {
+            "Diameter": 0.13
+        }
+      }
+
+    
+      ]
+    },
+    {
+      "rowId": "row_B",
+      "location": {
+        "x": 1.50,
+        "y": 0,
+        "z": 0
+      },
+      "size": {
+        "width": 0.75,
+        "length": 4.033
+      },
+      "plants": [
+        {
+          "plantId": "plant_005",
+          "plantName": "Leek Plant 1",
+          "species": "Leek",
+          "position": {
+            "x": 1.825,
+            "y": 0,
+            "z": 0.575
+          }
+          , 
+          "size": {
+            "x": 0.09,
+            "z": 0.09
+        }
+        },
+        {
+          "plantId": "plant_006",
+          "plantName": "Leek Plant 2",
+          "species": "Leek",
+          "position": {
+            "x": 1.834,
+            "y": 0,
+            "z": 0.85
+          }
+          , 
+          "size": {
+            "x": 0.09,
+            "z": 0.09
+        }
+        
+        },
+         {
+          "plantId": "plant_007",
+          "plantName": "Leek Plant 3",
+          "species": "Leek",
+          "position": {
+            "x": 1.825,
+            "y": 0,
+            "z": 1.13
+          }
+          , 
+          "size": {
+            "x": 0.09,
+            "z": 0.09
+        }
+        
+        },
+         {
+          "plantId": "plant_008",
+          "plantName": "Tomato Plant 5",
+          "species": "Tomato",
+          "position": {
+            "x": 1.825,
+            "y": 0,
+            "z": 1.55
+          }
+          , 
+          "size": {
+            "Diameter": 0.115
+        }
+        
+        },
+         {
+          "plantId": "plant_009",
+          "plantName": "Tomato Plant 6",
+          "species": "Tomato",
+          "position": {
+            "x": 1.825,
+            "y": 0,
+            "z": 1.90
+          }
+          , 
+          "size": {
+            "Diameter": 0.115
+        }
+        
+        }
+      ]
+    },
+    {
+      "rowId": "row_C",
+      "location": {
+        "x": 3,
+        "y": 0,
+        "z": 0
+      },
+      "size": {
+        "width": 0.722,
+        "length": 4.033
+      },
+      "plants": [
+        {
+          "plantId": "plant_010",
+          "plantName": "Radish Plant 1",
+          "species": "Radish",
+          "position": {
+            "x": 3.465,
+            "y": 0,
+            "z": 0.33
+          }
+          , 
+          "size": {
+            "x": 0.065,
+            "z": 0.065
+        }
+        },
+        {
+          "plantId": "plant_011",
+          "plantName": "Radish Plant 2",
+          "species": "Radish",
+          "position": {
+            "x": 3.395,
+            "y": 0,
+            "z": 0.33
+          }
+           , 
+          "size": {
+            "x": 0.065,
+            "z": 0.065
+        }
+        },
+        {
+          "plantId": "plant_012",
+          "plantName": "Radish Plant 3",
+          "species": "Radish",
+          "position": {
+            "x": 3.31,
+            "y": 0,
+            "z": 0.33
+          }
+           , 
+          "size": {
+            "x": 0.065,
+            "z": 0.065
+        }
+        },
+        {
+          "plantId": "plant_013",
+          "plantName": "Radish Plant 4",
+          "species": "Radish",
+          "position": {
+            "x": 3.343,
+            "y": 0,
+            "z": 0.72
+          }
+           , 
+          "size": {
+            "Diameter": 0.10
+        }
+        },
+        {
+          "plantId": "plant_014",
+          "plantName": "Radish Plant 5 & 6",
+          "species": "Radish",
+          "position": {
+            "x": 3.256,
+            "y": 0,
+            "z": 0.898
+          }
+           , 
+          "size": {
+            "Diameter": 0.10
+        }
+        },
+        {
+          "plantId": "plant_015",
+          "plantName": "Radish Plant 7 & 8",
+          "species": "Radish",
+          "position": {
+            "x": 3.486,
+            "y": 0,
+            "z": 0.865
+          }
+           , 
+          "size": {
+            "Diameter": 0.10
+        }
+        },
+        {
+          "plantId": "plant_016",
+          "plantName": "Leek Plant 4 & 5",
+          "species": "Leek",
+          "position": {
+            "x": 3.16,
+            "y": 0,
+            "z": 1.60
+          }
+           , 
+          "size": {
+            "Diameter": 0.10
+        }
+        },
+        {
+          "plantId": "plant_017",
+          "plantName": "Leek Plant 6 & 7",
+          "species": "Leek",
+          "position": {
+            "x": 3.275,
+            "y": 0,
+            "z": 1.60
+          }
+           , 
+          "size": {
+            "x": 0.09,
+            "y": 0.09
+        }
+        
+        },
+        {
+          "plantId": "plant_017",
+          "plantName": "Tomato Plant 7",
+          "species": "Tomato",
+          "position": {
+            "x": 3.213,
+            "y": 0,
+            "z": 1.72
+          }
+           , 
+          "size": {
+            "Diameter": 0.115
+        }
+        
+        }
+      ]
+    }
+  ]
+}
