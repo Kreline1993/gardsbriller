@@ -1923,9 +1923,33 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4203569980646124839, guid: d2146f84bdb809f4db2754d3041471e5, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4203569980646124839, guid: d2146f84bdb809f4db2754d3041471e5, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4203569980646124839, guid: d2146f84bdb809f4db2754d3041471e5, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 8124382476681737968}
+      objectReference: {fileID: 5108735646973919674}
+    - target: {fileID: 4203569980646124839, guid: d2146f84bdb809f4db2754d3041471e5, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: Toggle
+      objectReference: {fileID: 0}
+    - target: {fileID: 4203569980646124839, guid: d2146f84bdb809f4db2754d3041471e5, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: StartStopButton, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 4203569980646124839, guid: d2146f84bdb809f4db2754d3041471e5, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 4203569980646124839, guid: d2146f84bdb809f4db2754d3041471e5, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 6140025957519032212, guid: d2146f84bdb809f4db2754d3041471e5, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -2057,13 +2081,72 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 2208172692257230675, guid: d2146f84bdb809f4db2754d3041471e5, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5108735646973919674}
   m_SourcePrefab: {fileID: 100100000, guid: d2146f84bdb809f4db2754d3041471e5, type: 3}
 --- !u!1 &5108735646973919669 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 925569956113273897, guid: d2146f84bdb809f4db2754d3041471e5, type: 3}
   m_PrefabInstance: {fileID: 5108735646973919668}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &5108735646973919670 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1223304081400240859, guid: d2146f84bdb809f4db2754d3041471e5, type: 3}
+  m_PrefabInstance: {fileID: 5108735646973919668}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
+--- !u!114 &5108735646973919671 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7164145011620587421, guid: d2146f84bdb809f4db2754d3041471e5, type: 3}
+  m_PrefabInstance: {fileID: 5108735646973919668}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
+--- !u!1 &5108735646973919672 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2208172692257230675, guid: d2146f84bdb809f4db2754d3041471e5, type: 3}
+  m_PrefabInstance: {fileID: 5108735646973919668}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &5108735646973919673 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5741053898759890800, guid: d2146f84bdb809f4db2754d3041471e5, type: 3}
+  m_PrefabInstance: {fileID: 5108735646973919668}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 94492f17c6ef38749ab34df18d923883, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ToastUI
+--- !u!114 &5108735646973919674
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5108735646973919672}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee1596edbe392074a87af6e35e8bcf17, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StartStopButton
+  multisetUpdater: {fileID: 8124382476681737968}
+  toastUI: {fileID: 5108735646973919673}
+  buttonLabel: {fileID: 5108735646973919670}
+  buttonIcon: {fileID: 5108735646973919671}
+  startSprite: {fileID: 21300000, guid: 87f014dea19a2a742a39563d534d420f, type: 3}
+  stopSprite: {fileID: 21300000, guid: 7ac57a931d460eb42a14291d7d9458d9, type: 3}
 --- !u!1001 &5283953534593869129
 PrefabInstance:
   m_ObjectHideFlags: 0
