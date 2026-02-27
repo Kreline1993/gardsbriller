@@ -20,6 +20,7 @@ public class MultisetUpdater : MonoBehaviour
 
     public void PauseAutomaticUpdating() {
         if (_timerRoutine != null) {
+            Debug.Log("[Multiset Updater] Pausing automatic localization updates.");
             StopCoroutine(_timerRoutine);
             _timerRoutine = null;
         }
@@ -27,6 +28,8 @@ public class MultisetUpdater : MonoBehaviour
 
     public void StartAutomaticUpdating() {
         if (_timerRoutine == null) {
+            Debug.Log("[Multiset Updater] Starting automatic localization updates.");
+            localizationManager.LocalizeFrame();
             _timerRoutine = StartCoroutine(ManualLocalizationRoutine());
         }
     }
