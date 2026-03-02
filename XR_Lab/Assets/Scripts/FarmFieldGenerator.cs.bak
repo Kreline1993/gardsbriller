@@ -1,10 +1,11 @@
-using UnityEngine;
-using UnityEngine.Networking;
 using System.Collections;
 using System.IO; // Delete when removing pc only read
+using UnityEngine;
+using UnityEngine.Networking;
 
 public class FarmFieldGenerator : MonoBehaviour
 {
+    [SerializeField] private Transform farmSquareOrigin;
     public GameObject interactionPrefab;
     public float scaleFactor = 10.0f;
 
@@ -60,14 +61,20 @@ public class FarmFieldGenerator : MonoBehaviour
             // but we ignore row.location for the plant placement.
             foreach (Plant p in row.plants)
             {
-                Vector3 localOffset = new Vector3(
+                // Calculate position relative ONLY to world 0,0,0 plus scale
+                Vector3 localPos = new Vector3(
                     p.position.x * scaleFactor,
                     p.position.y * scaleFactor,
                     p.position.z * scaleFactor
                 );
-                Vector3 worldPos = transform.TransformPoint(localOffset);
 
-                GameObject ghostPlant = Instantiate(interactionPrefab, worldPos, transform.rotation, this.transform);
+                // Convert local -> world using the farmSquareOrigin transform
+                Vector3 worldPos = farmSquareOrigin.TransformPoint(localPos);
+
+                // Use the origin's rotation 
+                Quaternion worldRot = farmSquareOrigin.rotation;
+
+                GameObject ghostPlant = Instantiate(interactionPrefab, localPos, Quaternion.identity, this.transform);
 
                 PlantIdentity identity = ghostPlant.GetComponent<PlantIdentity>();
                 if (identity != null)
@@ -82,48 +89,34 @@ public class FarmFieldGenerator : MonoBehaviour
     void OnDrawGizmos()
     {
         if (Application.isPlaying) return;
+        if (farmSquareOrigin == null) return;
 
         string path = Path.Combine(Application.streamingAssetsPath, "PlantData.json");
         if (!File.Exists(path)) return;
 
-        try
+        string jsonString = File.ReadAllText(path);
+        FarmData data = JsonUtility.FromJson<FarmData>(jsonString);
+
+        if (data?.rows == null) return;
+
+        foreach (Row row in data.rows)
         {
-            string jsonString = File.ReadAllText(path);
-            FarmData data = JsonUtility.FromJson<FarmData>(jsonString);
+            if (row.plants == null) continue;
 
-            if (data == null || data.rows == null) return;
+            Gizmos.color = Color.green;
 
-            Gizmos.matrix = Matrix4x4.TRS(transform.position, transform.rotation, Vector3.one);
-
-            foreach (Row row in data.rows)
+            foreach (Plant p in row.plants)
             {
-                Vector3 rowBase = new Vector3(row.location.x, row.location.y, row.location.z) * scaleFactor;
+                Vector3 plantLocal = new Vector3(
+                    p.position.x * scaleFactor,
+                    p.position.y * scaleFactor,
+                    p.position.z * scaleFactor
+                );
 
-                float w = (row.size != null ? row.size.width : 1f) * scaleFactor;
-                float l = (row.size != null ? row.size.length : 1f) * scaleFactor;
-                float h = 0.2f;
+                Vector3 plantWorld = farmSquareOrigin.TransformPoint(plantLocal);
 
-                Vector3 rowCenter = rowBase + new Vector3(w / 2f, h / 2f, l / 2f);
-
-                Gizmos.color = Color.cyan;
-                Gizmos.DrawWireCube(rowCenter, new Vector3(w, h, l));
-
-                Gizmos.color = new Color(0, 1, 1, 0.2f);
-                Gizmos.DrawCube(rowCenter, new Vector3(w, h, l));
-
-                if (row.plants != null)
-                {
-                    Gizmos.color = Color.green;
-                    foreach (Plant p in row.plants)
-                    {
-                        Vector3 pPos = new Vector3(p.position.x, p.position.y, p.position.z) * scaleFactor;
-                        Gizmos.DrawWireSphere(pPos, 0.1f * scaleFactor);
-                    }
-                }
+                Gizmos.DrawWireSphere(plantWorld, 0.1f * scaleFactor);
             }
-
-            Gizmos.matrix = Matrix4x4.identity;
         }
-        catch (System.Exception) { /* Fail silently */ }
     }
 }
