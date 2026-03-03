@@ -61,7 +61,7 @@ public class Row
 }
 
 [System.Serializable]
-public class FarmData
+public class TwinData
 {
     public Row[] rows;
 }

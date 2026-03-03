@@ -1102,8 +1102,20 @@ PrefabInstance:
       propertyPath: m_Name
       value: Alignment Cube
       objectReference: {fileID: 0}
+    - target: {fileID: 4860440364606958003, guid: 0a9a7fe72c9211f4485da2bb4b650886, type: 3}
+      propertyPath: m_Name
+      value: Twin Database
+      objectReference: {fileID: 0}
+    - target: {fileID: 5999468095107288088, guid: 0a9a7fe72c9211f4485da2bb4b650886, type: 3}
+      propertyPath: twinGenerator
+      value: 
+      objectReference: {fileID: 1845547963}
     - target: {fileID: 5999468095107288088, guid: 0a9a7fe72c9211f4485da2bb4b650886, type: 3}
       propertyPath: farmFieldGenerator
+      value: 
+      objectReference: {fileID: 1845547963}
+    - target: {fileID: 5999468095107288088, guid: 0a9a7fe72c9211f4485da2bb4b650886, type: 3}
+      propertyPath: twinFieldGenerator
       value: 
       objectReference: {fileID: 1845547963}
     - target: {fileID: 6629855476953273169, guid: 0a9a7fe72c9211f4485da2bb4b650886, type: 3}
@@ -1122,6 +1134,10 @@ PrefabInstance:
       propertyPath: interactionPrefab
       value: 
       objectReference: {fileID: 8800490417148209320, guid: ab1093e3d34b20744963492b69490a0c, type: 3}
+    - target: {fileID: 7751720821704951965, guid: 0a9a7fe72c9211f4485da2bb4b650886, type: 3}
+      propertyPath: m_Name
+      value: Twin Manager
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 6798200658510473208, guid: 0a9a7fe72c9211f4485da2bb4b650886, type: 3}
     - {fileID: 6629855476953273169, guid: 0a9a7fe72c9211f4485da2bb4b650886, type: 3}
@@ -1187,7 +1203,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::FarmFieldGenerator
   interactionPrefab: {fileID: 8800490417148209320, guid: ab1093e3d34b20744963492b69490a0c, type: 3}
   scaleFactor: 1
-  farmDataLoader: {fileID: 1845547964}
+  twinDataLoader: {fileID: 1845547964}
 --- !u!114 &1845547964
 MonoBehaviour:
   m_ObjectHideFlags: 0

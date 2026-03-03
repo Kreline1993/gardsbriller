@@ -1,9 +1,9 @@
 using UnityEngine;
-public class FarmDatabase : MonoBehaviour
+public class TwinDatabase : MonoBehaviour
 {
-    public static FarmDatabase Instance { get; private set; }
+    public static TwinDatabase Instance { get; private set; }
 
-    [SerializeField] private FarmFieldGenerator farmFieldGenerator;
+    [SerializeField] private TwinGenerator twinGenerator;
 
     private void Awake()
     {
@@ -16,7 +16,7 @@ public class FarmDatabase : MonoBehaviour
     }
     public Plant GetPlantById(string id)
     {
-        FarmData data = farmFieldGenerator?.FarmData;
+        TwinData data = twinGenerator?.TwinData;
         if (data?.rows == null) return null;
 
         foreach (Row row in data.rows)

@@ -18,14 +18,14 @@ public class InfoPanelSpawner : MonoBehaviour
                 return;
             }
 
-            if (FarmDatabase.Instance == null)
+            if (TwinDatabase.Instance == null)
             {
-                Debug.LogError("[InfoPanelSpawner] FarmDatabase.Instance is null. Add FarmDatabase to a Services GameObject in the scene.");
+                Debug.LogError("[InfoPanelSpawner] TwinDatabase.Instance is null. Add TwinDatabase to a Services GameObject in the scene.");
                 return;
             }
 
             string id = identity.plantId;
-            Plant data = FarmDatabase.Instance.GetPlantById(id);
+            Plant data = TwinDatabase.Instance.GetPlantById(id);
 
             // 2. Position logic
             Vector3 directionToPlayer = (Camera.main.transform.position - transform.position).normalized;

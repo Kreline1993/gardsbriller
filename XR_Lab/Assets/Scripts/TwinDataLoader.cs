@@ -4,11 +4,11 @@ using System;
 using System.Collections;
 using System.IO;
 
-public class FarmDataLoader : MonoBehaviour
+public class TwinDataLoader : MonoBehaviour
 {
     [SerializeField] private string fileName = "PlantData.json";
 
-    public IEnumerator LoadFarmDataRoutine(Action<FarmData> onLoaded)
+    public IEnumerator LoadTwinDataRoutine(Action<TwinData> onLoaded)
     {
         string path = Path.Combine(Application.streamingAssetsPath, fileName);
         string jsonString;
@@ -21,7 +21,7 @@ public class FarmDataLoader : MonoBehaviour
 
                 if (webRequest.result != UnityWebRequest.Result.Success)
                 {
-                    Debug.LogError($"[FarmDataLoader] Error loading JSON from APK: {webRequest.error}");
+                    Debug.LogError($"[TwinDataLoader] Error loading JSON from APK: {webRequest.error}");
                     onLoaded?.Invoke(null);
                     yield break;
                 }
@@ -33,7 +33,7 @@ public class FarmDataLoader : MonoBehaviour
         {
             if (!File.Exists(path))
             {
-                Debug.LogError($"[FarmDataLoader] JSON not found at: {path}");
+                Debug.LogError($"[TwinDataLoader] JSON not found at: {path}");
                 onLoaded?.Invoke(null);
                 yield break;
             }
@@ -44,7 +44,7 @@ public class FarmDataLoader : MonoBehaviour
         onLoaded?.Invoke(Parse(jsonString));
     }
 
-    public bool TryLoadFarmDataEditor(out FarmData data)
+    public bool TryLoadTwinDataEditor(out TwinData data)
     {
         data = null;
         string path = Path.Combine(Application.streamingAssetsPath, fileName);
@@ -63,9 +63,9 @@ public class FarmDataLoader : MonoBehaviour
         }
     }
 
-    private FarmData Parse(string jsonString)
+    private TwinData Parse(string jsonString)
     {
-        FarmData data = JsonUtility.FromJson<FarmData>(jsonString);
+        TwinData data = JsonUtility.FromJson<TwinData>(jsonString);
         if (data == null || data.rows == null)
             return null;
 
