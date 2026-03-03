@@ -1138,6 +1138,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 7751720821704951965, guid: 0a9a7fe72c9211f4485da2bb4b650886, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1845547963}
+    - targetCorrespondingSourceObject: {fileID: 7751720821704951965, guid: 0a9a7fe72c9211f4485da2bb4b650886, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1845547965}
   m_SourcePrefab: {fileID: 100100000, guid: 0a9a7fe72c9211f4485da2bb4b650886, type: 3}
 --- !u!1 &1845547956 stripped
 GameObject:
@@ -1184,6 +1187,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::FarmFieldGenerator
   interactionPrefab: {fileID: 8800490417148209320, guid: ab1093e3d34b20744963492b69490a0c, type: 3}
   scaleFactor: 1
+  farmDataLoader: {fileID: 1845547965}
+--- !u!114 &1845547965
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 359883192}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df4caad07466d1b45b5b8bfb2c88641a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FarmDataLoader
+  fileName: PlantData.json
 --- !u!1 &1849515172
 GameObject:
   m_ObjectHideFlags: 0
