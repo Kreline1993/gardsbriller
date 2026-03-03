@@ -8,22 +8,46 @@ public class Vector3Data
     public float z;
 }
 
-// New class to handle width/length and Diameter
+
 [System.Serializable]
 public class SizeData
 {
-    public float width;   // Used by Row
-    public float length;  // Used by Row
-    public float Diameter; // Used by Plant (Note: matches JSON casing)
+    public float width;
+    public float length;
+    public float diameter;
+    public float height;
+}
+
+[System.Serializable]
+public class DateData
+{
+    public int day;
+    public int month;
+    public int year;
+}
+
+[System.Serializable]
+public class NoteData
+{
+    public string textNote;
+    public string noteTag;
 }
 
 [System.Serializable]
 public class Plant
 {
     public string plantId;
+    public string plantName;
     public string species;
     public Vector3Data position;
-    public SizeData size; // Added to access plant diameter
+    public SizeData size;
+    public int growth;
+    public DateData estimatedHarvestDate;
+    public DateData lastWateredDate;
+    public string healthStatus;
+    public NoteData notes;
+    public DateData lastPesticide;
+    public DateData nextPesticide;
 }
 
 [System.Serializable]
@@ -31,7 +55,8 @@ public class Row
 {
     public string rowId;
     public Vector3Data location;
-    public SizeData size; // Added to access row dimensions
+    public int groundMoisture;
+    public SizeData size;
     public Plant[] plants;
 }
 
