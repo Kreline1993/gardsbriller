@@ -1,35 +1,35 @@
 using UnityEngine;
 using System.Collections;
 
-public class FarmFieldGenerator : MonoBehaviour
+public class TwinGenerator : MonoBehaviour
 {
     public GameObject interactionPrefab;
     public float scaleFactor = 10.0f;
-    [SerializeField] private FarmDataLoader farmDataLoader;
+    [SerializeField] private TwinDataLoader twinDataLoader;
 
-    public FarmData FarmData { get; private set; }
+    public TwinData TwinData { get; private set; }
 
     private void Awake()
     {
-        if (farmDataLoader == null)
-            farmDataLoader = GetComponent<FarmDataLoader>();
+        if (twinDataLoader == null)
+            twinDataLoader = GetComponent<TwinDataLoader>();
     }
 
     void Start()
     {
-        StartCoroutine(GenerateFieldRoutine());
+        StartCoroutine(GenerateRoutine());
     }
 
-    IEnumerator GenerateFieldRoutine()
+    IEnumerator GenerateRoutine()
     {
-        if (farmDataLoader == null)
+        if (twinDataLoader == null)
         {
-            Debug.LogError("[FarmFieldGenerator] Missing FarmDataLoader reference.");
+            Debug.LogError("[TwinGenerator] Missing TwinDataLoader reference.");
             yield break;
         }
 
-        FarmData loadedData = null;
-        yield return StartCoroutine(farmDataLoader.LoadFarmDataRoutine(data => loadedData = data));
+        TwinData loadedData = null;
+        yield return StartCoroutine(twinDataLoader.LoadTwinDataRoutine(data => loadedData = data));
 
         if (loadedData == null)
             yield break;
@@ -37,12 +37,12 @@ public class FarmFieldGenerator : MonoBehaviour
         GenerateFromData(loadedData);
     }
 
-    void GenerateFromData(FarmData data)
+    void GenerateFromData(TwinData data)
     {
-        FarmData = data;
-        if (FarmData?.rows == null) return;
+        TwinData = data;
+        if (TwinData?.rows == null) return;
 
-        foreach (Row row in FarmData.rows)
+        foreach (Row row in TwinData.rows)
         {
             foreach (Plant p in row.plants)
             {
@@ -68,12 +68,12 @@ public class FarmFieldGenerator : MonoBehaviour
     void OnDrawGizmos()
     {
         if (Application.isPlaying) return;
-        if (farmDataLoader == null)
-            farmDataLoader = GetComponent<FarmDataLoader>();
+        if (twinDataLoader == null)
+            twinDataLoader = GetComponent<TwinDataLoader>();
 
-        if (farmDataLoader == null) return;
+        if (twinDataLoader == null) return;
 
-        if (farmDataLoader.TryLoadFarmDataEditor(out FarmData data) && data.rows != null)
+        if (twinDataLoader.TryLoadTwinDataEditor(out TwinData data) && data.rows != null)
         {
 
             Gizmos.matrix = Matrix4x4.TRS(transform.position, transform.rotation, Vector3.one);
