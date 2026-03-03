@@ -1095,7 +1095,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3418786129194963997, guid: 0a9a7fe72c9211f4485da2bb4b650886, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4676515126534888462, guid: 0a9a7fe72c9211f4485da2bb4b650886, type: 3}
       propertyPath: m_Name
@@ -2108,7 +2108,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 166902089980687335, guid: 391746b4d05e046f1ad857954bef332a, type: 3}
       propertyPath: LocalizationSuccess.m_PersistentCalls.m_Calls.Array.size
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 166902089980687335, guid: 391746b4d05e046f1ad857954bef332a, type: 3}
       propertyPath: LocalizationInit.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -2121,6 +2121,10 @@ PrefabInstance:
     - target: {fileID: 166902089980687335, guid: 391746b4d05e046f1ad857954bef332a, type: 3}
       propertyPath: LocalizationSuccess.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
       value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 166902089980687335, guid: 391746b4d05e046f1ad857954bef332a, type: 3}
+      propertyPath: LocalizationSuccess.m_PersistentCalls.m_Calls.Array.data[2].m_Mode
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 166902089980687335, guid: 391746b4d05e046f1ad857954bef332a, type: 3}
       propertyPath: LocalizationFailure.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -2139,6 +2143,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1638230590}
     - target: {fileID: 166902089980687335, guid: 391746b4d05e046f1ad857954bef332a, type: 3}
+      propertyPath: LocalizationSuccess.m_PersistentCalls.m_Calls.Array.data[2].m_Target
+      value: 
+      objectReference: {fileID: 8124382476681737969}
+    - target: {fileID: 166902089980687335, guid: 391746b4d05e046f1ad857954bef332a, type: 3}
       propertyPath: LocalizationRequested.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1638230590}
@@ -2155,12 +2163,20 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 166902089980687335, guid: 391746b4d05e046f1ad857954bef332a, type: 3}
+      propertyPath: LocalizationSuccess.m_PersistentCalls.m_Calls.Array.data[2].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 166902089980687335, guid: 391746b4d05e046f1ad857954bef332a, type: 3}
       propertyPath: LocalizationFailure.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
       value: SetActive
       objectReference: {fileID: 0}
     - target: {fileID: 166902089980687335, guid: 391746b4d05e046f1ad857954bef332a, type: 3}
       propertyPath: LocalizationSuccess.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
       value: SetActive
+      objectReference: {fileID: 0}
+    - target: {fileID: 166902089980687335, guid: 391746b4d05e046f1ad857954bef332a, type: 3}
+      propertyPath: LocalizationSuccess.m_PersistentCalls.m_Calls.Array.data[2].m_MethodName
+      value: OnLocalizationSuccess
       objectReference: {fileID: 0}
     - target: {fileID: 166902089980687335, guid: 391746b4d05e046f1ad857954bef332a, type: 3}
       propertyPath: LocalizationFailure.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
@@ -2171,11 +2187,19 @@ PrefabInstance:
       value: UnityEngine.GameObject, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 166902089980687335, guid: 391746b4d05e046f1ad857954bef332a, type: 3}
+      propertyPath: LocalizationSuccess.m_PersistentCalls.m_Calls.Array.data[2].m_TargetAssemblyTypeName
+      value: ActivateOnFirstLocalizationSuccess, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 166902089980687335, guid: 391746b4d05e046f1ad857954bef332a, type: 3}
       propertyPath: LocalizationFailure.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 166902089980687335, guid: 391746b4d05e046f1ad857954bef332a, type: 3}
       propertyPath: LocalizationSuccess.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 166902089980687335, guid: 391746b4d05e046f1ad857954bef332a, type: 3}
+      propertyPath: LocalizationSuccess.m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 3570057316558304214, guid: 391746b4d05e046f1ad857954bef332a, type: 3}
@@ -2241,6 +2265,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3570057316558304214, guid: 391746b4d05e046f1ad857954bef332a, type: 3}
       insertIndex: -1
       addedObject: {fileID: 8124382476681737968}
+    - targetCorrespondingSourceObject: {fileID: 3570057316558304214, guid: 391746b4d05e046f1ad857954bef332a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8124382476681737969}
   m_SourcePrefab: {fileID: 100100000, guid: 391746b4d05e046f1ad857954bef332a, type: 3}
 --- !u!1 &8124382476681737967 stripped
 GameObject:
@@ -2263,6 +2290,20 @@ MonoBehaviour:
   UpdateFrequency: 30
   sendInitialApiCall: 0
   enableAutomaticUpdatingOnStart: 0
+--- !u!114 &8124382476681737969
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8124382476681737967}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ad5b36c35a020145a3c235f4c0e1ef1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ActivateOnFirstLocalizationSuccess
+  digitalTwinRoot: {fileID: 1845547956}
+  disableOnStart: 1
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
