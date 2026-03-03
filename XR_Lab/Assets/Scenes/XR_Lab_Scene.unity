@@ -1243,6 +1243,7 @@ GameObject:
   - component: {fileID: 637239364}
   - component: {fileID: 637239363}
   - component: {fileID: 637239362}
+  - component: {fileID: 637239365}
   m_Layer: 5
   m_Name: ModePanel
   m_TagString: Untagged
@@ -1322,6 +1323,25 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 637239360}
   m_CullTransparentMesh: 1
+--- !u!114 &637239365
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 637239360}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 54e5b73484a4d214b9d69062d7114812, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ModePanelUI
+  modeController: {fileID: 551489248}
+  defaultButton: {fileID: 1814384007}
+  overviewButton: {fileID: 1493829518}
+  plantPickingButton: {fileID: 1006673612}
+  weedingButton: {fileID: 684054139}
+  activeButtonColor: {r: 0, g: 1, b: 0, a: 1}
+  inactiveButtonColor: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
 --- !u!1 &643372768
 GameObject:
   m_ObjectHideFlags: 0
