@@ -119,43 +119,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &47664888 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4860440364606958003, guid: 0a9a7fe72c9211f4485da2bb4b650886, type: 3}
-  m_PrefabInstance: {fileID: 1845547955}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &47664890 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5999468095107288088, guid: 0a9a7fe72c9211f4485da2bb4b650886, type: 3}
-  m_PrefabInstance: {fileID: 1845547955}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 47664888}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c7e5dec5c01ee82489e8da058b57b9a2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::DataService
---- !u!114 &47664891
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 47664888}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ea664c67f0dc01b45b77b1ed3f9eed1d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::TwinDatabaseQueryTest
-  queryMode: 1
-  species: Tomato
-  healthStatus: bad
-  minimumGrowth: 90
-  wateredDay: 3
-  wateredMonth: 3
-  wateredYear: 2026
-  maxGroundMoisture: 30
-  waitForDataTimeoutSeconds: 5
 --- !u!20 &341889590 stripped
 Camera:
   m_CorrespondingSourceObject: {fileID: 8593683647834113248, guid: 7e17be6200c63ff4a9ff385b018b5a42, type: 3}
@@ -349,55 +312,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6147826009795423660, guid: b76f49c75695e464489d600c8d6a4e2b, type: 3}
   m_PrefabInstance: {fileID: 515853747}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &551489247
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 551489249}
-  - component: {fileID: 551489248}
-  m_Layer: 0
-  m_Name: 'ModeController '
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &551489248
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 551489247}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a48271f9cbb25f348a676f5ed302942e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ModeController
-  twinDatabase: {fileID: 47664890}
-  plantVisualRegistry: {fileID: 0}
-  initialMode: 0
-  weedingProtectedTint: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
-  disableTouchForProtectedPlants: 1
---- !u!4 &551489249
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 551489247}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.67152, y: -0, z: -0.34193}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &562179997
 GameObject:
   m_ObjectHideFlags: 0
@@ -1188,20 +1102,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: Alignment Cube
       objectReference: {fileID: 0}
-    - target: {fileID: 4860440364606958003, guid: 0a9a7fe72c9211f4485da2bb4b650886, type: 3}
-      propertyPath: m_Name
-      value: Twin Database
-      objectReference: {fileID: 0}
-    - target: {fileID: 5999468095107288088, guid: 0a9a7fe72c9211f4485da2bb4b650886, type: 3}
-      propertyPath: twinGenerator
-      value: 
-      objectReference: {fileID: 1845547963}
     - target: {fileID: 5999468095107288088, guid: 0a9a7fe72c9211f4485da2bb4b650886, type: 3}
       propertyPath: farmFieldGenerator
-      value: 
-      objectReference: {fileID: 1845547963}
-    - target: {fileID: 5999468095107288088, guid: 0a9a7fe72c9211f4485da2bb4b650886, type: 3}
-      propertyPath: twinFieldGenerator
       value: 
       objectReference: {fileID: 1845547963}
     - target: {fileID: 6629855476953273169, guid: 0a9a7fe72c9211f4485da2bb4b650886, type: 3}
@@ -1220,10 +1122,6 @@ PrefabInstance:
       propertyPath: interactionPrefab
       value: 
       objectReference: {fileID: 8800490417148209320, guid: ab1093e3d34b20744963492b69490a0c, type: 3}
-    - target: {fileID: 7751720821704951965, guid: 0a9a7fe72c9211f4485da2bb4b650886, type: 3}
-      propertyPath: m_Name
-      value: Twin Manager
-      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 6798200658510473208, guid: 0a9a7fe72c9211f4485da2bb4b650886, type: 3}
     - {fileID: 6629855476953273169, guid: 0a9a7fe72c9211f4485da2bb4b650886, type: 3}
@@ -1242,30 +1140,13 @@ PrefabInstance:
       addedObject: {fileID: 1845547963}
     - targetCorrespondingSourceObject: {fileID: 7751720821704951965, guid: 0a9a7fe72c9211f4485da2bb4b650886, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1845547966}
-    - targetCorrespondingSourceObject: {fileID: 7751720821704951965, guid: 0a9a7fe72c9211f4485da2bb4b650886, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1845547967}
-    - targetCorrespondingSourceObject: {fileID: 4860440364606958003, guid: 0a9a7fe72c9211f4485da2bb4b650886, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 47664891}
+      addedObject: {fileID: 1845547965}
   m_SourcePrefab: {fileID: 100100000, guid: 0a9a7fe72c9211f4485da2bb4b650886, type: 3}
 --- !u!1 &1845547956 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3418786129194963997, guid: 0a9a7fe72c9211f4485da2bb4b650886, type: 3}
   m_PrefabInstance: {fileID: 1845547955}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1845547957 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5999468095107288088, guid: 0a9a7fe72c9211f4485da2bb4b650886, type: 3}
-  m_PrefabInstance: {fileID: 1845547955}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 47664888}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c7e5dec5c01ee82489e8da058b57b9a2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::DataService
 --- !u!4 &1845547958 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 380962797603807336, guid: 0a9a7fe72c9211f4485da2bb4b650886, type: 3}
@@ -1306,33 +1187,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::FarmFieldGenerator
   interactionPrefab: {fileID: 8800490417148209320, guid: ab1093e3d34b20744963492b69490a0c, type: 3}
   scaleFactor: 1
-  twinDataLoader: {fileID: 1845547967}
---- !u!114 &1845547966
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 359883192}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: db48583c83899fa459d78e71216158de, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlantVisualRegistry
-  searchRoot: {fileID: 0}
---- !u!114 &1845547967
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 359883192}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 990d045432f619141bbc0fe72a898d82, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::TwinDataLoader
-  fileName: PlantData.json
+  farmDataLoader: {fileID: 1845547965}
 --- !u!114 &1845547965
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1342,11 +1197,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 359883192}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bd63826ac7e526f469960b2a7e34d94c, type: 3}
+  m_Script: {fileID: 11500000, guid: df4caad07466d1b45b5b8bfb2c88641a, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlantHighlightController
-  twinDatabase: {fileID: 1845547957}
-  dataTimeoutSeconds: 5
+  m_EditorClassIdentifier: Assembly-CSharp::FarmDataLoader
+  fileName: PlantData.json
 --- !u!1 &1849515172
 GameObject:
   m_ObjectHideFlags: 0
@@ -2062,34 +1916,6 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7764897123163495796, guid: d2146f84bdb809f4db2754d3041471e5, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7764897123163495796, guid: d2146f84bdb809f4db2754d3041471e5, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7764897123163495796, guid: d2146f84bdb809f4db2754d3041471e5, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 551489248}
-    - target: {fileID: 7764897123163495796, guid: d2146f84bdb809f4db2754d3041471e5, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 7764897123163495796, guid: d2146f84bdb809f4db2754d3041471e5, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: SwitchToWeeding
-      objectReference: {fileID: 0}
-    - target: {fileID: 7764897123163495796, guid: d2146f84bdb809f4db2754d3041471e5, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: ModeController, Assembly-CSharp
-      objectReference: {fileID: 0}
-    - target: {fileID: 7764897123163495796, guid: d2146f84bdb809f4db2754d3041471e5, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: UnityEngine.Object, UnityEngine
-      objectReference: {fileID: 0}
     - target: {fileID: 8411037815051671288, guid: d2146f84bdb809f4db2754d3041471e5, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -2517,4 +2343,3 @@ SceneRoots:
   - {fileID: 1309741603}
   - {fileID: 768643374}
   - {fileID: 574821887}
-  - {fileID: 551489249}

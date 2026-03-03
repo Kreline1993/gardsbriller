@@ -119,6 +119,8 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+<<<<<<< Updated upstream
+=======
 --- !u!1 &47664888 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4860440364606958003, guid: 0a9a7fe72c9211f4485da2bb4b650886, type: 3}
@@ -156,6 +158,7 @@ MonoBehaviour:
   wateredYear: 2026
   maxGroundMoisture: 30
   waitForDataTimeoutSeconds: 5
+>>>>>>> Stashed changes
 --- !u!20 &341889590 stripped
 Camera:
   m_CorrespondingSourceObject: {fileID: 8593683647834113248, guid: 7e17be6200c63ff4a9ff385b018b5a42, type: 3}
@@ -1188,20 +1191,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: Alignment Cube
       objectReference: {fileID: 0}
-    - target: {fileID: 4860440364606958003, guid: 0a9a7fe72c9211f4485da2bb4b650886, type: 3}
-      propertyPath: m_Name
-      value: Twin Database
-      objectReference: {fileID: 0}
-    - target: {fileID: 5999468095107288088, guid: 0a9a7fe72c9211f4485da2bb4b650886, type: 3}
-      propertyPath: twinGenerator
-      value: 
-      objectReference: {fileID: 1845547963}
     - target: {fileID: 5999468095107288088, guid: 0a9a7fe72c9211f4485da2bb4b650886, type: 3}
       propertyPath: farmFieldGenerator
-      value: 
-      objectReference: {fileID: 1845547963}
-    - target: {fileID: 5999468095107288088, guid: 0a9a7fe72c9211f4485da2bb4b650886, type: 3}
-      propertyPath: twinFieldGenerator
       value: 
       objectReference: {fileID: 1845547963}
     - target: {fileID: 6629855476953273169, guid: 0a9a7fe72c9211f4485da2bb4b650886, type: 3}
@@ -1220,10 +1211,6 @@ PrefabInstance:
       propertyPath: interactionPrefab
       value: 
       objectReference: {fileID: 8800490417148209320, guid: ab1093e3d34b20744963492b69490a0c, type: 3}
-    - target: {fileID: 7751720821704951965, guid: 0a9a7fe72c9211f4485da2bb4b650886, type: 3}
-      propertyPath: m_Name
-      value: Twin Manager
-      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 6798200658510473208, guid: 0a9a7fe72c9211f4485da2bb4b650886, type: 3}
     - {fileID: 6629855476953273169, guid: 0a9a7fe72c9211f4485da2bb4b650886, type: 3}
@@ -1242,30 +1229,23 @@ PrefabInstance:
       addedObject: {fileID: 1845547963}
     - targetCorrespondingSourceObject: {fileID: 7751720821704951965, guid: 0a9a7fe72c9211f4485da2bb4b650886, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1845547966}
+<<<<<<< Updated upstream
+      addedObject: {fileID: 1845547965}
+=======
+      addedObject: {fileID: 1845547964}
     - targetCorrespondingSourceObject: {fileID: 7751720821704951965, guid: 0a9a7fe72c9211f4485da2bb4b650886, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1845547967}
+      addedObject: {fileID: 1845547966}
     - targetCorrespondingSourceObject: {fileID: 4860440364606958003, guid: 0a9a7fe72c9211f4485da2bb4b650886, type: 3}
       insertIndex: -1
       addedObject: {fileID: 47664891}
+>>>>>>> Stashed changes
   m_SourcePrefab: {fileID: 100100000, guid: 0a9a7fe72c9211f4485da2bb4b650886, type: 3}
 --- !u!1 &1845547956 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3418786129194963997, guid: 0a9a7fe72c9211f4485da2bb4b650886, type: 3}
   m_PrefabInstance: {fileID: 1845547955}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1845547957 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5999468095107288088, guid: 0a9a7fe72c9211f4485da2bb4b650886, type: 3}
-  m_PrefabInstance: {fileID: 1845547955}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 47664888}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c7e5dec5c01ee82489e8da058b57b9a2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::DataService
 --- !u!4 &1845547958 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 380962797603807336, guid: 0a9a7fe72c9211f4485da2bb4b650886, type: 3}
@@ -1306,7 +1286,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::FarmFieldGenerator
   interactionPrefab: {fileID: 8800490417148209320, guid: ab1093e3d34b20744963492b69490a0c, type: 3}
   scaleFactor: 1
-  twinDataLoader: {fileID: 1845547967}
+  farmDataLoader: {fileID: 1845547965}
+--- !u!114 &1845547965
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 359883192}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df4caad07466d1b45b5b8bfb2c88641a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FarmDataLoader
+  fileName: PlantData.json
 --- !u!114 &1845547966
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1320,33 +1313,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlantVisualRegistry
   searchRoot: {fileID: 0}
---- !u!114 &1845547967
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 359883192}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 990d045432f619141bbc0fe72a898d82, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::TwinDataLoader
-  fileName: PlantData.json
---- !u!114 &1845547965
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 359883192}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bd63826ac7e526f469960b2a7e34d94c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlantHighlightController
-  twinDatabase: {fileID: 1845547957}
-  dataTimeoutSeconds: 5
 --- !u!1 &1849515172
 GameObject:
   m_ObjectHideFlags: 0
