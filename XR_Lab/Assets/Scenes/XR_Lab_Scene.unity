@@ -1183,6 +1183,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 7751720821704951965, guid: 0a9a7fe72c9211f4485da2bb4b650886, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1845547964}
+    - targetCorrespondingSourceObject: {fileID: 7751720821704951965, guid: 0a9a7fe72c9211f4485da2bb4b650886, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1845547965}
     - targetCorrespondingSourceObject: {fileID: 4860440364606958003, guid: 0a9a7fe72c9211f4485da2bb4b650886, type: 3}
       insertIndex: -1
       addedObject: {fileID: 47664891}
@@ -1192,6 +1195,17 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 3418786129194963997, guid: 0a9a7fe72c9211f4485da2bb4b650886, type: 3}
   m_PrefabInstance: {fileID: 1845547955}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1845547957 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5999468095107288088, guid: 0a9a7fe72c9211f4485da2bb4b650886, type: 3}
+  m_PrefabInstance: {fileID: 1845547955}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 47664888}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c7e5dec5c01ee82489e8da058b57b9a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DataService
 --- !u!4 &1845547958 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 380962797603807336, guid: 0a9a7fe72c9211f4485da2bb4b650886, type: 3}
@@ -1246,6 +1260,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FarmDataLoader
   fileName: PlantData.json
+--- !u!114 &1845547965
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 359883192}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd63826ac7e526f469960b2a7e34d94c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlantHighlightController
+  twinDatabase: {fileID: 1845547957}
+  dataTimeoutSeconds: 5
 --- !u!1 &1849515172
 GameObject:
   m_ObjectHideFlags: 0
