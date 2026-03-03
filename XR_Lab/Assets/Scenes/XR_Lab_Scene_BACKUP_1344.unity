@@ -119,6 +119,8 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+<<<<<<< Updated upstream
+=======
 --- !u!1 &47664888 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4860440364606958003, guid: 0a9a7fe72c9211f4485da2bb4b650886, type: 3}
@@ -156,6 +158,7 @@ MonoBehaviour:
   wateredYear: 2026
   maxGroundMoisture: 30
   waitForDataTimeoutSeconds: 5
+>>>>>>> Stashed changes
 --- !u!20 &341889590 stripped
 Camera:
   m_CorrespondingSourceObject: {fileID: 8593683647834113248, guid: 7e17be6200c63ff4a9ff385b018b5a42, type: 3}
@@ -1226,6 +1229,9 @@ PrefabInstance:
       addedObject: {fileID: 1845547963}
     - targetCorrespondingSourceObject: {fileID: 7751720821704951965, guid: 0a9a7fe72c9211f4485da2bb4b650886, type: 3}
       insertIndex: -1
+<<<<<<< Updated upstream
+      addedObject: {fileID: 1845547965}
+=======
       addedObject: {fileID: 1845547964}
     - targetCorrespondingSourceObject: {fileID: 7751720821704951965, guid: 0a9a7fe72c9211f4485da2bb4b650886, type: 3}
       insertIndex: -1
@@ -1233,6 +1239,7 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 4860440364606958003, guid: 0a9a7fe72c9211f4485da2bb4b650886, type: 3}
       insertIndex: -1
       addedObject: {fileID: 47664891}
+>>>>>>> Stashed changes
   m_SourcePrefab: {fileID: 100100000, guid: 0a9a7fe72c9211f4485da2bb4b650886, type: 3}
 --- !u!1 &1845547956 stripped
 GameObject:
