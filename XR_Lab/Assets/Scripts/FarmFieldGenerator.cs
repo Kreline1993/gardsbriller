@@ -1,14 +1,19 @@
 using UnityEngine;
-using UnityEngine.Networking;
 using System.Collections;
-using System.IO; // Delete when removing pc only read
 
 public class FarmFieldGenerator : MonoBehaviour
 {
     public GameObject interactionPrefab;
     public float scaleFactor = 10.0f;
+    [SerializeField] private FarmDataLoader farmDataLoader;
 
     public FarmData FarmData { get; private set; }
+
+    private void Awake()
+    {
+        if (farmDataLoader == null)
+            farmDataLoader = GetComponent<FarmDataLoader>();
+    }
 
     void Start()
     {
@@ -17,47 +22,28 @@ public class FarmFieldGenerator : MonoBehaviour
 
     IEnumerator GenerateFieldRoutine()
     {
-        string path = Path.Combine(Application.streamingAssetsPath, "PlantData.json");
-        string jsonString = "";
-
-        // Check if using Android/Quest
-        if (path.Contains("://") || path.Contains(":///"))
+        if (farmDataLoader == null)
         {
-            using (UnityWebRequest webRequest = UnityWebRequest.Get(path))
-            {
-                yield return webRequest.SendWebRequest();
-
-                if (webRequest.result != UnityWebRequest.Result.Success)
-                {
-                    Debug.LogError($"[FarmGenerator] Error loading JSON from APK: {webRequest.error}");
-                    yield break;
-                }
-                jsonString = webRequest.downloadHandler.text;
-            }
-        }
-        else
-        {
-            // Standard PC/Editor loading - Delete when testing finished
-            if (!File.Exists(path))
-            {
-                Debug.LogError($"[FarmGenerator] JSON not found at: {path}");
-                yield break;
-            }
-            jsonString = File.ReadAllText(path);
+            Debug.LogError("[FarmFieldGenerator] Missing FarmDataLoader reference.");
+            yield break;
         }
 
-        ParseAndGenerate(jsonString);
+        FarmData loadedData = null;
+        yield return StartCoroutine(farmDataLoader.LoadFarmDataRoutine(data => loadedData = data));
+
+        if (loadedData == null)
+            yield break;
+
+        GenerateFromData(loadedData);
     }
 
-    void ParseAndGenerate(string jsonString)
+    void GenerateFromData(FarmData data)
     {
-        FarmData = JsonUtility.FromJson<FarmData>(jsonString);
-        if (FarmData == null || FarmData.rows == null) return;
+        FarmData = data;
+        if (FarmData?.rows == null) return;
 
         foreach (Row row in FarmData.rows)
         {
-            // We still iterate through rows to get the plants, 
-            // but we ignore row.location for the plant placement.
             foreach (Plant p in row.plants)
             {
                 Vector3 localOffset = new Vector3(
@@ -82,16 +68,13 @@ public class FarmFieldGenerator : MonoBehaviour
     void OnDrawGizmos()
     {
         if (Application.isPlaying) return;
+        if (farmDataLoader == null)
+            farmDataLoader = GetComponent<FarmDataLoader>();
 
-        string path = Path.Combine(Application.streamingAssetsPath, "PlantData.json");
-        if (!File.Exists(path)) return;
+        if (farmDataLoader == null) return;
 
-        try
+        if (farmDataLoader.TryLoadFarmDataEditor(out FarmData data) && data.rows != null)
         {
-            string jsonString = File.ReadAllText(path);
-            FarmData data = JsonUtility.FromJson<FarmData>(jsonString);
-
-            if (data == null || data.rows == null) return;
 
             Gizmos.matrix = Matrix4x4.TRS(transform.position, transform.rotation, Vector3.one);
 
@@ -124,6 +107,5 @@ public class FarmFieldGenerator : MonoBehaviour
 
             Gizmos.matrix = Matrix4x4.identity;
         }
-        catch (System.Exception) { /* Fail silently */ }
     }
 }
