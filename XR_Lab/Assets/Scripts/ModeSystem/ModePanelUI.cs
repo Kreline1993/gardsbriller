@@ -13,6 +13,9 @@ public class ModePanelUI : MonoBehaviour
     [SerializeField] private Color activeButtonColor = Color.green;
     [SerializeField] private Color inactiveButtonColor = Color.gray;
     
+    
+    [SerializeField] private bool autoClosePanelAfterModeSelect = true;
+    
     private void Start()
     {
         if (modeController == null)
@@ -25,10 +28,10 @@ public class ModePanelUI : MonoBehaviour
         modeController.ModeChanged += OnModeChanged;
         
         // Wire up button clicks
-        defaultButton?.onClick.AddListener(() => modeController.SwitchToDefault());
-        overviewButton?.onClick.AddListener(() => modeController.SwitchToOverview());
-        plantPickingButton?.onClick.AddListener(() => modeController.SwitchToPlantPicking());
-        weedingButton?.onClick.AddListener(() => modeController.SwitchToWeeding());
+        defaultButton?.onClick.AddListener(() => { modeController.SwitchToDefault(); ClosePanelAfterModeSelect(); });
+        overviewButton?.onClick.AddListener(() => { modeController.SwitchToOverview(); ClosePanelAfterModeSelect(); });
+        plantPickingButton?.onClick.AddListener(() => { modeController.SwitchToPlantPicking(); ClosePanelAfterModeSelect(); });
+        weedingButton?.onClick.AddListener(() => { modeController.SwitchToWeeding(); ClosePanelAfterModeSelect(); });
     }
     
     private void OnModeChanged(AppMode newMode)
@@ -68,6 +71,16 @@ public class ModePanelUI : MonoBehaviour
         Image image = button.GetComponent<Image>();
         if (image != null)
             image.color = color;
+    }
+    
+    
+    /// <summary>
+    /// Called after a mode is selected to close the panel automatically.
+    /// </summary>
+    private void ClosePanelAfterModeSelect()
+    {
+        if (autoClosePanelAfterModeSelect)
+            gameObject.SetActive(false);
     }
     
     private void OnDestroy()
