@@ -55,6 +55,13 @@ public class TwinGenerator : MonoBehaviour
 
                 GameObject ghostPlant = Instantiate(interactionPrefab, worldPos, transform.rotation, this.transform);
 
+                if (p.size != null)
+                {
+                    float d = p.size.diameter * scaleFactor;
+                    float h = p.size.height * scaleFactor;
+                    ghostPlant.transform.localScale = new Vector3(d, h, d);
+                }
+
                 PlantIdentity identity = ghostPlant.GetComponent<PlantIdentity>();
                 if (identity != null)
                 {
@@ -100,7 +107,8 @@ public class TwinGenerator : MonoBehaviour
                     foreach (Plant p in row.plants)
                     {
                         Vector3 pPos = new Vector3(p.position.x, p.position.y, p.position.z) * scaleFactor;
-                        Gizmos.DrawWireSphere(pPos, 0.1f * scaleFactor);
+                        float radius = (p.size != null ? p.size.diameter : 0.1f) * scaleFactor * 0.5f;
+                        Gizmos.DrawWireSphere(pPos, radius);
                     }
                 }
             }
