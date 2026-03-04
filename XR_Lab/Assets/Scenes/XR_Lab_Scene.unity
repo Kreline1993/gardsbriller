@@ -3161,7 +3161,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc42392eef74480408e2bb758c8d3457, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FarmFieldGenerator
-  interactionPrefab: {fileID: 8800490417148209320, guid: ab1093e3d34b20744963492b69490a0c, type: 3}
+  interactionPrefab: {fileID: 8800490417148209320, guid: e9f8fcbd3efc5cc43969351f5ca524aa, type: 3}
   scaleFactor: 1
   twinDataLoader: {fileID: 1845547967}
 --- !u!114 &1845547967
