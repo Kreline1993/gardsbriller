@@ -123,12 +123,14 @@ public sealed class OverviewModeState : ModeStateBase
 
             Vector3 localBase = new Vector3(row.location.x, row.location.y, row.location.z) * s;
             Vector3 localCenter = localBase + new Vector3(w / 2f, h / 2f, l / 2f);
-            Vector3 worldCenter = gen.transform.TransformPoint(localCenter);
 
-            GameObject overlay = Object.Instantiate(overlayPrefab, worldCenter, gen.transform.rotation);
+            // Instantiate as a child of TwinGenerator so local space matches how plants are spawned
+            GameObject overlay = Object.Instantiate(overlayPrefab, gen.transform);
+            overlay.transform.localPosition = localCenter;
+            overlay.transform.localRotation = Quaternion.identity;
             overlay.transform.localScale = new Vector3(w, h, l);
 
-            // Tint the overlay purple
+            // Tint purple
             MaterialPropertyBlock block = new MaterialPropertyBlock();
             foreach (Renderer rend in overlay.GetComponentsInChildren<Renderer>(true))
             {
@@ -141,7 +143,7 @@ public sealed class OverviewModeState : ModeStateBase
             }
 
             spawnedRowOverlays.Add(overlay);
-            Debug.Log($"[OverviewModeState] Row overlay spawned for '{row.rowId}' (moisture: {row.groundMoisture}%).");
+            Debug.Log($"[OverviewModeState] Row overlay for '{row.rowId}' | localPos={localCenter} | scale=({w:F2}, {h:F2}, {l:F2})");
         }
     }
 

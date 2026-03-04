@@ -52,7 +52,7 @@
           "healthStatus": "bad",
           "notes": {
             "textNote": "Growing slowly, possible root damage. Inspect soil and roots.",
-            "noteTag": "warning"
+            "noteTag": "note"
           },
           "lastPesticide": { "day": 25, "month": 1, "year": 2026 },
           "nextPesticide": { "day": 25, "month": 4, "year": 2026 }
