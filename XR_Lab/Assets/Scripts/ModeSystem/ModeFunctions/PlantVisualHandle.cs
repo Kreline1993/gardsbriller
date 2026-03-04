@@ -183,7 +183,7 @@ public class PlantVisualHandle : MonoBehaviour
             SetOriginalRenderersEnabled(false);
 
         spawnedOverlay = Object.Instantiate(prefab, transform.position, transform.rotation, transform);
-        spawnedOverlay.transform.localScale = Vector3.one;
+        spawnedOverlay.transform.localScale = prefab.transform.localScale;
 
         MaterialPropertyBlock block = new MaterialPropertyBlock();
         Renderer[] overlayRenderers = spawnedOverlay.GetComponentsInChildren<Renderer>(true);
