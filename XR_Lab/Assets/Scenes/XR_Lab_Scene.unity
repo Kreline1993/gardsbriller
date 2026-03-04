@@ -773,6 +773,10 @@ PrefabInstance:
       value: MAP_12N3IUZZ8PUE
       objectReference: {fileID: 0}
     - target: {fileID: 4814140183114437194, guid: b76f49c75695e464489d600c8d6a4e2b, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4814140183114437194, guid: b76f49c75695e464489d600c8d6a4e2b, type: 3}
       propertyPath: m_TagString
       value: EditorOnly
       objectReference: {fileID: 0}
@@ -1623,7 +1627,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 515853748}
-  - {fileID: 1845547958}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &822830000
@@ -4533,7 +4536,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 768643374}
+    m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 67616677388522875, guid: 0a9a7fe72c9211f4485da2bb4b650886, type: 3}
       propertyPath: m_IsActive
@@ -6229,7 +6232,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ActivateOnFirstLocalizationSuccess
   digitalTwinRoot: {fileID: 1845547956}
-  disableOnStart: 1
+  disableOnStart: 0
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -6250,5 +6253,6 @@ SceneRoots:
   - {fileID: 2130025554}
   - {fileID: 1309741603}
   - {fileID: 768643374}
+  - {fileID: 1845547955}
   - {fileID: 574821887}
   - {fileID: 551489249}
