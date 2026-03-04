@@ -416,6 +416,11 @@ MonoBehaviour:
   twinDatabase: {fileID: 47664890}
   plantVisualRegistry: {fileID: 0}
   initialMode: 0
+  overviewLowMoistureColor: {r: 0.5, g: 0, b: 1, a: 1}
+  overviewBadHealthColor: {r: 1, g: 0.5, b: 0, a: 1}
+  overviewWarningTagColor: {r: 1, g: 0, b: 0, a: 1}
+  overviewOverlayPrefab: {fileID: 4312566435863121009, guid: 6e381599a6a7f604b96ca62061828e27, type: 3}
+  overviewHideOriginalDuringOverlay: 1
   weedingProtectedTint: {r: 1, g: 0.92156863, b: 0.015686275, a: 0.46666667}
   disableTouchForProtectedPlants: 1
   weedingOverlayPrefab: {fileID: 4312566435863121009, guid: 6e381599a6a7f604b96ca62061828e27, type: 3}

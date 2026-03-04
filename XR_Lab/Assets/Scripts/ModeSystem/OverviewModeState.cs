@@ -6,6 +6,8 @@ public sealed class OverviewModeState : ModeStateBase
     private readonly Color lowMoistureColor;
     private readonly Color badHealthColor;
     private readonly Color warningTagColor;
+    private readonly GameObject overlayPrefab;
+    private readonly bool hideOriginalDuringOverlay;
 
     private const int LowMoistureThreshold = 30;
 
@@ -15,12 +17,16 @@ public sealed class OverviewModeState : ModeStateBase
         ModeContext context,
         Color lowMoistureColor,
         Color badHealthColor,
-        Color warningTagColor)
+        Color warningTagColor,
+        GameObject overlayPrefab = null,
+        bool hideOriginalDuringOverlay = true)
         : base(context)
     {
         this.lowMoistureColor = lowMoistureColor;
         this.badHealthColor = badHealthColor;
         this.warningTagColor = warningTagColor;
+        this.overlayPrefab = overlayPrefab;
+        this.hideOriginalDuringOverlay = hideOriginalDuringOverlay;
     }
 
     public override void Enter()
@@ -32,7 +38,17 @@ public sealed class OverviewModeState : ModeStateBase
         }
 
         Dictionary<string, Color> alertColors = BuildAlertColorMap();
-        context.PlantVisualRegistry.ApplyPerPlantColors(alertColors, Color.white, false);
+
+        if (overlayPrefab != null)
+        {
+            context.PlantVisualRegistry.ApplyPerPlantColorsWithOverlay(
+                overlayPrefab, alertColors, Color.white,
+                false, hideOriginalDuringOverlay);
+        }
+        else
+        {
+            context.PlantVisualRegistry.ApplyPerPlantColors(alertColors, Color.white, false);
+        }
     }
 
     public override void Exit()

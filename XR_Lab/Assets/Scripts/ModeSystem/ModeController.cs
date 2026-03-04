@@ -15,6 +15,10 @@ public class ModeController : MonoBehaviour
     [SerializeField] private Color overviewLowMoistureColor = new Color(0.5f, 0f, 1f, 1f);
     [SerializeField] private Color overviewBadHealthColor = new Color(1f, 0.5f, 0f, 1f);
     [SerializeField] private Color overviewWarningTagColor = new Color(1f, 0f, 0f, 1f);
+    [Tooltip("Optional. When set, this prefab is spawned at each plant position instead of tinting the original plant.")]
+    [SerializeField] private GameObject overviewOverlayPrefab;
+    [Tooltip("When true, the original plant is hidden while the overlay is active.")]
+    [SerializeField] private bool overviewHideOriginalDuringOverlay = true;
 
     [Header("Weeding Mode")]
     [SerializeField] private Color weedingProtectedTint = Color.yellow;
@@ -58,7 +62,7 @@ public class ModeController : MonoBehaviour
         ModeContext context = new ModeContext(twinDatabase, plantVisualRegistry);
 
         states[AppMode.Default] = new DefaultModeState(context);
-        states[AppMode.Overview] = new OverviewModeState(context, overviewLowMoistureColor, overviewBadHealthColor, overviewWarningTagColor);
+        states[AppMode.Overview] = new OverviewModeState(context, overviewLowMoistureColor, overviewBadHealthColor, overviewWarningTagColor, overviewOverlayPrefab, overviewHideOriginalDuringOverlay);
         states[AppMode.PlantPicking] = new PlantPickingModeState(context, pickingHighlightTint);
         states[AppMode.Weeding] = new WeedingModeState(context, weedingProtectedTint, disableTouchForProtectedPlants, weedingOverlayPrefab, hideOriginalDuringOverlay);
     }
