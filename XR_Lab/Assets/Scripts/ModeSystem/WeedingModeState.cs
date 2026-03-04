@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using UnityEngine;
 
 public sealed class WeedingModeState : ModeStateBase
@@ -19,37 +18,15 @@ public sealed class WeedingModeState : ModeStateBase
     {
         Debug.Log("[WeedingModeState] Entering Weeding mode.");
 
-        if (context.TwinDatabase == null)
-        {
-            Debug.LogWarning("[WeedingModeState] TwinDatabase is null.");
-            return;
-        }
-
-        List<Plant> allPlants = context.TwinDatabase.GetPlantsWhere(plant => plant != null);
-        Debug.Log($"[WeedingModeState] Found {allPlants.Count} plants in database.");
-
-        HashSet<string> protectedIds = new HashSet<string>();
-        foreach (Plant plant in allPlants)
-        {
-            if (plant == null || string.IsNullOrEmpty(plant.plantId))
-                continue;
-
-            protectedIds.Add(plant.plantId);
-        }
-
-        Debug.Log($"[WeedingModeState] Marking {protectedIds.Count} plants as protected.");
-
         if (context.PlantVisualRegistry == null)
         {
             Debug.LogWarning("[WeedingModeState] PlantVisualRegistry is null.");
             return;
         }
 
-        context.PlantVisualRegistry.ApplyProtectedSet(
-            protectedIds,
-            protectedTint,
-            disableTouchForProtectedPlants
-        );
+        // All known plants are marked as protected ("don't touch").
+        // The tint forces alpha to the selected color, making normally-transparent prefabs visible.
+        context.PlantVisualRegistry.MarkAllProtected(protectedTint, disableTouchForProtectedPlants);
     }
 
     public override void Exit()

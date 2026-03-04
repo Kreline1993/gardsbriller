@@ -76,6 +76,38 @@ public class PlantVisualHandle : MonoBehaviour
         initialized = true;
     }
 
+    /// <summary>
+    /// Makes the plant visible (alpha forced to 1) or restores original opacity.
+    /// Useful for modes that need to reveal normally-transparent plants without tinting.
+    /// </summary>
+    public void SetVisible(bool visible)
+    {
+        InitializeIfNeeded();
+
+        for (int i = 0; i < rendererStates.Count; i++)
+        {
+            RendererState state = rendererStates[i];
+            if (state.renderer == null)
+                continue;
+
+            state.renderer.GetPropertyBlock(propertyBlock);
+
+            if (state.hasBaseColor)
+            {
+                Color color = visible ? WithFullAlpha(state.originalBaseColor) : state.originalBaseColor;
+                propertyBlock.SetColor("_BaseColor", color);
+            }
+
+            if (state.hasColor)
+            {
+                Color color = visible ? WithFullAlpha(state.originalColor) : state.originalColor;
+                propertyBlock.SetColor("_Color", color);
+            }
+
+            state.renderer.SetPropertyBlock(propertyBlock);
+        }
+    }
+
     public void SetProtectedVisual(bool isProtected, Color protectedTint, bool disableTouchForProtected)
     {
         InitializeIfNeeded();
@@ -113,5 +145,10 @@ public class PlantVisualHandle : MonoBehaviour
     public void ResetVisuals()
     {
         SetProtectedVisual(false, default, true);
+    }
+
+    private static Color WithFullAlpha(Color color)
+    {
+        return new Color(color.r, color.g, color.b, 1f);
     }
 }

@@ -39,6 +39,41 @@ public class PlantVisualRegistry : MonoBehaviour
         Debug.Log($"[PlantVisualRegistry] Indexed {handlesByPlantId.Count} plants.");
     }
 
+    /// <summary>
+    /// Marks every indexed plant as protected. Use when all known plants should be
+    /// shown as "don't touch" (e.g. weeding mode without weed-specific data).
+    /// </summary>
+    public void MarkAllProtected(Color protectedTint, bool disableTouch)
+    {
+        Debug.Log($"[PlantVisualRegistry] Marking all {handlesByPlantId.Count} plants as protected.");
+
+        foreach (KeyValuePair<string, PlantVisualHandle> pair in handlesByPlantId)
+        {
+            if (pair.Value == null)
+                continue;
+
+            pair.Value.SetProtectedVisual(true, protectedTint, disableTouch);
+        }
+    }
+
+    /// <summary>
+    /// Makes all indexed plants visible (alpha override) without changing their tint.
+    /// </summary>
+    public void ShowAll()
+    {
+        foreach (KeyValuePair<string, PlantVisualHandle> pair in handlesByPlantId)
+        {
+            if (pair.Value == null)
+                continue;
+
+            pair.Value.SetVisible(true);
+        }
+    }
+
+    /// <summary>
+    /// Applies a protected set of plants to the visual registry.
+    /// Note: This method is not used in the current implementation.
+    /// </summary>
     public void ApplyProtectedSet(HashSet<string> protectedPlantIds, Color protectedTint, bool disableTouchForProtected)
     {
         if (protectedPlantIds == null)

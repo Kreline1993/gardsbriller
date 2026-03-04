@@ -1120,7 +1120,7 @@ MonoBehaviour:
   plantVisualRegistry: {fileID: 0}
   initialMode: 0
   weedingProtectedTint: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
-  disableTouchForProtectedPlants: 1
+  disableTouchForProtectedPlants: 0
 --- !u!4 &551489249
 Transform:
   m_ObjectHideFlags: 0
