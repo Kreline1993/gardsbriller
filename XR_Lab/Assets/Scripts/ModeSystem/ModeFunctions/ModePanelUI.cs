@@ -20,8 +20,14 @@ public class ModePanelUI : MonoBehaviour
     {
         if (modeController == null)
             modeController = FindObjectOfType<ModeController>();
-        
-        // Set initial button states
+
+        if (modeController == null)
+        {
+            Debug.LogError($"[ModePanelUI] No ModeController found in scene. Disabling {gameObject.name}.", this);
+            gameObject.SetActive(false);
+            return;
+        }
+
         UpdateButtonColors(modeController.CurrentMode);
         
         // Subscribe to mode changes
