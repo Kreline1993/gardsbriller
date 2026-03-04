@@ -57,9 +57,11 @@ public class PlantVisualRegistry : MonoBehaviour
     }
 
     /// <summary>
-    /// Spawns a tinted overlay prefab at each plant's position while leaving the
-    /// original plant untouched (invisible). Optionally disables colliders on the
-    /// originals so only the overlays are interactive.
+    /// Spawns a tinted overlay prefab at each plant's position.
+    /// When <paramref name="hideOriginal"/> is true the original renderers are hidden;
+    /// otherwise they remain visible underneath the overlay.
+    /// When <paramref name="disableTouch"/> is true, colliders on the original plants
+    /// are disabled (the overlay prefab retains its own colliders).
     /// </summary>
     public void MarkAllProtectedWithOverlay(GameObject overlayPrefab, Color tint, bool disableTouch, bool hideOriginal = true)
     {
