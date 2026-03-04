@@ -178,4 +178,27 @@ public class PlantVisualRegistry : MonoBehaviour
                 pair.Value.DisableColliders();
         }
     }
+    /// <summary>
+    /// Spawns coloured overlays ONLY for plants present in the alert map.
+    /// Plants with no alert condition are left untouched.
+    /// </summary>
+    public void ApplyAlertOverlaysOnly(
+        GameObject overlayPrefab,
+        Dictionary<string, Color> alertColors,
+        bool disableTouch,
+        bool hideOriginal = true)
+    {
+        Debug.Log($"[PlantVisualRegistry] Spawning alert overlays for {alertColors.Count} flagged plants.");
+
+        foreach (KeyValuePair<string, Color> pair in alertColors)
+        {
+            if (!handlesByPlantId.TryGetValue(pair.Key, out PlantVisualHandle handle) || handle == null)
+                continue;
+
+            handle.SpawnOverlay(overlayPrefab, pair.Value, hideOriginal);
+
+            if (disableTouch)
+                handle.DisableColliders();
+        }
+    }
 }

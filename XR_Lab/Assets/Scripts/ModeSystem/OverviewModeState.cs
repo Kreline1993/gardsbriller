@@ -41,9 +41,8 @@ public sealed class OverviewModeState : ModeStateBase
 
         if (overlayPrefab != null)
         {
-            context.PlantVisualRegistry.ApplyPerPlantColorsWithOverlay(
-                overlayPrefab, alertColors, Color.white,
-                false, hideOriginalDuringOverlay);
+            context.PlantVisualRegistry.ApplyAlertOverlaysOnly(
+                overlayPrefab, alertColors, false, hideOriginalDuringOverlay);
         }
         else
         {
