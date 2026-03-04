@@ -421,7 +421,7 @@ MonoBehaviour:
   overviewWarningTagColor: {r: 1, g: 0, b: 0, a: 0.39215687}
   overviewOverlayPrefab: {fileID: 4312566435863121009, guid: 6e381599a6a7f604b96ca62061828e27, type: 3}
   overviewHideOriginalDuringOverlay: 0
-  overviewRowOverlayHeight: 1.5
+  overviewRowOverlayHeight: 0.25
   weedingProtectedTint: {r: 1, g: 0.92156863, b: 0.015686275, a: 0.46666667}
   disableTouchForProtectedPlants: 1
   weedingOverlayPrefab: {fileID: 4312566435863121009, guid: 6e381599a6a7f604b96ca62061828e27, type: 3}

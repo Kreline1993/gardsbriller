@@ -172,7 +172,7 @@
     {
       "rowId": "row_C",
       "location": { "x": 3, "y": 0, "z": 0 },
-      "groundMoisture": 35,
+      "groundMoisture": 29,
       "size": { "width": 0.722, "length": 4.033 },
       "plants": [
         {
