@@ -30,7 +30,6 @@ public class ModeController : MonoBehaviour
         if (plantVisualRegistry == null)
             plantVisualRegistry = FindObjectOfType<PlantVisualRegistry>();
 
-        // If registry still not found, try to find TwinGenerator and add registry to it
         if (plantVisualRegistry == null)
         {
             TwinGenerator twinGenerator = FindObjectOfType<TwinGenerator>();
@@ -45,17 +44,12 @@ public class ModeController : MonoBehaviour
             }
         }
 
-        ModeContext context = new ModeContext(
-            twinDatabase,
-            plantVisualRegistry,
-            weedingProtectedTint,
-            disableTouchForProtectedPlants
-        );
+        ModeContext context = new ModeContext(twinDatabase, plantVisualRegistry);
 
         states[AppMode.Default] = new DefaultModeState(context);
         states[AppMode.Overview] = new OverviewModeState(context);
         states[AppMode.PlantPicking] = new PlantPickingModeState(context);
-        states[AppMode.Weeding] = new WeedingModeState(context);
+        states[AppMode.Weeding] = new WeedingModeState(context, weedingProtectedTint, disableTouchForProtectedPlants);
     }
 
     private void Start()
@@ -86,27 +80,16 @@ public class ModeController : MonoBehaviour
         currentState.Enter();
         ModeChanged?.Invoke(mode);
     }
-    public void SwitchToDefault()
-    {
-        Debug.Log("[ModeController] Switching to Default mode.");
-        SwitchMode(AppMode.Default);
-    }
 
-    public void SwitchToOverview()
+    /// <summary>
+    /// Convenience method for Unity Inspector button events.
+    /// Pass the enum name as a string (e.g. "Default", "Weeding").
+    /// </summary>
+    public void SwitchModeByName(string modeName)
     {
-        Debug.Log("[ModeController] Switching to Overview mode.");
-        SwitchMode(AppMode.Overview);
-    }
-
-    public void SwitchToPlantPicking()
-    {
-        Debug.Log("[ModeController] Switching to Plant Picking mode.");
-        SwitchMode(AppMode.PlantPicking);
-    }
-
-    public void SwitchToWeeding()
-    {
-        Debug.Log("[ModeController] Switching to Weeding mode.");
-        SwitchMode(AppMode.Weeding);
+        if (Enum.TryParse(modeName, true, out AppMode mode))
+            SwitchMode(mode);
+        else
+            Debug.LogWarning($"[ModeController] Unknown mode name: {modeName}");
     }
 }

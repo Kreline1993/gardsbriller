@@ -1341,10 +1341,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ModePanelUI
   modeController: {fileID: 551489248}
-  defaultButton: {fileID: 1814384007}
-  overviewButton: {fileID: 1493829518}
-  plantPickingButton: {fileID: 1006673612}
-  weedingButton: {fileID: 684054139}
+  modeButtons:
+  - mode: 0
+    button: {fileID: 1814384007}
+  - mode: 1
+    button: {fileID: 1493829518}
+  - mode: 2
+    button: {fileID: 1006673612}
+  - mode: 3
+    button: {fileID: 684054139}
   activeButtonColor: {r: 0, g: 1, b: 0, a: 1}
   inactiveButtonColor: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
   autoClosePanelAfterModeSelect: 1
@@ -1502,19 +1507,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 684054140}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 551489248}
-        m_TargetAssemblyTypeName: ModeController, Assembly-CSharp
-        m_MethodName: SwitchToWeeding
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &684054140
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2136,18 +2129,6 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 551489248}
-        m_TargetAssemblyTypeName: ModeController, Assembly-CSharp
-        m_MethodName: SwitchToPlantPicking
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
       - m_Target: {fileID: 967669915}
         m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
         m_MethodName: SetActive
@@ -3308,19 +3289,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1493829519}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 551489248}
-        m_TargetAssemblyTypeName: ModeController, Assembly-CSharp
-        m_MethodName: SwitchToOverview
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &1493829519
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4479,19 +4448,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1814384008}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 551489248}
-        m_TargetAssemblyTypeName: ModeController, Assembly-CSharp
-        m_MethodName: SwitchToDefault
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &1814384008
 MonoBehaviour:
   m_ObjectHideFlags: 0

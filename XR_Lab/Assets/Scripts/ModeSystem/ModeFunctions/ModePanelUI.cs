@@ -3,19 +3,21 @@ using UnityEngine.UI;
 
 public class ModePanelUI : MonoBehaviour
 {
+    [System.Serializable]
+    public struct ModeButtonEntry
+    {
+        public AppMode mode;
+        public Button button;
+    }
+
     [SerializeField] private ModeController modeController;
-    
-    [SerializeField] private Button defaultButton;
-    [SerializeField] private Button overviewButton;
-    [SerializeField] private Button plantPickingButton;
-    [SerializeField] private Button weedingButton;
-    
+    [SerializeField] private ModeButtonEntry[] modeButtons;
+
     [SerializeField] private Color activeButtonColor = Color.green;
     [SerializeField] private Color inactiveButtonColor = Color.gray;
-    
-    
+
     [SerializeField] private bool autoClosePanelAfterModeSelect = true;
-    
+
     private void Start()
     {
         if (modeController == null)
@@ -28,49 +30,29 @@ public class ModePanelUI : MonoBehaviour
             return;
         }
 
+        foreach (ModeButtonEntry entry in modeButtons)
+        {
+            AppMode mode = entry.mode;
+            entry.button?.onClick.AddListener(() =>
+            {
+                modeController.SwitchMode(mode);
+                ClosePanelAfterModeSelect();
+            });
+        }
+
+        modeController.ModeChanged += UpdateButtonColors;
         UpdateButtonColors(modeController.CurrentMode);
-        
-        // Subscribe to mode changes
-        modeController.ModeChanged += OnModeChanged;
-        
-        // Wire up button clicks
-        defaultButton?.onClick.AddListener(() => { modeController.SwitchToDefault(); ClosePanelAfterModeSelect(); });
-        overviewButton?.onClick.AddListener(() => { modeController.SwitchToOverview(); ClosePanelAfterModeSelect(); });
-        plantPickingButton?.onClick.AddListener(() => { modeController.SwitchToPlantPicking(); ClosePanelAfterModeSelect(); });
-        weedingButton?.onClick.AddListener(() => { modeController.SwitchToWeeding(); ClosePanelAfterModeSelect(); });
     }
-    
-    private void OnModeChanged(AppMode newMode)
-    {
-        UpdateButtonColors(newMode);
-    }
-    
+
     private void UpdateButtonColors(AppMode currentMode)
     {
-        // Reset all buttons to inactive
-        SetButtonColor(defaultButton, inactiveButtonColor);
-        SetButtonColor(overviewButton, inactiveButtonColor);
-        SetButtonColor(plantPickingButton, inactiveButtonColor);
-        SetButtonColor(weedingButton, inactiveButtonColor);
-        
-        // Highlight the active button
-        switch (currentMode)
+        foreach (ModeButtonEntry entry in modeButtons)
         {
-            case AppMode.Default:
-                SetButtonColor(defaultButton, activeButtonColor);
-                break;
-            case AppMode.Overview:
-                SetButtonColor(overviewButton, activeButtonColor);
-                break;
-            case AppMode.PlantPicking:
-                SetButtonColor(plantPickingButton, activeButtonColor);
-                break;
-            case AppMode.Weeding:
-                SetButtonColor(weedingButton, activeButtonColor);
-                break;
+            Color color = entry.mode == currentMode ? activeButtonColor : inactiveButtonColor;
+            SetButtonColor(entry.button, color);
         }
     }
-    
+
     private void SetButtonColor(Button button, Color color)
     {
         if (button == null) return;
@@ -78,20 +60,16 @@ public class ModePanelUI : MonoBehaviour
         if (image != null)
             image.color = color;
     }
-    
-    
-    /// <summary>
-    /// Called after a mode is selected to close the panel automatically.
-    /// </summary>
+
     private void ClosePanelAfterModeSelect()
     {
         if (autoClosePanelAfterModeSelect)
             gameObject.SetActive(false);
     }
-    
+
     private void OnDestroy()
     {
         if (modeController != null)
-            modeController.ModeChanged -= OnModeChanged;
+            modeController.ModeChanged -= UpdateButtonColors;
     }
 }
