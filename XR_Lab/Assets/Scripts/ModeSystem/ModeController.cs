@@ -15,9 +15,6 @@ public class ModeController : MonoBehaviour
     [SerializeField] private Color weedingProtectedTint = Color.yellow;
     [SerializeField] private bool disableTouchForProtectedPlants = true;
 
-    [Header("Picking Mode")]
-    [SerializeField] private Color pickingHighlightTint = new Color(1f, 0.4f, 0.8f, 1f);
-
     private readonly Dictionary<AppMode, IModeState> states = new Dictionary<AppMode, IModeState>();
     private IModeState currentState;
 
@@ -46,18 +43,12 @@ public class ModeController : MonoBehaviour
             }
         }
 
-        ModeContext context = new ModeContext(
-            twinDatabase,
-            plantVisualRegistry,
-            weedingProtectedTint,
-            disableTouchForProtectedPlants,
-            pickingHighlightTint
-        );
+        ModeContext context = new ModeContext(twinDatabase, plantVisualRegistry);
 
         states[AppMode.Default] = new DefaultModeState(context);
         states[AppMode.Overview] = new OverviewModeState(context);
         states[AppMode.PlantPicking] = new PlantPickingModeState(context);
-        states[AppMode.Weeding] = new WeedingModeState(context);
+        states[AppMode.Weeding] = new WeedingModeState(context, weedingProtectedTint, disableTouchForProtectedPlants);
     }
 
     private void Start()
@@ -89,28 +80,15 @@ public class ModeController : MonoBehaviour
         ModeChanged?.Invoke(mode);
     }
 
-    // ----------  Mode shortcuts ----------
-
-    public void SwitchToDefault() => SwitchMode(AppMode.Default);
-    public void SwitchToOverview() => SwitchMode(AppMode.Overview);
-    public void SwitchToPlantPicking() => SwitchMode(AppMode.PlantPicking);
-    public void SwitchToWeeding() => SwitchMode(AppMode.Weeding);
-
-    //---------- Picking mode controls ----------
-
-    public void TogglePickingSpecies(string species)
+    /// <summary>
+    /// Convenience method for Unity Inspector button events.
+    /// Pass the enum name as a string (e.g. "Default", "Weeding").
+    /// </summary>
+    public void SwitchModeByName(string modeName)
     {
-        if (currentState is PlantPickingModeState pickingState)
-            pickingState.ToggleSpecies(species);
+        if (Enum.TryParse(modeName, true, out AppMode mode))
+            SwitchMode(mode);
         else
-            Debug.LogWarning("[ModeController] TogglePickingSpecies called but not in PlantPicking mode.");
-    }
-
-    public void ClearPickingHighlights()
-    {
-        if (currentState is PlantPickingModeState pickingState)
-            pickingState.ClearAll();
-        else
-            Debug.LogWarning("[ModeController] ClearPickingHighlights called but not in PlantPicking mode.");
+            Debug.LogWarning($"[ModeController] Unknown mode name: {modeName}");
     }
 }
