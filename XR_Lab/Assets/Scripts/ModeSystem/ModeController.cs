@@ -19,11 +19,13 @@ public class ModeController : MonoBehaviour
     [Tooltip("When true, the original plant prefab is hidden while the overlay is active.")]
     [SerializeField] private bool hideOriginalDuringOverlay = true;
 
+    [Header("Picking Mode")]
+    [SerializeField] private Color pickingHighlightTint = new Color(1f, 0.4f, 0.8f, 1f);
+
     private readonly Dictionary<AppMode, IModeState> states = new Dictionary<AppMode, IModeState>();
     private IModeState currentState;
 
     public AppMode CurrentMode { get; private set; }
-
     public event Action<AppMode> ModeChanged;
 
     private void Awake()
@@ -52,7 +54,7 @@ public class ModeController : MonoBehaviour
 
         states[AppMode.Default] = new DefaultModeState(context);
         states[AppMode.Overview] = new OverviewModeState(context);
-        states[AppMode.PlantPicking] = new PlantPickingModeState(context);
+        states[AppMode.PlantPicking] = new PlantPickingModeState(context, pickingHighlightTint);
         states[AppMode.Weeding] = new WeedingModeState(context, weedingProtectedTint, disableTouchForProtectedPlants, weedingOverlayPrefab, hideOriginalDuringOverlay);
     }
 
@@ -95,5 +97,20 @@ public class ModeController : MonoBehaviour
             SwitchMode(mode);
         else
             Debug.LogWarning($"[ModeController] Unknown mode name: {modeName}");
+    }
+    public void TogglePickingSpecies(string species)
+    {
+        if (currentState is PlantPickingModeState pickingState)
+            pickingState.ToggleSpecies(species);
+        else
+            Debug.LogWarning("[ModeController] TogglePickingSpecies called but not in PlantPicking mode.");
+    }
+
+    public void ClearPickingHighlights()
+    {
+        if (currentState is PlantPickingModeState pickingState)
+            pickingState.ClearAll();
+        else
+            Debug.LogWarning("[ModeController] ClearPickingHighlights called but not in PlantPicking mode.");
     }
 }
