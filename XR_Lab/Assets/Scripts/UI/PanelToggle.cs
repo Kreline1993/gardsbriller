@@ -11,9 +11,10 @@ public class PanelToggle : MonoBehaviour
 
     private void Start()
     {
-        // If targetPanel not assigned, assume this script is on the panel itself
         if (targetPanel == null)
             targetPanel = gameObject;
+
+        isPanelActive = targetPanel.activeSelf;
     }
 
     /// <summary>
