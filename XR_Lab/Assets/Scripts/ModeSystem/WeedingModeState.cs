@@ -4,14 +4,23 @@ public sealed class WeedingModeState : ModeStateBase
 {
     private readonly Color protectedTint;
     private readonly bool disableTouchForProtectedPlants;
+    private readonly GameObject overlayPrefab;
+    private readonly bool hideOriginalDuringOverlay;
 
     public override AppMode Mode => AppMode.Weeding;
 
-    public WeedingModeState(ModeContext context, Color protectedTint, bool disableTouchForProtectedPlants)
+    public WeedingModeState(
+        ModeContext context,
+        Color protectedTint,
+        bool disableTouchForProtectedPlants,
+        GameObject overlayPrefab = null,
+        bool hideOriginalDuringOverlay = true)
         : base(context)
     {
         this.protectedTint = protectedTint;
         this.disableTouchForProtectedPlants = disableTouchForProtectedPlants;
+        this.overlayPrefab = overlayPrefab;
+        this.hideOriginalDuringOverlay = hideOriginalDuringOverlay;
     }
 
     public override void Enter()
@@ -24,9 +33,16 @@ public sealed class WeedingModeState : ModeStateBase
             return;
         }
 
-        // All known plants are marked as protected ("don't touch").
-        // The tint forces alpha to the selected color, making normally-transparent prefabs visible.
-        context.PlantVisualRegistry.MarkAllProtected(protectedTint, disableTouchForProtectedPlants);
+        if (overlayPrefab != null)
+        {
+            context.PlantVisualRegistry.MarkAllProtectedWithOverlay(
+                overlayPrefab, protectedTint, disableTouchForProtectedPlants, hideOriginalDuringOverlay);
+        }
+        else
+        {
+            context.PlantVisualRegistry.MarkAllProtected(
+                protectedTint, disableTouchForProtectedPlants);
+        }
     }
 
     public override void Exit()

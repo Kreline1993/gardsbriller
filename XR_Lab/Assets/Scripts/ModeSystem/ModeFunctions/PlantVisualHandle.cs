@@ -23,6 +23,8 @@ public class PlantVisualHandle : MonoBehaviour
     private readonly List<ColliderState> colliderStates = new List<ColliderState>();
     private readonly MaterialPropertyBlock propertyBlock = new MaterialPropertyBlock();
 
+    private GameObject spawnedOverlay;
+    private bool originalRenderersHidden;
     private bool initialized;
 
     private void Awake()
@@ -142,8 +144,94 @@ public class PlantVisualHandle : MonoBehaviour
         }
     }
 
+    public void DisableColliders()
+    {
+        InitializeIfNeeded();
+
+        for (int i = 0; i < colliderStates.Count; i++)
+        {
+            if (colliderStates[i].collider != null)
+                colliderStates[i].collider.enabled = false;
+        }
+    }
+
+    public void RestoreColliders()
+    {
+        for (int i = 0; i < colliderStates.Count; i++)
+        {
+            if (colliderStates[i].collider != null)
+                colliderStates[i].collider.enabled = colliderStates[i].originalEnabled;
+        }
+    }
+
+    /// <summary>
+    /// Replaces this plant visually: hides the original renderers and spawns the
+    /// given prefab at the same position/rotation/scale with the tint applied.
+    /// Destroys any existing replacement first.
+    /// </summary>
+    public void SpawnOverlay(GameObject prefab, Color tint, bool hideOriginal = true)
+    {
+        DestroyOverlay();
+
+        if (prefab == null)
+            return;
+
+        InitializeIfNeeded();
+
+        originalRenderersHidden = hideOriginal;
+        if (hideOriginal)
+            SetOriginalRenderersEnabled(false);
+
+        spawnedOverlay = Object.Instantiate(prefab, transform.position, transform.rotation, transform);
+        spawnedOverlay.transform.localScale = Vector3.one;
+
+        MaterialPropertyBlock block = new MaterialPropertyBlock();
+        Renderer[] overlayRenderers = spawnedOverlay.GetComponentsInChildren<Renderer>(true);
+        foreach (Renderer renderer in overlayRenderers)
+        {
+            if (renderer == null)
+                continue;
+
+            renderer.GetPropertyBlock(block);
+
+            Material mat = renderer.sharedMaterial;
+            if (mat != null && mat.HasProperty("_BaseColor"))
+                block.SetColor("_BaseColor", tint);
+
+            if (mat != null && mat.HasProperty("_Color"))
+                block.SetColor("_Color", tint);
+
+            renderer.SetPropertyBlock(block);
+        }
+    }
+
+    public void DestroyOverlay()
+    {
+        if (spawnedOverlay == null)
+            return;
+
+        Object.Destroy(spawnedOverlay);
+        spawnedOverlay = null;
+
+        if (originalRenderersHidden)
+        {
+            SetOriginalRenderersEnabled(true);
+            originalRenderersHidden = false;
+        }
+    }
+
+    private void SetOriginalRenderersEnabled(bool enabled)
+    {
+        for (int i = 0; i < rendererStates.Count; i++)
+        {
+            if (rendererStates[i].renderer != null)
+                rendererStates[i].renderer.enabled = enabled;
+        }
+    }
+
     public void ResetVisuals()
     {
+        DestroyOverlay();
         SetProtectedVisual(false, default, true);
     }
 

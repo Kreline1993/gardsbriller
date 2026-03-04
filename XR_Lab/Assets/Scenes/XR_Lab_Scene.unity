@@ -1119,8 +1119,10 @@ MonoBehaviour:
   twinDatabase: {fileID: 47664890}
   plantVisualRegistry: {fileID: 0}
   initialMode: 0
-  weedingProtectedTint: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
-  disableTouchForProtectedPlants: 0
+  weedingProtectedTint: {r: 1, g: 0.92156863, b: 0.015686275, a: 0.46666667}
+  disableTouchForProtectedPlants: 1
+  weedingOverlayPrefab: {fileID: 4312566435863121009, guid: 6e381599a6a7f604b96ca62061828e27, type: 3}
+  hideOriginalDuringOverlay: 0
 --- !u!4 &551489249
 Transform:
   m_ObjectHideFlags: 0

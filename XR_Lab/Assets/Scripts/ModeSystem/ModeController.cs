@@ -14,6 +14,10 @@ public class ModeController : MonoBehaviour
     [Header("Weeding Mode")]
     [SerializeField] private Color weedingProtectedTint = Color.yellow;
     [SerializeField] private bool disableTouchForProtectedPlants = true;
+    [Tooltip("Optional. When set, this prefab is spawned at each plant position with the tint applied instead of tinting the original plant.")]
+    [SerializeField] private GameObject weedingOverlayPrefab;
+    [Tooltip("When true, the original plant prefab is hidden while the overlay is active.")]
+    [SerializeField] private bool hideOriginalDuringOverlay = true;
 
     private readonly Dictionary<AppMode, IModeState> states = new Dictionary<AppMode, IModeState>();
     private IModeState currentState;
@@ -49,7 +53,7 @@ public class ModeController : MonoBehaviour
         states[AppMode.Default] = new DefaultModeState(context);
         states[AppMode.Overview] = new OverviewModeState(context);
         states[AppMode.PlantPicking] = new PlantPickingModeState(context);
-        states[AppMode.Weeding] = new WeedingModeState(context, weedingProtectedTint, disableTouchForProtectedPlants);
+        states[AppMode.Weeding] = new WeedingModeState(context, weedingProtectedTint, disableTouchForProtectedPlants, weedingOverlayPrefab, hideOriginalDuringOverlay);
     }
 
     private void Start()

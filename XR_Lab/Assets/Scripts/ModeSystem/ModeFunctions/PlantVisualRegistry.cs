@@ -57,6 +57,27 @@ public class PlantVisualRegistry : MonoBehaviour
     }
 
     /// <summary>
+    /// Spawns a tinted overlay prefab at each plant's position while leaving the
+    /// original plant untouched (invisible). Optionally disables colliders on the
+    /// originals so only the overlays are interactive.
+    /// </summary>
+    public void MarkAllProtectedWithOverlay(GameObject overlayPrefab, Color tint, bool disableTouch, bool hideOriginal = true)
+    {
+        Debug.Log($"[PlantVisualRegistry] Spawning overlay for all {handlesByPlantId.Count} plants.");
+
+        foreach (KeyValuePair<string, PlantVisualHandle> pair in handlesByPlantId)
+        {
+            if (pair.Value == null)
+                continue;
+
+            pair.Value.SpawnOverlay(overlayPrefab, tint, hideOriginal);
+
+            if (disableTouch)
+                pair.Value.DisableColliders();
+        }
+    }
+
+    /// <summary>
     /// Makes all indexed plants visible (alpha override) without changing their tint.
     /// </summary>
     public void ShowAll()
