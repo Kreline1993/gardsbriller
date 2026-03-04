@@ -11,6 +11,11 @@ public class ModeController : MonoBehaviour
     [Header("Startup")]
     [SerializeField] private AppMode initialMode = AppMode.Default;
 
+    [Header("Overview Mode")]
+    [SerializeField] private Color overviewLowMoistureColor = new Color(0.5f, 0f, 1f, 1f);
+    [SerializeField] private Color overviewBadHealthColor = new Color(1f, 0.5f, 0f, 1f);
+    [SerializeField] private Color overviewWarningTagColor = new Color(1f, 0f, 0f, 1f);
+
     [Header("Weeding Mode")]
     [SerializeField] private Color weedingProtectedTint = Color.yellow;
     [SerializeField] private bool disableTouchForProtectedPlants = true;
@@ -53,7 +58,7 @@ public class ModeController : MonoBehaviour
         ModeContext context = new ModeContext(twinDatabase, plantVisualRegistry);
 
         states[AppMode.Default] = new DefaultModeState(context);
-        states[AppMode.Overview] = new OverviewModeState(context);
+        states[AppMode.Overview] = new OverviewModeState(context, overviewLowMoistureColor, overviewBadHealthColor, overviewWarningTagColor);
         states[AppMode.PlantPicking] = new PlantPickingModeState(context, pickingHighlightTint);
         states[AppMode.Weeding] = new WeedingModeState(context, weedingProtectedTint, disableTouchForProtectedPlants, weedingOverlayPrefab, hideOriginalDuringOverlay);
     }
@@ -87,10 +92,6 @@ public class ModeController : MonoBehaviour
         ModeChanged?.Invoke(mode);
     }
 
-    /// <summary>
-    /// Convenience method for Unity Inspector button events.
-    /// Pass the enum name as a string (e.g. "Default", "Weeding").
-    /// </summary>
     public void SwitchModeByName(string modeName)
     {
         if (Enum.TryParse(modeName, true, out AppMode mode))
@@ -98,6 +99,7 @@ public class ModeController : MonoBehaviour
         else
             Debug.LogWarning($"[ModeController] Unknown mode name: {modeName}");
     }
+
     public void TogglePickingSpecies(string species)
     {
         if (currentState is PlantPickingModeState pickingState)

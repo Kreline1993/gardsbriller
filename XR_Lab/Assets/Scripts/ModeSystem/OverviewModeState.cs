@@ -3,15 +3,25 @@ using UnityEngine;
 
 public sealed class OverviewModeState : ModeStateBase
 {
-    private static readonly Color LowMoistureColor = new Color(0.5f, 0f, 1f, 1f); // purple
-    private static readonly Color BadHealthColor = new Color(1f, 0.5f, 0f, 1f); // orange
-    private static readonly Color WarningTagColor = new Color(1f, 0f, 0f, 1f); // red
+    private readonly Color lowMoistureColor;
+    private readonly Color badHealthColor;
+    private readonly Color warningTagColor;
 
     private const int LowMoistureThreshold = 30;
 
     public override AppMode Mode => AppMode.Overview;
 
-    public OverviewModeState(ModeContext context) : base(context) { }
+    public OverviewModeState(
+        ModeContext context,
+        Color lowMoistureColor,
+        Color badHealthColor,
+        Color warningTagColor)
+        : base(context)
+    {
+        this.lowMoistureColor = lowMoistureColor;
+        this.badHealthColor = badHealthColor;
+        this.warningTagColor = warningTagColor;
+    }
 
     public override void Enter()
     {
@@ -45,19 +55,19 @@ public sealed class OverviewModeState : ModeStateBase
         List<Plant> lowMoisturePlants = db.GetPlantsWhere(
             (plant, row) => row.groundMoisture < LowMoistureThreshold);
         foreach (Plant plant in lowMoisturePlants)
-            map[plant.plantId] = LowMoistureColor;
+            map[plant.plantId] = lowMoistureColor;
 
         // Orange: bad health (overwrites purple)
         List<Plant> badHealthPlants = db.GetPlantsWhere(
             plant => plant.healthStatus == "bad");
         foreach (Plant plant in badHealthPlants)
-            map[plant.plantId] = BadHealthColor;
+            map[plant.plantId] = badHealthColor;
 
         // Red: warning tag (highest priority, overwrites all)
         List<Plant> warningPlants = db.GetPlantsWhere(
             plant => plant.notes != null && plant.notes.noteTag == "warning");
         foreach (Plant plant in warningPlants)
-            map[plant.plantId] = WarningTagColor;
+            map[plant.plantId] = warningTagColor;
 
         Debug.Log($"[OverviewModeState] Alert map built: {map.Count} plants flagged.");
         return map;
