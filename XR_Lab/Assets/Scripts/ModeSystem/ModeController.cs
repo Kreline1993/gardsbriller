@@ -15,11 +15,13 @@ public class ModeController : MonoBehaviour
     [SerializeField] private Color weedingProtectedTint = Color.yellow;
     [SerializeField] private bool disableTouchForProtectedPlants = true;
 
+    [Header("Picking Mode")]
+    [SerializeField] private Color pickingHighlightTint = new Color(1f, 0.4f, 0.8f, 1f);
+
     private readonly Dictionary<AppMode, IModeState> states = new Dictionary<AppMode, IModeState>();
     private IModeState currentState;
 
     public AppMode CurrentMode { get; private set; }
-
     public event Action<AppMode> ModeChanged;
 
     private void Awake()
@@ -30,7 +32,6 @@ public class ModeController : MonoBehaviour
         if (plantVisualRegistry == null)
             plantVisualRegistry = FindObjectOfType<PlantVisualRegistry>();
 
-        // If registry still not found, try to find TwinGenerator and add registry to it
         if (plantVisualRegistry == null)
         {
             TwinGenerator twinGenerator = FindObjectOfType<TwinGenerator>();
@@ -49,7 +50,8 @@ public class ModeController : MonoBehaviour
             twinDatabase,
             plantVisualRegistry,
             weedingProtectedTint,
-            disableTouchForProtectedPlants
+            disableTouchForProtectedPlants,
+            pickingHighlightTint
         );
 
         states[AppMode.Default] = new DefaultModeState(context);
@@ -86,27 +88,29 @@ public class ModeController : MonoBehaviour
         currentState.Enter();
         ModeChanged?.Invoke(mode);
     }
-    public void SwitchToDefault()
+
+    // ----------  Mode shortcuts ----------
+
+    public void SwitchToDefault() => SwitchMode(AppMode.Default);
+    public void SwitchToOverview() => SwitchMode(AppMode.Overview);
+    public void SwitchToPlantPicking() => SwitchMode(AppMode.PlantPicking);
+    public void SwitchToWeeding() => SwitchMode(AppMode.Weeding);
+
+    //---------- Picking mode controls ----------
+
+    public void TogglePickingSpecies(string species)
     {
-        Debug.Log("[ModeController] Switching to Default mode.");
-        SwitchMode(AppMode.Default);
+        if (currentState is PlantPickingModeState pickingState)
+            pickingState.ToggleSpecies(species);
+        else
+            Debug.LogWarning("[ModeController] TogglePickingSpecies called but not in PlantPicking mode.");
     }
 
-    public void SwitchToOverview()
+    public void ClearPickingHighlights()
     {
-        Debug.Log("[ModeController] Switching to Overview mode.");
-        SwitchMode(AppMode.Overview);
-    }
-
-    public void SwitchToPlantPicking()
-    {
-        Debug.Log("[ModeController] Switching to Plant Picking mode.");
-        SwitchMode(AppMode.PlantPicking);
-    }
-
-    public void SwitchToWeeding()
-    {
-        Debug.Log("[ModeController] Switching to Weeding mode.");
-        SwitchMode(AppMode.Weeding);
+        if (currentState is PlantPickingModeState pickingState)
+            pickingState.ClearAll();
+        else
+            Debug.LogWarning("[ModeController] ClearPickingHighlights called but not in PlantPicking mode.");
     }
 }

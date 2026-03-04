@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using UnityEngine;
 
 public abstract class ModeStateBase : IModeState
 {
@@ -15,17 +16,14 @@ public abstract class ModeStateBase : IModeState
     public abstract void Exit();
     public virtual void Tick() { }
 }
+
 public sealed class DefaultModeState : ModeStateBase
 {
     public override AppMode Mode => AppMode.Default;
 
     public DefaultModeState(ModeContext context) : base(context) { }
 
-    public override void Enter()
-    {
-        context.PlantVisualRegistry?.ResetAll();
-    }
-
+    public override void Enter() { context.PlantVisualRegistry?.ResetAll(); }
     public override void Exit() { }
 }
 
@@ -35,11 +33,7 @@ public sealed class OverviewModeState : ModeStateBase
 
     public OverviewModeState(ModeContext context) : base(context) { }
 
-    public override void Enter()
-    {
-        context.PlantVisualRegistry?.ResetAll();
-    }
-
+    public override void Enter() { context.PlantVisualRegistry?.ResetAll(); }
     public override void Exit() { }
 }
 
@@ -47,14 +41,66 @@ public sealed class PlantPickingModeState : ModeStateBase
 {
     public override AppMode Mode => AppMode.PlantPicking;
 
+    private readonly PlantHighlightState _highlightState = new PlantHighlightState();
+    private List<Plant> _eligiblePlants = new List<Plant>();
+
     public PlantPickingModeState(ModeContext context) : base(context) { }
 
     public override void Enter()
     {
         context.PlantVisualRegistry?.ResetAll();
+        _highlightState.ClearAll();
+
+        if (context.TwinDatabase == null)
+        {
+            Debug.LogWarning("[PlantPickingModeState] TwinDatabase is null.");
+            return;
+        }
+
+        var all = context.TwinDatabase.GetPlantsWhere(_ => true);
+        _eligiblePlants = PlantHighlightState.FilterEligible(all);
+        _highlightState.SetEligiblePlants(_eligiblePlants);
+
+        Debug.Log($"[PlantPickingModeState] {_eligiblePlants.Count} mature plants ready for highlighting.");
     }
 
-    public override void Exit() { }
+    public override void Exit()
+    {
+        _highlightState.ClearAll();
+        context.PlantVisualRegistry?.ResetAll();
+    }
+
+    /// <summary>
+    /// Toggles the highlight for all mature plants of the given species.
+    /// Calling again with the same species will turn them off.
+    /// </summary>
+    public void ToggleSpecies(string species)
+    {
+        foreach (var plant in _eligiblePlants)
+        {
+            if (plant.species != species) continue;
+
+            if (_highlightState.IsSelected(plant.plantId))
+                _highlightState.Deselect(plant.plantId);
+            else
+                _highlightState.Select(plant.plantId);
+        }
+
+        ApplyVisuals();
+    }
+
+    public void ClearAll()
+    {
+        _highlightState.ClearAll();
+        context.PlantVisualRegistry?.ResetAll();
+    }
+
+    private void ApplyVisuals()
+    {
+        if (context.PlantVisualRegistry == null) return;
+        var selected = new HashSet<string>(_highlightState.SelectedIds);
+        context.PlantVisualRegistry.ApplyProtectedSet(selected, context.PickingHighlightTint, false);
+    }
 }
 
 public sealed class WeedingModeState : ModeStateBase
@@ -65,34 +111,32 @@ public sealed class WeedingModeState : ModeStateBase
 
     public override void Enter()
     {
-        UnityEngine.Debug.Log("[WeedingModeState] Entering Weeding mode.");
-        
+        Debug.Log("[WeedingModeState] Entering Weeding mode.");
+
         if (context.TwinDatabase == null)
         {
-            UnityEngine.Debug.LogWarning("[WeedingModeState] TwinDatabase is null.");
+            Debug.LogWarning("[WeedingModeState] TwinDatabase is null.");
             return;
         }
 
         List<Plant> allPlants = context.TwinDatabase.GetPlantsWhere(plant => plant != null);
-        UnityEngine.Debug.Log($"[WeedingModeState] Found {allPlants.Count} plants in database.");
-        
+        Debug.Log($"[WeedingModeState] Found {allPlants.Count} plants in database.");
+
         HashSet<string> protectedIds = new HashSet<string>();
         foreach (Plant plant in allPlants)
         {
-            if (plant == null || string.IsNullOrEmpty(plant.plantId))
-                continue;
-
+            if (plant == null || string.IsNullOrEmpty(plant.plantId)) continue;
             protectedIds.Add(plant.plantId);
         }
-        
-        UnityEngine.Debug.Log($"[WeedingModeState] Marking {protectedIds.Count} plants as protected.");
+
+        Debug.Log($"[WeedingModeState] Marking {protectedIds.Count} plants as protected.");
 
         if (context.PlantVisualRegistry == null)
         {
-            UnityEngine.Debug.LogWarning("[WeedingModeState] PlantVisualRegistry is null.");
+            Debug.LogWarning("[WeedingModeState] PlantVisualRegistry is null.");
             return;
         }
-        
+
         context.PlantVisualRegistry.ApplyProtectedSet(
             protectedIds,
             context.WeedingProtectedTint,
@@ -110,18 +154,21 @@ public sealed class ModeContext
 {
     public TwinDatabase TwinDatabase { get; }
     public PlantVisualRegistry PlantVisualRegistry { get; }
-    public UnityEngine.Color WeedingProtectedTint { get; }
+    public Color WeedingProtectedTint { get; }
     public bool DisableTouchForProtectedPlants { get; }
+    public Color PickingHighlightTint { get; }
 
     public ModeContext(
         TwinDatabase twinDatabase,
         PlantVisualRegistry plantVisualRegistry,
-        UnityEngine.Color weedingProtectedTint,
-        bool disableTouchForProtectedPlants)
+        Color weedingProtectedTint,
+        bool disableTouchForProtectedPlants,
+        Color pickingHighlightTint)
     {
         TwinDatabase = twinDatabase;
         PlantVisualRegistry = plantVisualRegistry;
         WeedingProtectedTint = weedingProtectedTint;
         DisableTouchForProtectedPlants = disableTouchForProtectedPlants;
+        PickingHighlightTint = pickingHighlightTint;
     }
 }
