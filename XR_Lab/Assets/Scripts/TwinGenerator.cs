@@ -59,7 +59,9 @@ public class TwinGenerator : MonoBehaviour
                 {
                     float d = p.size.diameter * scaleFactor;
                     float h = p.size.height * scaleFactor;
-                    ghostPlant.transform.localScale = new Vector3(d, h, d);
+                    Mesh mesh = interactionPrefab.GetComponentInChildren<MeshFilter>()?.sharedMesh;
+                    float meshHeight = (mesh != null) ? mesh.bounds.size.y : 1f;
+                    ghostPlant.transform.localScale = new Vector3(d, h / meshHeight, d);
                 }
 
                 PlantIdentity identity = ghostPlant.GetComponent<PlantIdentity>();
