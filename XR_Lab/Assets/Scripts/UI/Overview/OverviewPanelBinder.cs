@@ -67,7 +67,6 @@ public class OverviewPanelBinder : MonoBehaviour
         if (refreshOnEnable && dataProvider != null)
         {
             dataProvider.RefreshNow();
-            HandleDataUpdated(dataProvider.CurrentData);
         }
     }
 
