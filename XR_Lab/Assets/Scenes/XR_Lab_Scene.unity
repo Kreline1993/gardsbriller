@@ -422,6 +422,8 @@ MonoBehaviour:
   overviewOverlayPrefab: {fileID: 4312566435863121009, guid: 6e381599a6a7f604b96ca62061828e27, type: 3}
   overviewHideOriginalDuringOverlay: 0
   overviewRowOverlayHeight: 0.25
+  overviewRipeIconPrefab: {fileID: 4416891752233979593, guid: 2243cb2f4583753418ee8a40c16f93cf, type: 3}
+  overviewRipeIconYOffset: 0.2
   weedingProtectedTint: {r: 1, g: 0.92156863, b: 0.015686275, a: 0.46666667}
   disableTouchForProtectedPlants: 1
   weedingOverlayPrefab: {fileID: 4312566435863121009, guid: 6e381599a6a7f604b96ca62061828e27, type: 3}

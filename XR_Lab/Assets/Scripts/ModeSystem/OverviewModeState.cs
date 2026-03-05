@@ -9,6 +9,8 @@ public sealed class OverviewModeState : ModeStateBase
     private readonly GameObject overlayPrefab;
     private readonly bool hideOriginalDuringOverlay;
     private readonly float rowOverlayHeight;
+    private readonly GameObject ripeIconPrefab;
+    private readonly float ripeIconYOffset;
 
     private readonly List<GameObject> spawnedRowOverlays = new List<GameObject>();
 
@@ -23,7 +25,9 @@ public sealed class OverviewModeState : ModeStateBase
         Color warningTagColor,
         GameObject overlayPrefab = null,
         bool hideOriginalDuringOverlay = true,
-        float rowOverlayHeight = 1.5f)
+        float rowOverlayHeight = 1.5f,
+        GameObject ripeIconPrefab = null,
+        float ripeIconYOffset = 0.3f)
         : base(context)
     {
         this.lowMoistureColor = lowMoistureColor;
@@ -32,6 +36,8 @@ public sealed class OverviewModeState : ModeStateBase
         this.overlayPrefab = overlayPrefab;
         this.hideOriginalDuringOverlay = hideOriginalDuringOverlay;
         this.rowOverlayHeight = rowOverlayHeight;
+        this.ripeIconPrefab = ripeIconPrefab;
+        this.ripeIconYOffset = ripeIconYOffset;
     }
 
     public override void Enter()
@@ -55,12 +61,17 @@ public sealed class OverviewModeState : ModeStateBase
         {
             context.PlantVisualRegistry.ApplyPerPlantColors(plantAlerts, Color.white, false);
         }
+
+        // Ripe icons — runs regardless of overlayPrefab
+        if (ripeIconPrefab != null)
+            SpawnRipeIcons();
     }
 
     public override void Exit()
     {
         context.PlantVisualRegistry?.ResetAll();
         DestroyRowOverlays();
+        context.PlantVisualRegistry?.RemoveAllIcons();
     }
 
     /// <summary>
@@ -155,5 +166,22 @@ public sealed class OverviewModeState : ModeStateBase
                 Object.Destroy(overlay);
         }
         spawnedRowOverlays.Clear();
+    }
+    /// <summary>
+    /// Spawns the ripe icon above every plant with growth >= 100.
+    /// </summary>
+    private void SpawnRipeIcons()
+    {
+        TwinDatabase db = context.TwinDatabase;
+        if (db == null) return;
+
+        List<Plant> ripePlants = db.GetPlantsWhere(plant => plant.growth >= 100);
+
+        var ripeIds = new HashSet<string>();
+        foreach (Plant plant in ripePlants)
+            ripeIds.Add(plant.plantId);
+
+        context.PlantVisualRegistry.ApplyRipeIcons(ripeIconPrefab, ripeIds, ripeIconYOffset);
+        Debug.Log($"[OverviewModeState] Ripe icon spawned for {ripeIds.Count} plants (growth >= 100).");
     }
 }

@@ -24,6 +24,7 @@ public class PlantVisualHandle : MonoBehaviour
     private readonly MaterialPropertyBlock propertyBlock = new MaterialPropertyBlock();
 
     private GameObject spawnedOverlay;
+    private GameObject spawnedIcon;
     private bool originalRenderersHidden;
     private bool initialized;
 
@@ -235,6 +236,57 @@ public class PlantVisualHandle : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Spawns an icon prefab above this plant's renderer bounds.
+    /// The prefab keeps its own scale; the original plant is not hidden.
+    /// </summary>
+    public void SpawnIconAbove(GameObject prefab, float yOffset = 0.3f)
+    {
+        DestroyIcon();
+
+        if (prefab == null)
+            return;
+
+        InitializeIfNeeded();
+
+        // Find the highest point of all renderers in world space
+        float worldTopY = transform.position.y;
+        foreach (RendererState rs in rendererStates)
+        {
+            if (rs.renderer == null) continue;
+            float top = rs.renderer.bounds.max.y;
+            if (top > worldTopY) worldTopY = top;
+        }
+
+        // Convert world-space top Y into local Y relative to this transform
+        Vector3 worldTopPoint = new Vector3(transform.position.x, worldTopY, transform.position.z);
+        float localTopY = transform.InverseTransformPoint(worldTopPoint).y;
+
+        spawnedIcon = Object.Instantiate(prefab, transform);
+
+        // Compensate for parent plant's world scale so the icon appears
+        // at a consistent world-space size and height regardless of plant scale
+        Vector3 parentScale = transform.lossyScale;
+        spawnedIcon.transform.localPosition = new Vector3(
+            0f,
+            localTopY + (parentScale.y > 0f ? yOffset / parentScale.y : yOffset),
+            0f);
+        spawnedIcon.transform.localRotation = Quaternion.identity;
+        spawnedIcon.transform.localScale = new Vector3(
+            parentScale.x > 0f ? prefab.transform.localScale.x / parentScale.x : prefab.transform.localScale.x,
+            parentScale.y > 0f ? prefab.transform.localScale.y / parentScale.y : prefab.transform.localScale.y,
+            parentScale.z > 0f ? prefab.transform.localScale.z / parentScale.z : prefab.transform.localScale.z);
+    }
+
+    public void DestroyIcon()
+    {
+        if (spawnedIcon != null)
+        {
+            Object.Destroy(spawnedIcon);
+            spawnedIcon = null;
+        }
+    }
+
     private void SetOriginalRenderersEnabled(bool enabled)
     {
         for (int i = 0; i < rendererStates.Count; i++)
@@ -247,6 +299,7 @@ public class PlantVisualHandle : MonoBehaviour
     public void ResetVisuals()
     {
         DestroyOverlay();
+        DestroyIcon();                          
         SetProtectedVisual(false, default, true);
     }
 
