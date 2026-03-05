@@ -21,6 +21,10 @@ public class ModeController : MonoBehaviour
     [SerializeField] private bool overviewHideOriginalDuringOverlay = true;
     [Tooltip("Height of the bounding box spawned over low-moisture rows.")]
     [SerializeField] private float overviewRowOverlayHeight = 1.5f;
+    [Tooltip("Icon prefab to display above plants that have reached 100 growth or above.")]
+    [SerializeField] private GameObject overviewRipeIconPrefab;
+    [Tooltip("How far above the plant's top renderer bound the icon is placed (world units).")]
+    [SerializeField] private float overviewRipeIconYOffset = 0.3f;
 
     [Header("Weeding Mode")]
     [SerializeField] private Color weedingProtectedTint = Color.yellow;
@@ -64,9 +68,22 @@ public class ModeController : MonoBehaviour
         ModeContext context = new ModeContext(twinDatabase, plantVisualRegistry);
 
         states[AppMode.Default] = new DefaultModeState(context);
-        states[AppMode.Overview] = new OverviewModeState(context, overviewLowMoistureColor, overviewBadHealthColor, overviewWarningTagColor, overviewOverlayPrefab, overviewHideOriginalDuringOverlay, overviewRowOverlayHeight);
-        states[AppMode.PlantPicking] = new PlantPickingModeState(context, pickingHighlightTint);
-        states[AppMode.Weeding] = new WeedingModeState(context, weedingProtectedTint, disableTouchForProtectedPlants, weedingOverlayPrefab, hideOriginalDuringOverlay);
+        states[AppMode.Overview] = new OverviewModeState(context, 
+            overviewLowMoistureColor,
+            overviewBadHealthColor, 
+            overviewWarningTagColor, 
+            overviewOverlayPrefab, 
+            overviewHideOriginalDuringOverlay, 
+            overviewRowOverlayHeight,
+            overviewRipeIconPrefab,
+            overviewRipeIconYOffset);
+        states[AppMode.PlantPicking] = new PlantPickingModeState(context, 
+            pickingHighlightTint);
+        states[AppMode.Weeding] = new WeedingModeState(context, 
+            weedingProtectedTint, 
+            disableTouchForProtectedPlants, 
+            weedingOverlayPrefab, 
+            hideOriginalDuringOverlay);
     }
 
     private void Start()
