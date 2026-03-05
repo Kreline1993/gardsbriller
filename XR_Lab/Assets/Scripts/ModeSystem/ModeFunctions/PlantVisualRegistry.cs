@@ -202,15 +202,15 @@ public class PlantVisualRegistry : MonoBehaviour
         }
     }
     /// <summary>
-    /// Spawns a ripe icon above every plant whose ID is in <paramref name="ripePlantIds"/>.
+    /// Spawns a icon above appropriate plants/>.
     /// </summary>
-    public void ApplyRipeIcons(GameObject iconPrefab, HashSet<string> ripePlantIds, float yOffset = 0.3f)
+    public void ApplyIcons(GameObject iconPrefab, HashSet<string> plantIds, float yOffset = 0.3f)
     {
-        if (iconPrefab == null || ripePlantIds == null) return;
+        if (iconPrefab == null || plantIds == null) return;
 
-        Debug.Log($"[PlantVisualRegistry] Spawning ripe icons for {ripePlantIds.Count} plants.");
+        Debug.Log($"[PlantVisualRegistry] Spawning icons for {plantIds.Count} plants.");
 
-        foreach (string plantId in ripePlantIds)
+        foreach (string plantId in plantIds)
         {
             if (!handlesByPlantId.TryGetValue(plantId, out PlantVisualHandle handle) || handle == null)
                 continue;

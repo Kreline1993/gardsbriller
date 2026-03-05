@@ -416,12 +416,12 @@ MonoBehaviour:
   twinDatabase: {fileID: 47664890}
   plantVisualRegistry: {fileID: 0}
   initialMode: 0
-  overviewLowMoistureColor: {r: 0, g: 0.12644672, b: 1, a: 0.39215687}
-  overviewBadHealthColor: {r: 1, g: 0.5, b: 0, a: 0.39215687}
-  overviewWarningTagColor: {r: 1, g: 0, b: 0, a: 0.39215687}
-  overviewOverlayPrefab: {fileID: 4312566435863121009, guid: 6e381599a6a7f604b96ca62061828e27, type: 3}
-  overviewHideOriginalDuringOverlay: 0
+  overviewRowOverlayPrefab: {fileID: 3386440672379102047, guid: a108f49ea43ead24c8aead254716815c, type: 3}
   overviewRowOverlayHeight: 0.25
+  overviewBadHealthIconPrefab: {fileID: 621584630249350254, guid: af9d1131c788d454fa7dae4544fa99d2, type: 3}
+  overviewBadHealthIconYOffset: 0.8
+  overviewWarningIconPrefab: {fileID: 3824110197468282073, guid: f4872b50e9e39e3469946219b9ee754b, type: 3}
+  overviewWarningIconYOffset: 0.5
   overviewRipeIconPrefab: {fileID: 4416891752233979593, guid: 2243cb2f4583753418ee8a40c16f93cf, type: 3}
   overviewRipeIconYOffset: 0.2
   weedingProtectedTint: {r: 1, g: 0.92156863, b: 0.015686275, a: 0.46666667}

@@ -12,18 +12,24 @@ public class ModeController : MonoBehaviour
     [SerializeField] private AppMode initialMode = AppMode.Default;
 
     [Header("Overview Mode")]
-    [SerializeField] private Color overviewLowMoistureColor = new Color(0.5f, 0f, 1f, 1f);
-    [SerializeField] private Color overviewBadHealthColor = new Color(1f, 0.5f, 0f, 1f);
-    [SerializeField] private Color overviewWarningTagColor = new Color(1f, 0f, 0f, 1f);
-    [Tooltip("Optional. When set, this prefab is spawned at each plant position instead of tinting the original plant.")]
-    [SerializeField] private GameObject overviewOverlayPrefab;
-    [Tooltip("When true, the original plant is hidden while the overlay is active.")]
-    [SerializeField] private bool overviewHideOriginalDuringOverlay = true;
+    [Tooltip("Prefab for the bounding box spawned over low-moisture rows.")]
+    [SerializeField] private GameObject overviewRowOverlayPrefab;
     [Tooltip("Height of the bounding box spawned over low-moisture rows.")]
     [SerializeField] private float overviewRowOverlayHeight = 1.5f;
-    [Tooltip("Icon prefab to display above plants that have reached 100 growth or above.")]
+
+    [Tooltip("Icon prefab shown above plants with bad health status.")]
+    [SerializeField] private GameObject overviewBadHealthIconPrefab;
+    [Tooltip("Height above the plant the bad health icon is placed (world units).")]
+    [SerializeField] private float overviewBadHealthIconYOffset = 0.3f;
+
+    [Tooltip("Icon prefab shown above plants with a warning note tag.")]
+    [SerializeField] private GameObject overviewWarningIconPrefab;
+    [Tooltip("Height above the plant the warning icon is placed (world units).")]
+    [SerializeField] private float overviewWarningIconYOffset = 0.3f;
+
+    [Tooltip("Icon prefab shown above plants with growth >= 100.")]
     [SerializeField] private GameObject overviewRipeIconPrefab;
-    [Tooltip("How far above the plant's top renderer bound the icon is placed (world units).")]
+    [Tooltip("Height above the plant the ripe icon is placed (world units).")]
     [SerializeField] private float overviewRipeIconYOffset = 0.3f;
 
     [Header("Weeding Mode")]
@@ -68,13 +74,13 @@ public class ModeController : MonoBehaviour
         ModeContext context = new ModeContext(twinDatabase, plantVisualRegistry);
 
         states[AppMode.Default] = new DefaultModeState(context);
-        states[AppMode.Overview] = new OverviewModeState(context, 
-            overviewLowMoistureColor,
-            overviewBadHealthColor, 
-            overviewWarningTagColor, 
-            overviewOverlayPrefab, 
-            overviewHideOriginalDuringOverlay, 
+        states[AppMode.Overview] = new OverviewModeState(context,
+            overviewRowOverlayPrefab,
             overviewRowOverlayHeight,
+            overviewBadHealthIconPrefab,
+            overviewBadHealthIconYOffset,
+            overviewWarningIconPrefab,
+            overviewWarningIconYOffset,
             overviewRipeIconPrefab,
             overviewRipeIconYOffset);
         states[AppMode.PlantPicking] = new PlantPickingModeState(context, 
