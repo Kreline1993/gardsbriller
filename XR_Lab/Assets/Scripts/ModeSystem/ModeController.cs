@@ -117,6 +117,7 @@ public class ModeController : MonoBehaviour
         if (plantVisualRegistry != null && plantVisualRegistry.HandlesByPlantId.Count == 0)
             plantVisualRegistry.RebuildIndex();
 
+
         currentState.Enter();
         ModeChanged?.Invoke(mode);
     }

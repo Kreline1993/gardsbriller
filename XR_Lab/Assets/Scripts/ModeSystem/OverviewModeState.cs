@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System;
 using UnityEngine;
 
 public sealed class OverviewModeState : ModeStateBase
@@ -16,8 +17,6 @@ public sealed class OverviewModeState : ModeStateBase
     private readonly float ripeIconYOffset;
 
     private readonly List<GameObject> spawnedRowOverlays = new List<GameObject>();
-
-    private const int LowMoistureThreshold = 30;
 
     public override AppMode Mode => AppMode.Overview;
 
@@ -126,15 +125,15 @@ public sealed class OverviewModeState : ModeStateBase
         TwinDatabase db = context.TwinDatabase;
         if (db == null) return;
 
-        TwinGenerator gen = Object.FindObjectOfType<TwinGenerator>();
+        TwinGenerator gen = UnityEngine.Object.FindObjectOfType<TwinGenerator>();
         if (gen == null)
         {
-            Debug.LogWarning("[OverviewModeState] TwinGenerator not found — cannot spawn row overlays.");
+            Debug.LogWarning("[OverviewModeState] TwinGenerator not found - cannot spawn row overlays.");
             return;
         }
 
         List<Row> lowMoistureRows = db.GetRowsWhere(
-            row => row.groundMoisture < LowMoistureThreshold);
+            row => row.groundMoisture < OverviewRules.LowMoistureThreshold);
 
         foreach (Row row in lowMoistureRows)
         {
@@ -148,7 +147,7 @@ public sealed class OverviewModeState : ModeStateBase
             Vector3 localBase = new Vector3(row.location.x, row.location.y, row.location.z) * s;
             Vector3 localCenter = localBase + new Vector3(w / 2f, h / 2f, l / 2f);
 
-            GameObject overlay = Object.Instantiate(rowOverlayPrefab, gen.transform);
+            GameObject overlay = UnityEngine.Object.Instantiate(rowOverlayPrefab, gen.transform);
             overlay.transform.localPosition = localCenter;
             overlay.transform.localRotation = Quaternion.identity;
             overlay.transform.localScale = new Vector3(w, h, l);
@@ -163,7 +162,7 @@ public sealed class OverviewModeState : ModeStateBase
         foreach (GameObject overlay in spawnedRowOverlays)
         {
             if (overlay != null)
-                Object.Destroy(overlay);
+                UnityEngine.Object.Destroy(overlay);
         }
         spawnedRowOverlays.Clear();
     }
