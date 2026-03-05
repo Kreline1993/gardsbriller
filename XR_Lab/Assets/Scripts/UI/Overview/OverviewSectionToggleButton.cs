@@ -19,7 +19,7 @@ public class OverviewSectionToggleButton : MonoBehaviour, IPointerClickHandler, 
     [SerializeField] private OverviewPanelBinder binder;
     [SerializeField] private SectionType sectionType;
     [SerializeField] private Button button;
-    [SerializeField] private bool verboseLogs = true;
+    [SerializeField] private bool verboseLogs = false;
 
     private void Awake()
     {
