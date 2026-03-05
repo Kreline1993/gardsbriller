@@ -183,7 +183,22 @@ public class PlantVisualHandle : MonoBehaviour
             SetOriginalRenderersEnabled(false);
 
         spawnedOverlay = Object.Instantiate(prefab, transform.position, transform.rotation, transform);
-        spawnedOverlay.transform.localScale = prefab.transform.localScale;
+
+        Vector3 scale = prefab.transform.localScale;
+        MeshFilter parentMF = GetComponent<MeshFilter>();
+        MeshFilter overlayMF = spawnedOverlay.GetComponent<MeshFilter>();
+        if (parentMF != null && overlayMF != null
+            && parentMF.sharedMesh != null && overlayMF.sharedMesh != null)
+        {
+            Vector3 parentBounds = parentMF.sharedMesh.bounds.size;
+            Vector3 overlayBounds = overlayMF.sharedMesh.bounds.size;
+            scale = new Vector3(
+                overlayBounds.x > 0 ? scale.x * (parentBounds.x / overlayBounds.x) : scale.x,
+                overlayBounds.y > 0 ? scale.y * (parentBounds.y / overlayBounds.y) : scale.y,
+                overlayBounds.z > 0 ? scale.z * (parentBounds.z / overlayBounds.z) : scale.z
+            );
+        }
+        spawnedOverlay.transform.localScale = scale;
 
         MaterialPropertyBlock block = new MaterialPropertyBlock();
         Renderer[] overlayRenderers = spawnedOverlay.GetComponentsInChildren<Renderer>(true);
