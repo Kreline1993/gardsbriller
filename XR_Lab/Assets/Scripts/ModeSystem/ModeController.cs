@@ -117,15 +117,6 @@ public class ModeController : MonoBehaviour
         if (plantVisualRegistry != null && plantVisualRegistry.HandlesByPlantId.Count == 0)
             plantVisualRegistry.RebuildIndex();
 
-        // Pass rule colors to OverviewPanelBinder when entering Overview mode
-        if (mode == AppMode.Overview)
-        {
-            OverviewPanelBinder overviewPanel = FindObjectOfType<OverviewPanelBinder>();
-            if (overviewPanel != null)
-            {
-                overviewPanel.SetRuleColors(overviewLowMoistureColor, overviewBadHealthColor, overviewWarningTagColor);
-            }
-        }
 
         currentState.Enter();
         ModeChanged?.Invoke(mode);

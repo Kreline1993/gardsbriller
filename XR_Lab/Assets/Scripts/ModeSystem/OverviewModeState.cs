@@ -147,7 +147,7 @@ public sealed class OverviewModeState : ModeStateBase
             Vector3 localBase = new Vector3(row.location.x, row.location.y, row.location.z) * s;
             Vector3 localCenter = localBase + new Vector3(w / 2f, h / 2f, l / 2f);
 
-            GameObject overlay = Object.Instantiate(rowOverlayPrefab, gen.transform);
+            GameObject overlay = UnityEngine.Object.Instantiate(rowOverlayPrefab, gen.transform);
             overlay.transform.localPosition = localCenter;
             overlay.transform.localRotation = Quaternion.identity;
             overlay.transform.localScale = new Vector3(w, h, l);
