@@ -79,7 +79,8 @@ public class OverviewSectionToggleButton : MonoBehaviour, IPointerClickHandler, 
                 break;
         }
 
-        Debug.Log($"[OverviewSectionToggleButton] Toggled {sectionType}");
+        if (verboseLogs)
+            Debug.Log($"[OverviewSectionToggleButton] Toggled {sectionType}");
     }
 
     public void OnPointerEnter(PointerEventData eventData)
