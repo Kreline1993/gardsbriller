@@ -20,6 +20,10 @@ public class OverviewPanelBinder : MonoBehaviour
     [SerializeField] private TMP_Text warningsHeaderText;
     [SerializeField] private TMP_Text warningsDetailsText;
 
+    [Header("Simple Fields (Optional)")]
+    [SerializeField] private TMP_Text nextPesticidesText;
+    [SerializeField] private TMP_Text lowestMoistureText;
+
     [Header("Behavior")]
     [SerializeField] private bool refreshOnEnable = true;
 
@@ -161,6 +165,12 @@ public class OverviewPanelBinder : MonoBehaviour
 
         if (warningsDetailsText != null)
             warningsDetailsText.text = expandedWarnings ? BuildPlantDetails(snapshot.warningPlants) : string.Empty;
+
+        if (nextPesticidesText != null)
+            nextPesticidesText.text = $"Next Pesticides: {snapshot.nextPesticidesDate}";
+
+        if (lowestMoistureText != null)
+            lowestMoistureText.text = $"Lowest Moisture: {snapshot.lowestRowMoisture}%";
     }
 
     private static string BuildSummaryText(OverviewSummarySectionData summary)

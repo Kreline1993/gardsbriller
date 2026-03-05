@@ -37,4 +37,6 @@ public class OverviewPanelDataSnapshot
     public List<OverviewRowSectionData> lowMoistureRows = new List<OverviewRowSectionData>();
     public List<OverviewPlantSectionData> badHealthPlants = new List<OverviewPlantSectionData>();
     public List<OverviewPlantSectionData> warningPlants = new List<OverviewPlantSectionData>();
+    public string nextPesticidesDate = "N/A";
+    public int lowestRowMoisture = 0;
 }

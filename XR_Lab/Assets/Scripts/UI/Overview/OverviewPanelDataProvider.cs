@@ -75,15 +75,32 @@ public class OverviewPanelDataProvider : MonoBehaviour
         var snapshot = new OverviewPanelDataSnapshot();
 
         if (twinDatabase == null)
+        {
+            Debug.LogWarning("[OverviewPanelDataProvider] TwinDatabase is null");
             return snapshot;
+        }
 
         List<Row> rows = twinDatabase.GetRowsWhere(row => row != null);
+        
+        if (rows == null || rows.Count == 0)
+        {
+            Debug.LogWarning("[OverviewPanelDataProvider] No rows found in TwinDatabase");
+            return snapshot;
+        }
+
+        int lowestMoisture = int.MaxValue;
+        System.DateTime? earliestNextPesticide = null;
+
         foreach (Row row in rows)
         {
             int plantCount = row.plants != null ? row.plants.Length : 0;
 
             snapshot.summary.totalRows++;
             snapshot.summary.totalPlants += plantCount;
+
+            // Track lowest moisture
+            if (row.groundMoisture < lowestMoisture)
+                lowestMoisture = row.groundMoisture;
 
             if (row.groundMoisture < OverviewRules.LowMoistureThreshold)
             {
@@ -141,6 +158,21 @@ public class OverviewPanelDataProvider : MonoBehaviour
                         noteTag = plant.notes?.noteTag
                     });
                 }
+
+                // Track earliest next pesticide date
+                if (plant.nextPesticide != null)
+                {
+                    try
+                    {
+                        var nextPestDate = ConvertDateDataToDateTime(plant.nextPesticide);
+                        if (!earliestNextPesticide.HasValue || nextPestDate < earliestNextPesticide)
+                            earliestNextPesticide = nextPestDate;
+                    }
+                    catch (System.Exception ex)
+                    {
+                        Debug.LogWarning($"[OverviewPanelDataProvider] Failed to parse nextPesticide date for plant {plant.plantId}: {ex.Message}");
+                    }
+                }
             }
         }
 
@@ -148,6 +180,19 @@ public class OverviewPanelDataProvider : MonoBehaviour
         snapshot.badHealthPlants.Sort((a, b) => string.Compare(a.plantId, b.plantId, StringComparison.Ordinal));
         snapshot.warningPlants.Sort((a, b) => string.Compare(a.plantId, b.plantId, StringComparison.Ordinal));
 
+        // Set the two new simple fields
+        snapshot.lowestRowMoisture = lowestMoisture == int.MaxValue ? 0 : lowestMoisture;
+        snapshot.nextPesticidesDate = earliestNextPesticide.HasValue 
+            ? earliestNextPesticide.Value.ToString("dd/MM/yyyy")
+            : "N/A";
+
+        Debug.Log($"[OverviewPanelDataProvider] Snapshot built - Lowest Moisture: {snapshot.lowestRowMoisture}%, Next Pesticide: {snapshot.nextPesticidesDate}, Rows: {snapshot.summary.totalRows}");
+
         return snapshot;
+    }
+
+    private System.DateTime ConvertDateDataToDateTime(DateData date)
+    {
+        return new System.DateTime(date.year, date.month, date.day);
     }
 }
