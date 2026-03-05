@@ -201,4 +201,32 @@ public class PlantVisualRegistry : MonoBehaviour
                 handle.DisableColliders();
         }
     }
+    /// <summary>
+    /// Spawns a icon above appropriate plants/>.
+    /// </summary>
+    public void ApplyIcons(GameObject iconPrefab, HashSet<string> plantIds, float yOffset = 0.3f)
+    {
+        if (iconPrefab == null || plantIds == null) return;
+
+        Debug.Log($"[PlantVisualRegistry] Spawning icons for {plantIds.Count} plants.");
+
+        foreach (string plantId in plantIds)
+        {
+            if (!handlesByPlantId.TryGetValue(plantId, out PlantVisualHandle handle) || handle == null)
+                continue;
+
+            handle.SpawnIconAbove(iconPrefab, yOffset);
+        }
+    }
+
+    /// <summary>
+    /// Destroys the ripe icon on every indexed plant.
+    /// </summary>
+    public void RemoveAllIcons()
+    {
+        foreach (KeyValuePair<string, PlantVisualHandle> pair in handlesByPlantId)
+        {
+            pair.Value?.DestroyIcon();
+        }
+    }
 }

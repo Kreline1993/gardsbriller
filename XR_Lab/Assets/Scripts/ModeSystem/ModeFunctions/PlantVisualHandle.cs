@@ -24,6 +24,7 @@ public class PlantVisualHandle : MonoBehaviour
     private readonly MaterialPropertyBlock propertyBlock = new MaterialPropertyBlock();
 
     private GameObject spawnedOverlay;
+    private readonly List<GameObject> spawnedIcons = new List<GameObject>();
     private bool originalRenderersHidden;
     private bool initialized;
 
@@ -235,6 +236,54 @@ public class PlantVisualHandle : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Spawns an icon prefab above this plant's renderer bounds.
+    /// The prefab keeps its own scale; the original plant is not hidden.
+    /// </summary>
+    public void SpawnIconAbove(GameObject prefab, float yOffset = 0.3f)
+    {
+        if (prefab == null)
+            return;
+
+        InitializeIfNeeded();
+
+        float worldTopY = transform.position.y;
+        foreach (RendererState rs in rendererStates)
+        {
+            if (rs.renderer == null) continue;
+            float top = rs.renderer.bounds.max.y;
+            if (top > worldTopY) worldTopY = top;
+        }
+
+        Vector3 worldTopPoint = new Vector3(transform.position.x, worldTopY, transform.position.z);
+        float localTopY = transform.InverseTransformPoint(worldTopPoint).y;
+
+        GameObject icon = Object.Instantiate(prefab, transform);
+
+        Vector3 parentScale = transform.lossyScale;
+        icon.transform.localPosition = new Vector3(
+            0f,
+            localTopY + (parentScale.y > 0f ? yOffset / parentScale.y : yOffset),
+            0f);
+        icon.transform.localRotation = Quaternion.identity;
+        icon.transform.localScale = new Vector3(
+            parentScale.x > 0f ? prefab.transform.localScale.x / parentScale.x : prefab.transform.localScale.x,
+            parentScale.y > 0f ? prefab.transform.localScale.y / parentScale.y : prefab.transform.localScale.y,
+            parentScale.z > 0f ? prefab.transform.localScale.z / parentScale.z : prefab.transform.localScale.z);
+
+        spawnedIcons.Add(icon);
+    }
+
+    public void DestroyIcon()
+    {
+        foreach (GameObject icon in spawnedIcons)
+        {
+            if (icon != null)
+                Object.Destroy(icon);
+        }
+        spawnedIcons.Clear();
+    }
+
     private void SetOriginalRenderersEnabled(bool enabled)
     {
         for (int i = 0; i < rendererStates.Count; i++)
@@ -247,6 +296,7 @@ public class PlantVisualHandle : MonoBehaviour
     public void ResetVisuals()
     {
         DestroyOverlay();
+        DestroyIcon();                          
         SetProtectedVisual(false, default, true);
     }
 
