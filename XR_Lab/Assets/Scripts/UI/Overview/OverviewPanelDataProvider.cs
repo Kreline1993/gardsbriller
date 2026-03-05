@@ -186,7 +186,9 @@ public class OverviewPanelDataProvider : MonoBehaviour
             ? earliestNextPesticide.Value.ToString("dd/MM/yyyy")
             : "N/A";
 
+#if UNITY_EDITOR
         Debug.Log($"[OverviewPanelDataProvider] Snapshot built - Lowest Moisture: {snapshot.lowestRowMoisture}%, Next Pesticide: {snapshot.nextPesticidesDate}, Rows: {snapshot.summary.totalRows}");
+#endif
 
         return snapshot;
     }
