@@ -19,7 +19,6 @@ GameObject:
   - component: {fileID: 7341646236756335404}
   - component: {fileID: -3518256474722827645}
   - component: {fileID: -48988628982631073}
-  - component: {fileID: 336813103183400258}
   m_Layer: 0
   m_Name: PlantRepresentationInteractableSphere
   m_TagString: Untagged
@@ -179,7 +178,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 88c3137634f9d3f489849b372ea77b9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InfoPanelSpawner
-  infoPanelPrefab: {fileID: 1909543623181412970, guid: eafe9010993e2c845b024900f157286f, type: 3}
+  infoPanelPrefab: {fileID: 5275418831095437995, guid: 2a3c55cb60e14af49ae2d74a4821eb52, type: 3}
 --- !u!114 &7341646236756335404
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -263,16 +262,3 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Oculus.Interaction::Oculus.Interaction.Surfaces.ColliderSurface
   _collider: {fileID: 3527109923150699768}
---- !u!114 &336813103183400258
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8800490417148209320}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b671aadaec6b66f4785c74fb9104e2cd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlantHighlighter
-  highlightMaterial: {fileID: 2100000, guid: 76e86af446b7eda42a2df048775c191e, type: 2}
