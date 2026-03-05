@@ -28,12 +28,31 @@ public class OverviewPanelBinder : MonoBehaviour
     private bool expandedBadHealth = false;
     private bool expandedWarnings = false;
 
+    // Rule colors provided by ModeController
+    private Color lowMoistureColor = new Color(0.5f, 0f, 1f, 1f); // Default purple
+    private Color badHealthColor = new Color(1f, 0.5f, 0f, 1f);   // Default orange
+    private Color warningTagColor = new Color(1f, 0f, 0f, 1f);    // Default red
+
     private OverviewPanelDataSnapshot currentSnapshot;
 
     private void Awake()
     {
         if (dataProvider == null)
             dataProvider = FindObjectOfType<OverviewPanelDataProvider>();
+    }
+
+    /// <summary>
+    /// Sets the colors to use for each rule category in the overview display.
+    /// </summary>
+    public void SetRuleColors(Color lowMoisture, Color badHealth, Color warningTag)
+    {
+        lowMoistureColor = lowMoisture;
+        badHealthColor = badHealth;
+        warningTagColor = warningTag;
+
+        // Refresh the display with the new colors
+        if (currentSnapshot != null)
+            RenderAll(currentSnapshot);
     }
 
     private void OnEnable()
@@ -156,25 +175,28 @@ public class OverviewPanelBinder : MonoBehaviour
     private string BuildLowMoistureHeader(int count)
     {
         string arrow = expandedLowMoisture ? "▼" : "▶";
+        string colorHex = ColorUtility.ToHtmlStringRGB(lowMoistureColor);
         return count == 0
             ? $"{arrow} <color=green>[Low Moisture] Rows clear</color>"
-            : $"{arrow} <color=red>{count} [Low Moisture] Rows need attention</color>";
+            : $"{arrow} <color=#{colorHex}>{count} [Low Moisture] Rows need attention</color>";
     }
 
     private string BuildBadHealthHeader(int count)
     {
         string arrow = expandedBadHealth ? "▼" : "▶";
+        string colorHex = ColorUtility.ToHtmlStringRGB(badHealthColor);
         return count == 0
             ? $"{arrow} <color=green>[Bad Health] Plants clear</color>"
-            : $"{arrow} <color=red>{count} [Bad Health] Plants need attention</color>";
+            : $"{arrow} <color=#{colorHex}>{count} [Bad Health] Plants need attention</color>";
     }
 
     private string BuildWarningsHeader(int count)
     {
         string arrow = expandedWarnings ? "▼" : "▶";
+        string colorHex = ColorUtility.ToHtmlStringRGB(warningTagColor);
         return count == 0
             ? $"{arrow} <color=green>[Warning] Plants clear</color>"
-            : $"{arrow} <color=red>{count} [Warning] Plants need attention</color>";
+            : $"{arrow} <color=#{colorHex}>{count} [Warning] Plants need attention</color>";
     }
 
     private static string BuildRowDetails(List<OverviewRowSectionData> rows)
