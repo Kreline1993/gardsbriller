@@ -12,7 +12,6 @@ public class ModeController : MonoBehaviour
     [SerializeField] private AppMode initialMode = AppMode.Default;
 
     [Header("Overview Mode")]
-    [SerializeField] private Color overviewLowMoistureColor = new Color(0.5f, 0f, 1f, 1f);
     [Tooltip("Prefab for the bounding box spawned over low-moisture rows.")]
     [SerializeField] private GameObject overviewRowOverlayPrefab;
     [Tooltip("Height of the bounding box spawned over low-moisture rows.")]
@@ -76,7 +75,6 @@ public class ModeController : MonoBehaviour
 
         states[AppMode.Default] = new DefaultModeState(context);
         states[AppMode.Overview] = new OverviewModeState(context,
-            overviewLowMoistureColor,
             overviewRowOverlayPrefab,
             overviewRowOverlayHeight,
             overviewBadHealthIconPrefab,

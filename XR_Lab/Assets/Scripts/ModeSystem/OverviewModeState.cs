@@ -4,7 +4,6 @@ using UnityEngine;
 public sealed class OverviewModeState : ModeStateBase
 {
     private readonly GameObject rowOverlayPrefab;
-    private readonly Color lowMoistureColor;
     private readonly float rowOverlayHeight;
 
     private readonly GameObject badHealthIconPrefab;
@@ -24,7 +23,6 @@ public sealed class OverviewModeState : ModeStateBase
 
     public OverviewModeState(
         ModeContext context,
-        Color lowMoistureColor,
         GameObject rowOverlayPrefab = null,
         float rowOverlayHeight = 1.5f,
         GameObject badHealthIconPrefab = null,
@@ -35,7 +33,6 @@ public sealed class OverviewModeState : ModeStateBase
         float ripeIconYOffset = 0.3f)
         : base(context)
     {
-        this.lowMoistureColor = lowMoistureColor;
         this.rowOverlayPrefab = rowOverlayPrefab;
         this.rowOverlayHeight = rowOverlayHeight;
         this.badHealthIconPrefab = badHealthIconPrefab;
@@ -155,17 +152,6 @@ public sealed class OverviewModeState : ModeStateBase
             overlay.transform.localPosition = localCenter;
             overlay.transform.localRotation = Quaternion.identity;
             overlay.transform.localScale = new Vector3(w, h, l);
-
-            MaterialPropertyBlock block = new MaterialPropertyBlock();
-            foreach (Renderer rend in overlay.GetComponentsInChildren<Renderer>(true))
-            {
-                if (rend == null) continue;
-                rend.GetPropertyBlock(block);
-                Material mat = rend.sharedMaterial;
-                if (mat != null && mat.HasProperty("_BaseColor")) block.SetColor("_BaseColor", lowMoistureColor);
-                if (mat != null && mat.HasProperty("_Color")) block.SetColor("_Color", lowMoistureColor);
-                rend.SetPropertyBlock(block);
-            }
 
             spawnedRowOverlays.Add(overlay);
             Debug.Log($"[OverviewModeState] Row overlay for '{row.rowId}' | localPos={localCenter} | scale=({w:F2}, {h:F2}, {l:F2})");

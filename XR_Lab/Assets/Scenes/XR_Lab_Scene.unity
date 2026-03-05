@@ -416,8 +416,7 @@ MonoBehaviour:
   twinDatabase: {fileID: 47664890}
   plantVisualRegistry: {fileID: 0}
   initialMode: 0
-  overviewLowMoistureColor: {r: 0, g: 0.12644672, b: 1, a: 0.39215687}
-  overviewRowOverlayPrefab: {fileID: 4312566435863121009, guid: 6e381599a6a7f604b96ca62061828e27, type: 3}
+  overviewRowOverlayPrefab: {fileID: 3386440672379102047, guid: a108f49ea43ead24c8aead254716815c, type: 3}
   overviewRowOverlayHeight: 0.25
   overviewBadHealthIconPrefab: {fileID: 621584630249350254, guid: af9d1131c788d454fa7dae4544fa99d2, type: 3}
   overviewBadHealthIconYOffset: 0.8
