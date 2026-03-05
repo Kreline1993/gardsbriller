@@ -1,41 +1,43 @@
 using System.Collections.Generic;
+using System;
 using UnityEngine;
 
 public sealed class OverviewModeState : ModeStateBase
 {
-    private readonly Color lowMoistureColor;
-    private readonly Color badHealthColor;
-    private readonly Color warningTagColor;
-    private readonly GameObject overlayPrefab;
-    private readonly bool hideOriginalDuringOverlay;
+    private readonly GameObject rowOverlayPrefab;
     private readonly float rowOverlayHeight;
+
+    private readonly GameObject badHealthIconPrefab;
+    private readonly float badHealthIconYOffset;
+
+    private readonly GameObject warningIconPrefab;
+    private readonly float warningIconYOffset;
+
     private readonly GameObject ripeIconPrefab;
     private readonly float ripeIconYOffset;
 
     private readonly List<GameObject> spawnedRowOverlays = new List<GameObject>();
 
-    private const int LowMoistureThreshold = 30;
-
     public override AppMode Mode => AppMode.Overview;
 
     public OverviewModeState(
         ModeContext context,
-        Color lowMoistureColor,
-        Color badHealthColor,
-        Color warningTagColor,
-        GameObject overlayPrefab = null,
-        bool hideOriginalDuringOverlay = true,
+        GameObject rowOverlayPrefab = null,
         float rowOverlayHeight = 1.5f,
+        GameObject badHealthIconPrefab = null,
+        float badHealthIconYOffset = 0.3f,
+        GameObject warningIconPrefab = null,
+        float warningIconYOffset = 0.3f,
         GameObject ripeIconPrefab = null,
         float ripeIconYOffset = 0.3f)
         : base(context)
     {
-        this.lowMoistureColor = lowMoistureColor;
-        this.badHealthColor = badHealthColor;
-        this.warningTagColor = warningTagColor;
-        this.overlayPrefab = overlayPrefab;
-        this.hideOriginalDuringOverlay = hideOriginalDuringOverlay;
+        this.rowOverlayPrefab = rowOverlayPrefab;
         this.rowOverlayHeight = rowOverlayHeight;
+        this.badHealthIconPrefab = badHealthIconPrefab;
+        this.badHealthIconYOffset = badHealthIconYOffset;
+        this.warningIconPrefab = warningIconPrefab;
+        this.warningIconYOffset = warningIconYOffset;
         this.ripeIconPrefab = ripeIconPrefab;
         this.ripeIconYOffset = ripeIconYOffset;
     }
@@ -48,21 +50,14 @@ public sealed class OverviewModeState : ModeStateBase
             return;
         }
 
-        Dictionary<string, Color> plantAlerts = BuildPlantAlertColorMap();
+        SpawnRowOverlays();
 
-        if (overlayPrefab != null)
-        {
-            context.PlantVisualRegistry.ApplyAlertOverlaysOnly(
-                overlayPrefab, plantAlerts, false, hideOriginalDuringOverlay);
+        if (badHealthIconPrefab != null)
+            SpawnBadHealthIcons();
 
-            SpawnRowOverlays();
-        }
-        else
-        {
-            context.PlantVisualRegistry.ApplyPerPlantColors(plantAlerts, Color.white, false);
-        }
+        if (warningIconPrefab != null)
+            SpawnWarningIcons();
 
-        // Ripe icons — runs regardless of overlayPrefab
         if (ripeIconPrefab != null)
             SpawnRipeIcons();
     }
@@ -74,35 +69,50 @@ public sealed class OverviewModeState : ModeStateBase
         context.PlantVisualRegistry?.RemoveAllIcons();
     }
 
-    /// <summary>
-    /// Per-plant alerts only: bad health (orange) and warning tag (red).
-    /// Low moisture is handled at row level via SpawnRowOverlays().
-    /// </summary>
-    private Dictionary<string, Color> BuildPlantAlertColorMap()
+    private void SpawnBadHealthIcons()
     {
-        var map = new Dictionary<string, Color>();
-
         TwinDatabase db = context.TwinDatabase;
-        if (db == null)
-        {
-            Debug.LogWarning("[OverviewModeState] TwinDatabase not found – skipping plant alert colouring.");
-            return map;
-        }
+        if (db == null) return;
 
-        // Orange: bad health
-        List<Plant> badHealthPlants = db.GetPlantsWhere(
-            plant => plant.healthStatus == "bad");
-        foreach (Plant plant in badHealthPlants)
-            map[plant.plantId] = badHealthColor;
+        List<Plant> plants = db.GetPlantsWhere(plant => plant.healthStatus == "bad");
 
-        // Red: warning tag (overwrites orange)
-        List<Plant> warningPlants = db.GetPlantsWhere(
+        HashSet<string> ids = new HashSet<string>();
+        foreach (Plant plant in plants)
+            ids.Add(plant.plantId);
+
+        context.PlantVisualRegistry.ApplyIcons(badHealthIconPrefab, ids, badHealthIconYOffset);
+        Debug.Log($"[OverviewModeState] Bad health icons spawned for {ids.Count} plants.");
+    }
+
+    private void SpawnWarningIcons()
+    {
+        TwinDatabase db = context.TwinDatabase;
+        if (db == null) return;
+
+        List<Plant> plants = db.GetPlantsWhere(
             plant => plant.notes != null && plant.notes.noteTag == "warning");
-        foreach (Plant plant in warningPlants)
-            map[plant.plantId] = warningTagColor;
 
-        Debug.Log($"[OverviewModeState] Plant alert map: {map.Count} plants flagged.");
-        return map;
+        HashSet<string> ids = new HashSet<string>();
+        foreach (Plant plant in plants)
+            ids.Add(plant.plantId);
+
+        context.PlantVisualRegistry.ApplyIcons(warningIconPrefab, ids, warningIconYOffset);
+        Debug.Log($"[OverviewModeState] Warning icons spawned for {ids.Count} plants.");
+    }
+
+    private void SpawnRipeIcons()
+    {
+        TwinDatabase db = context.TwinDatabase;
+        if (db == null) return;
+
+        List<Plant> plants = db.GetPlantsWhere(plant => plant.growth >= 100);
+
+        HashSet<string> ids = new HashSet<string>();
+        foreach (Plant plant in plants)
+            ids.Add(plant.plantId);
+
+        context.PlantVisualRegistry.ApplyIcons(ripeIconPrefab, ids, ripeIconYOffset);
+        Debug.Log($"[OverviewModeState] Ripe icons spawned for {ids.Count} plants (growth >= 100).");
     }
 
     /// <summary>
@@ -110,18 +120,20 @@ public sealed class OverviewModeState : ModeStateBase
     /// </summary>
     private void SpawnRowOverlays()
     {
+        if (rowOverlayPrefab == null) return;
+
         TwinDatabase db = context.TwinDatabase;
         if (db == null) return;
 
-        TwinGenerator gen = Object.FindObjectOfType<TwinGenerator>();
+        TwinGenerator gen = UnityEngine.Object.FindObjectOfType<TwinGenerator>();
         if (gen == null)
         {
-            Debug.LogWarning("[OverviewModeState] TwinGenerator not found – cannot spawn row overlays.");
+            Debug.LogWarning("[OverviewModeState] TwinGenerator not found - cannot spawn row overlays.");
             return;
         }
 
         List<Row> lowMoistureRows = db.GetRowsWhere(
-            row => row.groundMoisture < LowMoistureThreshold);
+            row => row.groundMoisture < OverviewRules.LowMoistureThreshold);
 
         foreach (Row row in lowMoistureRows)
         {
@@ -135,23 +147,10 @@ public sealed class OverviewModeState : ModeStateBase
             Vector3 localBase = new Vector3(row.location.x, row.location.y, row.location.z) * s;
             Vector3 localCenter = localBase + new Vector3(w / 2f, h / 2f, l / 2f);
 
-            // Instantiate as a child of TwinGenerator so local space matches how plants are spawned
-            GameObject overlay = Object.Instantiate(overlayPrefab, gen.transform);
+            GameObject overlay = UnityEngine.Object.Instantiate(rowOverlayPrefab, gen.transform);
             overlay.transform.localPosition = localCenter;
             overlay.transform.localRotation = Quaternion.identity;
             overlay.transform.localScale = new Vector3(w, h, l);
-
-            // Tint purple
-            MaterialPropertyBlock block = new MaterialPropertyBlock();
-            foreach (Renderer rend in overlay.GetComponentsInChildren<Renderer>(true))
-            {
-                if (rend == null) continue;
-                rend.GetPropertyBlock(block);
-                Material mat = rend.sharedMaterial;
-                if (mat != null && mat.HasProperty("_BaseColor")) block.SetColor("_BaseColor", lowMoistureColor);
-                if (mat != null && mat.HasProperty("_Color")) block.SetColor("_Color", lowMoistureColor);
-                rend.SetPropertyBlock(block);
-            }
 
             spawnedRowOverlays.Add(overlay);
             Debug.Log($"[OverviewModeState] Row overlay for '{row.rowId}' | localPos={localCenter} | scale=({w:F2}, {h:F2}, {l:F2})");
@@ -163,25 +162,8 @@ public sealed class OverviewModeState : ModeStateBase
         foreach (GameObject overlay in spawnedRowOverlays)
         {
             if (overlay != null)
-                Object.Destroy(overlay);
+                UnityEngine.Object.Destroy(overlay);
         }
         spawnedRowOverlays.Clear();
-    }
-    /// <summary>
-    /// Spawns the ripe icon above every plant with growth >= 100.
-    /// </summary>
-    private void SpawnRipeIcons()
-    {
-        TwinDatabase db = context.TwinDatabase;
-        if (db == null) return;
-
-        List<Plant> ripePlants = db.GetPlantsWhere(plant => plant.growth >= 100);
-
-        var ripeIds = new HashSet<string>();
-        foreach (Plant plant in ripePlants)
-            ripeIds.Add(plant.plantId);
-
-        context.PlantVisualRegistry.ApplyRipeIcons(ripeIconPrefab, ripeIds, ripeIconYOffset);
-        Debug.Log($"[OverviewModeState] Ripe icon spawned for {ripeIds.Count} plants (growth >= 100).");
     }
 }
