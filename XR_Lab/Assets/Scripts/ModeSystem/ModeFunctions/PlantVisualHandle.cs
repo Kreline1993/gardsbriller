@@ -263,9 +263,19 @@ public class PlantVisualHandle : MonoBehaviour
         float localTopY = transform.InverseTransformPoint(worldTopPoint).y;
 
         spawnedIcon = Object.Instantiate(prefab, transform);
-        spawnedIcon.transform.localPosition = new Vector3(0f, localTopY + yOffset, 0f);
+
+        // Compensate for parent plant's world scale so the icon appears
+        // at a consistent world-space size and height regardless of plant scale
+        Vector3 parentScale = transform.lossyScale;
+        spawnedIcon.transform.localPosition = new Vector3(
+            0f,
+            localTopY + (parentScale.y > 0f ? yOffset / parentScale.y : yOffset),
+            0f);
         spawnedIcon.transform.localRotation = Quaternion.identity;
-        // Intentionally not changing scale — the prefab defines its own size
+        spawnedIcon.transform.localScale = new Vector3(
+            parentScale.x > 0f ? prefab.transform.localScale.x / parentScale.x : prefab.transform.localScale.x,
+            parentScale.y > 0f ? prefab.transform.localScale.y / parentScale.y : prefab.transform.localScale.y,
+            parentScale.z > 0f ? prefab.transform.localScale.z / parentScale.z : prefab.transform.localScale.z);
     }
 
     public void DestroyIcon()

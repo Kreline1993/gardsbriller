@@ -32,9 +32,10 @@ namespace Benjathemaker
             initialScale = transform.localScale;
             initialPosition = transform.position;
 
-            // Adjust start and end scale based on initial scale
-            startScale = initialScale;
-            endScale = initialScale * (endScale.magnitude / startScale.magnitude);
+            // startScale and endScale are now multipliers relative to the runtime scale.
+            // (1,1,1) = no change. (1.05, 1.05, 1.05) = 5% bigger at peak.
+            startScale = Vector3.Scale(initialScale, startScale);
+            endScale = Vector3.Scale(initialScale, endScale);
         }
 
         void Update()
