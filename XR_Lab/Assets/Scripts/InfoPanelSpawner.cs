@@ -36,12 +36,17 @@ public class InfoPanelSpawner : MonoBehaviour
             spawnedPanel.transform.Rotate(0, 180, 0);
 
             // 3. Update the UI Text
-            if (data != null) {
-                TMP_Text text = spawnedPanel.GetComponentInChildren<TMP_Text>();
-                text.text = $"<b>{data.species}</b>\nID: {data.plantId}";
+            if (data != null)
+            {
+                InfoPanelBinder binder = spawnedPanel.GetComponent<InfoPanelBinder>();
+                if (binder != null)
+                    binder.Populate(data);
+                else
+                    Debug.LogWarning("[InfoPanelSpawner] InfoPanelBinder not found on panel prefab.");
             }
-            else {
-                Debug.LogWarning("No plant data found for ID: " + id);
+            else
+            {
+                Debug.LogWarning("[InfoPanelSpawner] No plant data found for ID: " + id);
             }
         }
         else

@@ -4459,6 +4459,7 @@ GameObject:
   - component: {fileID: 738844993861965602}
   - component: {fileID: 6335943918404138688}
   - component: {fileID: 5558525042193515563}
+  - component: {fileID: 2651653844143376438}
   m_Layer: 3
   m_Name: InfoPanel_V2
   m_TagString: Untagged
@@ -4578,6 +4579,20 @@ MonoBehaviour:
   overlapMask: 0
   overlayType: 2
   _overlayEnabled: 1
+--- !u!114 &2651653844143376438
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5275418831095437995}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 01f0eec6d15f51d48bf21b8d662d0ae3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InfoPanelBinder
+  speciesText: {fileID: 705125307375933726}
+  idText: {fileID: 3468482984411313822}
 --- !u!1 &5281184051760575005
 GameObject:
   m_ObjectHideFlags: 0
