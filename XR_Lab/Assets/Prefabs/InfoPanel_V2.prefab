@@ -4460,7 +4460,7 @@ GameObject:
   - component: {fileID: 6335943918404138688}
   - component: {fileID: 5558525042193515563}
   m_Layer: 3
-  m_Name: newinfopanel
+  m_Name: InfoPanel_V2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
