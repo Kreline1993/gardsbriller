@@ -11,6 +11,27 @@ public class ModeController : MonoBehaviour
     [Header("Startup")]
     [SerializeField] private AppMode initialMode = AppMode.Default;
 
+    [Header("Overview Mode")]
+    [Tooltip("Prefab for the bounding box spawned over low-moisture rows.")]
+    [SerializeField] private GameObject overviewRowOverlayPrefab;
+    [Tooltip("Height of the bounding box spawned over low-moisture rows.")]
+    [SerializeField] private float overviewRowOverlayHeight = 1.5f;
+
+    [Tooltip("Icon prefab shown above plants with bad health status.")]
+    [SerializeField] private GameObject overviewBadHealthIconPrefab;
+    [Tooltip("Height above the plant the bad health icon is placed (world units).")]
+    [SerializeField] private float overviewBadHealthIconYOffset = 0.3f;
+
+    [Tooltip("Icon prefab shown above plants with a warning note tag.")]
+    [SerializeField] private GameObject overviewWarningIconPrefab;
+    [Tooltip("Height above the plant the warning icon is placed (world units).")]
+    [SerializeField] private float overviewWarningIconYOffset = 0.3f;
+
+    [Tooltip("Icon prefab shown above plants with growth >= 100.")]
+    [SerializeField] private GameObject overviewRipeIconPrefab;
+    [Tooltip("Height above the plant the ripe icon is placed (world units).")]
+    [SerializeField] private float overviewRipeIconYOffset = 0.3f;
+
     [Header("Weeding Mode")]
     [SerializeField] private Color weedingProtectedTint = Color.yellow;
     [SerializeField] private bool disableTouchForProtectedPlants = true;
@@ -53,9 +74,22 @@ public class ModeController : MonoBehaviour
         ModeContext context = new ModeContext(twinDatabase, plantVisualRegistry);
 
         states[AppMode.Default] = new DefaultModeState(context);
-        states[AppMode.Overview] = new OverviewModeState(context);
-        states[AppMode.PlantPicking] = new PlantPickingModeState(context, pickingHighlightTint);
-        states[AppMode.Weeding] = new WeedingModeState(context, weedingProtectedTint, disableTouchForProtectedPlants, weedingOverlayPrefab, hideOriginalDuringOverlay);
+        states[AppMode.Overview] = new OverviewModeState(context,
+            overviewRowOverlayPrefab,
+            overviewRowOverlayHeight,
+            overviewBadHealthIconPrefab,
+            overviewBadHealthIconYOffset,
+            overviewWarningIconPrefab,
+            overviewWarningIconYOffset,
+            overviewRipeIconPrefab,
+            overviewRipeIconYOffset);
+        states[AppMode.PlantPicking] = new PlantPickingModeState(context, 
+            pickingHighlightTint);
+        states[AppMode.Weeding] = new WeedingModeState(context, 
+            weedingProtectedTint, 
+            disableTouchForProtectedPlants, 
+            weedingOverlayPrefab, 
+            hideOriginalDuringOverlay);
     }
 
     private void Start()
@@ -83,14 +117,11 @@ public class ModeController : MonoBehaviour
         if (plantVisualRegistry != null && plantVisualRegistry.HandlesByPlantId.Count == 0)
             plantVisualRegistry.RebuildIndex();
 
+
         currentState.Enter();
         ModeChanged?.Invoke(mode);
     }
 
-    /// <summary>
-    /// Convenience method for Unity Inspector button events.
-    /// Pass the enum name as a string (e.g. "Default", "Weeding").
-    /// </summary>
     public void SwitchModeByName(string modeName)
     {
         if (Enum.TryParse(modeName, true, out AppMode mode))
@@ -98,6 +129,7 @@ public class ModeController : MonoBehaviour
         else
             Debug.LogWarning($"[ModeController] Unknown mode name: {modeName}");
     }
+
     public void TogglePickingSpecies(string species)
     {
         if (currentState is PlantPickingModeState pickingState)

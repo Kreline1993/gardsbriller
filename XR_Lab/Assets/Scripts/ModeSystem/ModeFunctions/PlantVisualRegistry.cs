@@ -125,4 +125,108 @@ public class PlantVisualRegistry : MonoBehaviour
             pair.Value.ResetVisuals();
         }
     }
+
+    /// <summary>
+    /// Applies an individual colour to each plant based on the provided map.
+    /// Plants not present in <paramref name="alertColors"/> receive <paramref name="defaultColor"/>.
+    /// </summary>
+    public void ApplyPerPlantColors(
+        Dictionary<string, Color> alertColors,
+        Color defaultColor,
+        bool disableTouch)
+    {
+        Debug.Log($"[PlantVisualRegistry] Applying per-plant colours to {handlesByPlantId.Count} plants.");
+
+        foreach (KeyValuePair<string, PlantVisualHandle> pair in handlesByPlantId)
+        {
+            if (pair.Value == null)
+                continue;
+
+            Color color = alertColors.TryGetValue(pair.Key, out Color alertColor)
+                ? alertColor
+                : defaultColor;
+
+            pair.Value.SetProtectedVisual(true, color, disableTouch);
+        }
+    }
+
+    /// <summary>
+    /// Spawns a per-plant coloured overlay using the alert map.
+    /// Plants not in <paramref name="alertColors"/> use <paramref name="defaultColor"/>.
+    /// </summary>
+    public void ApplyPerPlantColorsWithOverlay(
+        GameObject overlayPrefab,
+        Dictionary<string, Color> alertColors,
+        Color defaultColor,
+        bool disableTouch,
+        bool hideOriginal = true)
+    {
+        Debug.Log($"[PlantVisualRegistry] Spawning per-plant alert overlays for {handlesByPlantId.Count} plants.");
+
+        foreach (KeyValuePair<string, PlantVisualHandle> pair in handlesByPlantId)
+        {
+            if (pair.Value == null)
+                continue;
+
+            Color color = alertColors.TryGetValue(pair.Key, out Color alertColor)
+                ? alertColor
+                : defaultColor;
+
+            pair.Value.SpawnOverlay(overlayPrefab, color, hideOriginal);
+
+            if (disableTouch)
+                pair.Value.DisableColliders();
+        }
+    }
+    /// <summary>
+    /// Spawns coloured overlays ONLY for plants present in the alert map.
+    /// Plants with no alert condition are left untouched.
+    /// </summary>
+    public void ApplyAlertOverlaysOnly(
+        GameObject overlayPrefab,
+        Dictionary<string, Color> alertColors,
+        bool disableTouch,
+        bool hideOriginal = true)
+    {
+        Debug.Log($"[PlantVisualRegistry] Spawning alert overlays for {alertColors.Count} flagged plants.");
+
+        foreach (KeyValuePair<string, Color> pair in alertColors)
+        {
+            if (!handlesByPlantId.TryGetValue(pair.Key, out PlantVisualHandle handle) || handle == null)
+                continue;
+
+            handle.SpawnOverlay(overlayPrefab, pair.Value, hideOriginal);
+
+            if (disableTouch)
+                handle.DisableColliders();
+        }
+    }
+    /// <summary>
+    /// Spawns a icon above appropriate plants/>.
+    /// </summary>
+    public void ApplyIcons(GameObject iconPrefab, HashSet<string> plantIds, float yOffset = 0.3f)
+    {
+        if (iconPrefab == null || plantIds == null) return;
+
+        Debug.Log($"[PlantVisualRegistry] Spawning icons for {plantIds.Count} plants.");
+
+        foreach (string plantId in plantIds)
+        {
+            if (!handlesByPlantId.TryGetValue(plantId, out PlantVisualHandle handle) || handle == null)
+                continue;
+
+            handle.SpawnIconAbove(iconPrefab, yOffset);
+        }
+    }
+
+    /// <summary>
+    /// Destroys the ripe icon on every indexed plant.
+    /// </summary>
+    public void RemoveAllIcons()
+    {
+        foreach (KeyValuePair<string, PlantVisualHandle> pair in handlesByPlantId)
+        {
+            pair.Value?.DestroyIcon();
+        }
+    }
 }
