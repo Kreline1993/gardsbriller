@@ -89,7 +89,7 @@ GameObject:
   - component: {fileID: 705125307375933726}
   - component: {fileID: 6924014957125588435}
   m_Layer: 3
-  m_Name: Text (TMP)  - "plante"
+  m_Name: Plant Name (text)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -146,8 +146,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Potet
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 18ad478d92d8e9a4580fdb1ca651b381, type: 2}
-  m_sharedMaterial: {fileID: -1506380294256876184, guid: 18ad478d92d8e9a4580fdb1ca651b381, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -659,8 +659,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Growth
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 18ad478d92d8e9a4580fdb1ca651b381, type: 2}
-  m_sharedMaterial: {fileID: -1506380294256876184, guid: 18ad478d92d8e9a4580fdb1ca651b381, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -742,7 +742,7 @@ GameObject:
   - component: {fileID: 5950499430397390648}
   - component: {fileID: 1953875019903373227}
   m_Layer: 3
-  m_Name: Button(genral)
+  m_Name: General(button)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2187,7 +2187,7 @@ GameObject:
   - component: {fileID: 6572168786943021948}
   - component: {fileID: 1941137043325960691}
   m_Layer: 3
-  m_Name: Image
+  m_Name: Panel Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2268,7 +2268,7 @@ GameObject:
   - component: {fileID: 2599926459571173600}
   - component: {fileID: 5430111221269711745}
   m_Layer: 3
-  m_Name: Image (1)
+  m_Name: Notes Icon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2473,8 +2473,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Warrning
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 18ad478d92d8e9a4580fdb1ca651b381, type: 2}
-  m_sharedMaterial: {fileID: -1506380294256876184, guid: 18ad478d92d8e9a4580fdb1ca651b381, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -2781,7 +2781,7 @@ GameObject:
   - component: {fileID: 7385493493169561616}
   - component: {fileID: 6786324934579473573}
   m_Layer: 3
-  m_Name: General tab
+  m_Name: General Tab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2808,7 +2808,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.009140015}
+  m_AnchoredPosition: {x: 0, y: 0.060165405}
   m_SizeDelta: {x: 500, y: 0}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &7385493493169561616
@@ -2864,7 +2864,7 @@ GameObject:
   - component: {fileID: 2077397344966347576}
   - component: {fileID: 6518172797762402854}
   m_Layer: 3
-  m_Name: Button(health)
+  m_Name: Health(button)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3039,8 +3039,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Growth
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 18ad478d92d8e9a4580fdb1ca651b381, type: 2}
-  m_sharedMaterial: {fileID: -1506380294256876184, guid: 18ad478d92d8e9a4580fdb1ca651b381, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -3121,7 +3121,7 @@ GameObject:
   - component: {fileID: 6866988220038450885}
   - component: {fileID: 3468482984411313822}
   m_Layer: 3
-  m_Name: Text (TMP) - "plant id"
+  m_Name: Plant ID (text)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3483,7 +3483,7 @@ GameObject:
   m_Component:
   - component: {fileID: 761379563395908920}
   m_Layer: 3
-  m_Name: queality tab
+  m_Name: Quality Tab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3575,8 +3575,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Moisture
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 18ad478d92d8e9a4580fdb1ca651b381, type: 2}
-  m_sharedMaterial: {fileID: -1506380294256876184, guid: 18ad478d92d8e9a4580fdb1ca651b381, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -3942,7 +3942,7 @@ GameObject:
   - component: {fileID: 6703583081711335958}
   - component: {fileID: 8456325820406579216}
   m_Layer: 3
-  m_Name: Image
+  m_Name: Panel Header
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4822,7 +4822,7 @@ GameObject:
   - component: {fileID: 7130772069470659474}
   - component: {fileID: 6011316943089156485}
   m_Layer: 3
-  m_Name: Button(quality)
+  m_Name: Quality(button)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5079,7 +5079,7 @@ GameObject:
   - component: {fileID: 2945640119382112670}
   - component: {fileID: 723792627849358017}
   m_Layer: 3
-  m_Name: Text (TMP)
+  m_Name: Button Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5628,7 +5628,7 @@ GameObject:
   - component: {fileID: 7463234822721199902}
   - component: {fileID: 5111199897076388625}
   m_Layer: 3
-  m_Name: Button
+  m_Name: Notes(button)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5774,7 +5774,7 @@ GameObject:
   - component: {fileID: 4287192664041667520}
   - component: {fileID: 2437328259481500867}
   m_Layer: 3
-  m_Name: Health tab
+  m_Name: Health Tab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5945,7 +5945,7 @@ GameObject:
   - component: {fileID: 2597826463212152079}
   - component: {fileID: 851493321282634315}
   m_Layer: 3
-  m_Name: warning icon
+  m_Name: Warning Icon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6170,7 +6170,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7946787523176779751}
   m_Layer: 3
-  m_Name: icon warning/danger
+  m_Name: Icons
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6264,8 +6264,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Warrning
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 18ad478d92d8e9a4580fdb1ca651b381, type: 2}
-  m_sharedMaterial: {fileID: -1506380294256876184, guid: 18ad478d92d8e9a4580fdb1ca651b381, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -6952,7 +6952,7 @@ GameObject:
   - component: {fileID: 1264165385156921973}
   - component: {fileID: 8991691990901055755}
   m_Layer: 3
-  m_Name: Text (TMP)
+  m_Name: Button Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7201,7 +7201,7 @@ GameObject:
   - component: {fileID: 5231694253798074846}
   - component: {fileID: 7349671295675113037}
   m_Layer: 3
-  m_Name: danger icon
+  m_Name: Danger Icon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7742,7 +7742,7 @@ GameObject:
   - component: {fileID: 7564010957329174790}
   - component: {fileID: 1118494332525231452}
   m_Layer: 3
-  m_Name: scroll conteiner
+  m_Name: Scroll Container
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7810,7 +7810,7 @@ GameObject:
   - component: {fileID: 5183539226560388490}
   - component: {fileID: 6469539764610870833}
   m_Layer: 3
-  m_Name: Text (TMP)
+  m_Name: Button Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7947,7 +7947,7 @@ GameObject:
   - component: {fileID: 6186586635716892889}
   - component: {fileID: 41795958404373841}
   m_Layer: 3
-  m_Name: Text (TMP)
+  m_Name: Button Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8709,7 +8709,7 @@ GameObject:
   - component: {fileID: 6221035248960755869}
   - component: {fileID: 3062603149014191422}
   m_Layer: 3
-  m_Name: Image
+  m_Name: Button Bar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
