@@ -42,6 +42,7 @@ public class Plant
     public Vector3Data position;
     public SizeData size;
     public int growth;
+    public DateData plantedDate;
     public DateData estimatedHarvestDate;
     public DateData lastWateredDate;
     public string healthStatus;

@@ -9,6 +9,9 @@ public class InfoPanelBinder : MonoBehaviour
     [SerializeField] private TMP_Text speciesText;
     [SerializeField] private TMP_Text idText;
 
+    [Header("Growth")]
+    [SerializeField] private TMP_Text growthText;
+
     [Header("Warning")]
     [SerializeField] private GameObject warningContainer;
     [SerializeField] private TMP_Text warningTitle;
@@ -21,11 +24,30 @@ public class InfoPanelBinder : MonoBehaviour
         if (speciesText != null) speciesText.text = plant.species;
         if (idText != null)      idText.text = plant.plantId;
 
+        PopulateGrowth(plant);
         PopulateWarnings(plant, row);
     }
 
     // Backward-compatible overload (no row = no moisture warning)
     public void Populate(Plant plant) => Populate(plant, null);
+
+    private void PopulateGrowth(Plant plant)
+    {
+        if (growthText == null) return;
+
+        string planted  = FormatDate(plant.plantedDate, "Unknown");
+        string harvest  = FormatDate(plant.estimatedHarvestDate, "Unknown");
+
+        growthText.text = $"Date Planted: {planted}\nMaturity: {plant.growth}%\nExpected Harvest: {harvest}";
+    }
+
+    private string FormatDate(DateData date, string fallback)
+    {
+        if (date == null || (date.day == 0 && date.month == 0 && date.year == 0))
+            return fallback;
+
+        return $"{date.day:D2}/{date.month:D2}/{date.year}";
+    }
 
     private void PopulateWarnings(Plant plant, Row row)
     {
