@@ -57,6 +57,7 @@ public class Row
     public string rowId;
     public Vector3Data location;
     public int groundMoisture;
+    public DateData lastWateredDate;
     public SizeData size;
     public Plant[] plants;
 }

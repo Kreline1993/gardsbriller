@@ -2059,7 +2059,7 @@ GameObject:
   - component: {fileID: 352752896692740986}
   - component: {fileID: 2053533179512287150}
   m_Layer: 3
-  m_Name: Text (TMP)
+  m_Name: Moisture Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3544,7 +3544,7 @@ GameObject:
   - component: {fileID: 8816424019311660783}
   - component: {fileID: 5440903632830360117}
   m_Layer: 3
-  m_Name: 'Text (TMP) - titel Health '
+  m_Name: Title
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4619,6 +4619,7 @@ MonoBehaviour:
   speciesText: {fileID: 705125307375933726}
   idText: {fileID: 3468482984411313822}
   growthText: {fileID: 1002833954750878820}
+  moistureText: {fileID: 2053533179512287150}
   warningContainer: {fileID: 1963626028236567052}
   warningTitle: {fileID: 47673160552043145}
   warningText: {fileID: 7749290555545504}
@@ -6111,7 +6112,7 @@ GameObject:
   - component: {fileID: 1218410454654057343}
   - component: {fileID: 8883609790358236012}
   m_Layer: 3
-  m_Name: text container
+  m_Name: Text Container
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6634,7 +6635,7 @@ GameObject:
   - component: {fileID: 4555373576062716514}
   - component: {fileID: 9017314193643577544}
   m_Layer: 3
-  m_Name: waterdrop ikon
+  m_Name: icon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7196,7 +7197,7 @@ GameObject:
   - component: {fileID: 4363555020424687037}
   - component: {fileID: 7183021153323136422}
   m_Layer: 3
-  m_Name: text container
+  m_Name: Text Containter
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7711,7 +7712,7 @@ GameObject:
   - component: {fileID: 4604066118771946628}
   - component: {fileID: 5727549094658917645}
   m_Layer: 3
-  m_Name: headerGrowth
+  m_Name: Header
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
