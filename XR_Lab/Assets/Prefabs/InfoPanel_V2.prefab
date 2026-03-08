@@ -849,7 +849,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 5950499430397390648}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 274601412907949107}
+        m_TargetAssemblyTypeName: TabController, Assembly-CSharp
+        m_MethodName: ShowGeneral
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &794760196035499225
 GameObject:
   m_ObjectHideFlags: 0
@@ -917,8 +929,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Health
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 18ad478d92d8e9a4580fdb1ca651b381, type: 2}
-  m_sharedMaterial: {fileID: -1506380294256876184, guid: 18ad478d92d8e9a4580fdb1ca651b381, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1129,8 +1141,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Pesticide State
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 18ad478d92d8e9a4580fdb1ca651b381, type: 2}
-  m_sharedMaterial: {fileID: -1506380294256876184, guid: 18ad478d92d8e9a4580fdb1ca651b381, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -2971,7 +2983,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2077397344966347576}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 274601412907949107}
+        m_TargetAssemblyTypeName: TabController, Assembly-CSharp
+        m_MethodName: ShowHealth
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &3900812764661249048
 GameObject:
   m_ObjectHideFlags: 0
@@ -4460,6 +4484,7 @@ GameObject:
   - component: {fileID: 6335943918404138688}
   - component: {fileID: 5558525042193515563}
   - component: {fileID: 2651653844143376438}
+  - component: {fileID: 274601412907949107}
   m_Layer: 3
   m_Name: InfoPanel_V2
   m_TagString: Untagged
@@ -4593,6 +4618,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::InfoPanelBinder
   speciesText: {fileID: 705125307375933726}
   idText: {fileID: 3468482984411313822}
+--- !u!114 &274601412907949107
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5275418831095437995}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7de4b00f372b3cf42830fcd05f636ec8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TabController
+  generalTab: {fileID: 8106544519234439992}
+  healthTab: {fileID: 5918330370348709068}
+  qualityTab: {fileID: 4343086855687308298}
 --- !u!1 &5281184051760575005
 GameObject:
   m_ObjectHideFlags: 0
@@ -4944,7 +4984,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 7130772069470659474}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 274601412907949107}
+        m_TargetAssemblyTypeName: TabController, Assembly-CSharp
+        m_MethodName: ShowQuality
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &5436560998188811962
 GameObject:
   m_ObjectHideFlags: 0
@@ -5012,8 +5064,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Moisture
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 18ad478d92d8e9a4580fdb1ca651b381, type: 2}
-  m_sharedMaterial: {fileID: -1506380294256876184, guid: 18ad478d92d8e9a4580fdb1ca651b381, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -7757,7 +7809,7 @@ GameObject:
   - component: {fileID: 7564010957329174790}
   - component: {fileID: 1118494332525231452}
   m_Layer: 3
-  m_Name: Scroll Container
+  m_Name: General Tab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
