@@ -453,7 +453,7 @@ GameObject:
   - component: {fileID: 6905121786927958853}
   - component: {fileID: 6096923174677952250}
   m_Layer: 3
-  m_Name: text container
+  m_Name: Text Container
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -874,7 +874,7 @@ GameObject:
   - component: {fileID: 3735976532742907490}
   - component: {fileID: 6017294305117471958}
   m_Layer: 3
-  m_Name: 'Text (TMP) - titel Health '
+  m_Name: Health Title
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1086,7 +1086,7 @@ GameObject:
   - component: {fileID: 7210092518236706657}
   - component: {fileID: 331375847966835646}
   m_Layer: 3
-  m_Name: 'Text (TMP) - titel Health '
+  m_Name: Pesticide Title
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1688,7 +1688,7 @@ GameObject:
   - component: {fileID: 250771340861846400}
   - component: {fileID: 536947212200270922}
   m_Layer: 3
-  m_Name: Health container (2)
+  m_Name: Health Container
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2355,7 +2355,7 @@ GameObject:
   - component: {fileID: 1607945935402144255}
   - component: {fileID: 6093734284006766000}
   m_Layer: 3
-  m_Name: heart ikon
+  m_Name: Icon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2567,7 +2567,7 @@ GameObject:
   - component: {fileID: 6539174297151983609}
   - component: {fileID: 7671262562958051192}
   m_Layer: 3
-  m_Name: pot ikon
+  m_Name: icon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3357,7 +3357,7 @@ GameObject:
   - component: {fileID: 5972840062616792029}
   - component: {fileID: 6744781150272013010}
   m_Layer: 3
-  m_Name: text container
+  m_Name: Text Container
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3687,7 +3687,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &5151755549705975086
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4620,6 +4620,7 @@ MonoBehaviour:
   idText: {fileID: 3468482984411313822}
   growthText: {fileID: 1002833954750878820}
   moistureText: {fileID: 2053533179512287150}
+  pesticideText: {fileID: 5524335552116109401}
   warningContainer: {fileID: 1963626028236567052}
   warningTitle: {fileID: 47673160552043145}
   warningText: {fileID: 7749290555545504}
@@ -4650,7 +4651,7 @@ GameObject:
   - component: {fileID: 2848168559955726720}
   - component: {fileID: 2983539953016383724}
   m_Layer: 3
-  m_Name: Text (TMP)
+  m_Name: Health Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5559,7 +5560,7 @@ GameObject:
   - component: {fileID: 5709035361379399114}
   - component: {fileID: 5524335552116109401}
   m_Layer: 3
-  m_Name: Text (TMP)
+  m_Name: Pesticide Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5913,7 +5914,7 @@ GameObject:
   - component: {fileID: 4478988833383267701}
   - component: {fileID: 5717847758273566303}
   m_Layer: 3
-  m_Name: headerHealth
+  m_Name: Header
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6921,7 +6922,7 @@ GameObject:
   - component: {fileID: 4194937075554428641}
   - component: {fileID: 3491402406942971628}
   m_Layer: 3
-  m_Name: headerGrowth
+  m_Name: Header
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8319,7 +8320,7 @@ GameObject:
   - component: {fileID: 7378022347849081761}
   - component: {fileID: 6745356508726271060}
   m_Layer: 3
-  m_Name: Growth container
+  m_Name: Pesticide Container
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8345,7 +8346,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 50, y: -255.54501}
+  m_AnchoredPosition: {x: 50, y: -52.845}
   m_SizeDelta: {x: 500, y: 161.89}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7283324238414692996

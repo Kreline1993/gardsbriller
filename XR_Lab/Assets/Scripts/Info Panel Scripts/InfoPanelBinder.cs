@@ -15,6 +15,9 @@ public class InfoPanelBinder : MonoBehaviour
     [Header("Moisture")]
     [SerializeField] private TMP_Text moistureText;
 
+    [Header("Pesticide")]
+    [SerializeField] private TMP_Text pesticideText;
+
     [Header("Warning")]
     [SerializeField] private GameObject warningContainer;
     [SerializeField] private TMP_Text warningTitle;
@@ -29,6 +32,7 @@ public class InfoPanelBinder : MonoBehaviour
 
         PopulateGrowth(plant);
         PopulateMoisture(row);
+        PopulatePesticide(plant);
         PopulateWarnings(plant, row);
     }
 
@@ -61,6 +65,16 @@ public class InfoPanelBinder : MonoBehaviour
         string moisture    = row != null ? $"{row.groundMoisture}%" : "Unknown";
 
         moistureText.text = $"Last Watered: {lastWatered}\nMoisture: {moisture}";
+    }
+
+    private void PopulatePesticide(Plant plant)
+    {
+        if (pesticideText == null) return;
+
+        string last = FormatDate(plant.lastPesticide, "Unknown");
+        string next = FormatDate(plant.nextPesticide, "Unknown");
+
+        pesticideText.text = $"Last Pesticide: {last}\nNext Pesticide: {next}";
     }
 
     private void PopulateWarnings(Plant plant, Row row)
