@@ -15,6 +15,9 @@ public class InfoPanelBinder : MonoBehaviour
     [Header("Moisture")]
     [SerializeField] private TMP_Text moistureText;
 
+    [Header("Health")]
+    [SerializeField] private TMP_Text healthText;
+
     [Header("Pesticide")]
     [SerializeField] private TMP_Text pesticideText;
 
@@ -32,6 +35,7 @@ public class InfoPanelBinder : MonoBehaviour
 
         PopulateGrowth(plant);
         PopulateMoisture(row);
+        PopulateHealth(plant);
         PopulatePesticide(plant);
         PopulateWarnings(plant, row);
     }
@@ -65,6 +69,14 @@ public class InfoPanelBinder : MonoBehaviour
         string moisture    = row != null ? $"{row.groundMoisture}%" : "Unknown";
 
         moistureText.text = $"Last Watered: {lastWatered}\nMoisture: {moisture}";
+    }
+
+    private void PopulateHealth(Plant plant)
+    {
+        if (healthText == null) return;
+
+        string status = string.IsNullOrEmpty(plant.healthStatus) ? "Unknown" : plant.healthStatus;
+        healthText.text = $"Health Status: {status}";
     }
 
     private void PopulatePesticide(Plant plant)
