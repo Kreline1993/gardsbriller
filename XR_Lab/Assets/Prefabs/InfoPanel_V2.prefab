@@ -255,7 +255,7 @@ GameObject:
   - component: {fileID: 716202876703382454}
   - component: {fileID: 6875558614523149898}
   m_Layer: 3
-  m_Name: headerGrowth
+  m_Name: Header
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2430,7 +2430,7 @@ GameObject:
   - component: {fileID: 1219636911143491578}
   - component: {fileID: 47673160552043145}
   m_Layer: 3
-  m_Name: 'Text (TMP) - titel Health '
+  m_Name: Warning Title
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2642,7 +2642,7 @@ GameObject:
   - component: {fileID: 3855957957435644430}
   - component: {fileID: 7450161355790615206}
   m_Layer: 3
-  m_Name: text container
+  m_Name: Text Container
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2793,7 +2793,7 @@ GameObject:
   - component: {fileID: 7385493493169561616}
   - component: {fileID: 6786324934579473573}
   m_Layer: 3
-  m_Name: General Tab
+  m_Name: Tab Contents
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3282,7 +3282,7 @@ GameObject:
   - component: {fileID: 2675897563218791661}
   - component: {fileID: 3500062357800706691}
   m_Layer: 3
-  m_Name: warningicon
+  m_Name: Warning Icon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4618,6 +4618,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::InfoPanelBinder
   speciesText: {fileID: 705125307375933726}
   idText: {fileID: 3468482984411313822}
+  warningContainer: {fileID: 1963626028236567052}
+  warningTitle: {fileID: 47673160552043145}
+  warningText: {fileID: 7749290555545504}
 --- !u!114 &274601412907949107
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6592,7 +6595,7 @@ GameObject:
   m_Component:
   - component: {fileID: 453472640138366066}
   m_Layer: 3
-  m_Name: icones
+  m_Name: Icon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7418,7 +7421,7 @@ GameObject:
   - component: {fileID: 6847634473444491988}
   - component: {fileID: 7749290555545504}
   m_Layer: 3
-  m_Name: Text (TMP)
+  m_Name: Warning Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

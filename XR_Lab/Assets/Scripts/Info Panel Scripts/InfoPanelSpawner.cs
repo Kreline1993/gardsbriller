@@ -26,6 +26,7 @@ public class InfoPanelSpawner : MonoBehaviour
 
             string id = identity.plantId;
             Plant data = TwinDatabase.Instance.GetPlantById(id);
+            Row row   = TwinDatabase.Instance.GetRowForPlant(id);
 
             // 2. Position logic
             Vector3 directionToPlayer = (Camera.main.transform.position - transform.position).normalized;
@@ -40,7 +41,7 @@ public class InfoPanelSpawner : MonoBehaviour
             {
                 InfoPanelBinder binder = spawnedPanel.GetComponent<InfoPanelBinder>();
                 if (binder != null)
-                    binder.Populate(data);
+                    binder.Populate(data, row);
                 else
                     Debug.LogWarning("[InfoPanelSpawner] InfoPanelBinder not found on panel prefab.");
             }
