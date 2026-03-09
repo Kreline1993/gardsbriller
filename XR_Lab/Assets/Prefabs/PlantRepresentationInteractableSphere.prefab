@@ -178,7 +178,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 88c3137634f9d3f489849b372ea77b9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InfoPanelSpawner
-  infoPanelPrefab: {fileID: 1909543623181412970, guid: eafe9010993e2c845b024900f157286f, type: 3}
+  infoPanelPrefab: {fileID: 5275418831095437995, guid: 2a3c55cb60e14af49ae2d74a4821eb52, type: 3}
 --- !u!114 &7341646236756335404
 MonoBehaviour:
   m_ObjectHideFlags: 0
