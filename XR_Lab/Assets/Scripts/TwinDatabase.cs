@@ -142,6 +142,25 @@ public class TwinDatabase : MonoBehaviour
         return results;
     }
 
+    public Row GetRowForPlant(string plantId)
+    {
+        if (string.IsNullOrEmpty(plantId)) return null;
+
+        TwinData data = twinGenerator?.TwinData;
+        if (data?.rows == null) return null;
+
+        foreach (Row row in data.rows)
+        {
+            if (row?.plants == null) continue;
+            foreach (Plant plant in row.plants)
+            {
+                if (plant?.plantId == plantId) return row;
+            }
+        }
+
+        return null;
+    }
+
     public static bool IsSameDate(DateData date, int day, int month, int year)
     {
         return date != null && date.day == day && date.month == month && date.year == year;
