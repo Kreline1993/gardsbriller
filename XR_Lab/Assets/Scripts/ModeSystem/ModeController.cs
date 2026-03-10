@@ -17,20 +17,18 @@ public class ModeController : MonoBehaviour
     [Tooltip("Height of the bounding box spawned over low-moisture rows.")]
     [SerializeField] private float overviewRowOverlayHeight = 1.5f;
 
-    [Tooltip("Icon prefab shown above plants with bad health status.")]
+    [Tooltip("Icon prefab shown above / clustering plants with bad health status.")]
     [SerializeField] private GameObject overviewBadHealthIconPrefab;
-    [Tooltip("Height above the plant the bad health icon is placed (world units).")]
-    [SerializeField] private float overviewBadHealthIconYOffset = 0.3f;
 
-    [Tooltip("Icon prefab shown above plants with a warning note tag.")]
+    [Tooltip("Icon prefab shown above / clustering plants with a warning note tag.")]
     [SerializeField] private GameObject overviewWarningIconPrefab;
-    [Tooltip("Height above the plant the warning icon is placed (world units).")]
-    [SerializeField] private float overviewWarningIconYOffset = 0.3f;
 
-    [Tooltip("Icon prefab shown above plants with growth >= 100.")]
+    [Tooltip("Icon prefab shown above / clustering plants with growth >= 100.")]
     [SerializeField] private GameObject overviewRipeIconPrefab;
-    [Tooltip("Height above the plant the ripe icon is placed (world units).")]
-    [SerializeField] private float overviewRipeIconYOffset = 0.3f;
+
+    [Tooltip("Assign the scene GameObject that has PlantIconLODController attached. " +
+             "All LOD and cluster values are edited directly on that component.")]
+    [SerializeField] private PlantIconLODController overviewLODController;
 
     [Header("Weeding Mode")]
     [SerializeField] private Color weedingProtectedTint = Color.yellow;
@@ -78,11 +76,9 @@ public class ModeController : MonoBehaviour
             overviewRowOverlayPrefab,
             overviewRowOverlayHeight,
             overviewBadHealthIconPrefab,
-            overviewBadHealthIconYOffset,
             overviewWarningIconPrefab,
-            overviewWarningIconYOffset,
             overviewRipeIconPrefab,
-            overviewRipeIconYOffset);
+            overviewLODController);
         states[AppMode.PlantPicking] = new PlantPickingModeState(context, 
             pickingHighlightTint);
         states[AppMode.Weeding] = new WeedingModeState(context, 

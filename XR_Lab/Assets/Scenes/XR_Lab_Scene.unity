@@ -389,11 +389,9 @@ MonoBehaviour:
   overviewRowOverlayPrefab: {fileID: 3386440672379102047, guid: a108f49ea43ead24c8aead254716815c, type: 3}
   overviewRowOverlayHeight: 0.25
   overviewBadHealthIconPrefab: {fileID: 621584630249350254, guid: af9d1131c788d454fa7dae4544fa99d2, type: 3}
-  overviewBadHealthIconYOffset: 0.8
   overviewWarningIconPrefab: {fileID: 3824110197468282073, guid: f4872b50e9e39e3469946219b9ee754b, type: 3}
-  overviewWarningIconYOffset: 0.5
   overviewRipeIconPrefab: {fileID: 4416891752233979593, guid: 2243cb2f4583753418ee8a40c16f93cf, type: 3}
-  overviewRipeIconYOffset: 0.2
+  overviewLODController: {fileID: 553951982}
   weedingProtectedTint: {r: 1, g: 0.92156863, b: 0.015686275, a: 0.46666667}
   disableTouchForProtectedPlants: 1
   weedingOverlayPrefab: {fileID: 4312566435863121009, guid: 6e381599a6a7f604b96ca62061828e27, type: 3}
@@ -431,6 +429,62 @@ MonoBehaviour:
   refreshOnlyInOverviewMode: 1
   autoRefresh: 1
   refreshIntervalSeconds: 1
+--- !u!1 &553951981
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 553951983}
+  - component: {fileID: 553951982}
+  m_Layer: 0
+  m_Name: PlantIconLODController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &553951982
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 553951981}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea1534b8616893345b93c6bed12c308c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlantIconLODController
+  nearThreshold: 3
+  farThreshold: 5
+  hysteresisBand: 0.15
+  clusterRadius: 2
+  singlePlantScale: 0.05
+  clusterMinScale: 0.05
+  clusterMaxScale: 1
+  maxCountForMaxScale: 30
+  nearIconYOffset: 0
+  midIconYOffset: 0.1
+  clusterIconYOffset: 0.5
+  updateInterval: 0.5
+--- !u!4 &553951983
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 553951981}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.08147, y: 0, z: 0.35716}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &562179997
 GameObject:
   m_ObjectHideFlags: 0
@@ -2715,3 +2769,4 @@ SceneRoots:
   - {fileID: 574821887}
   - {fileID: 551489249}
   - {fileID: 2087476487}
+  - {fileID: 553951983}
