@@ -524,7 +524,7 @@ GameObject:
   m_Component:
   - component: {fileID: 643372769}
   m_Layer: 0
-  m_Name: ---------------------------
+  m_Name: '---------------------------'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -637,7 +637,7 @@ GameObject:
   m_Component:
   - component: {fileID: 981785094}
   m_Layer: 0
-  m_Name: ---------------------------
+  m_Name: '---------------------------'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -769,7 +769,7 @@ GameObject:
   - component: {fileID: 1309741600}
   - component: {fileID: 1309741604}
   m_Layer: 5
-  m_Name: 'Canvas [EDITOR-ONLY]'
+  m_Name: Canvas [EDITOR-ONLY]
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1124,10 +1124,9 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 3903039415607992584, guid: 7e17be6200c63ff4a9ff385b018b5a42, type: 3}
-    - {fileID: 6001697388085406997, guid: 7e17be6200c63ff4a9ff385b018b5a42, type: 3}
-    - {fileID: 646707389679781101, guid: 7e17be6200c63ff4a9ff385b018b5a42, type: 3}
+    m_RemovedComponents: [{fileID: 3903039415607992584, guid: 7e17be6200c63ff4a9ff385b018b5a42, type: 3},
+      {fileID: 6001697388085406997, guid: 7e17be6200c63ff4a9ff385b018b5a42, type: 3},
+      {fileID: 646707389679781101, guid: 7e17be6200c63ff4a9ff385b018b5a42, type: 3}]
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 6647269525983367940, guid: 7e17be6200c63ff4a9ff385b018b5a42, type: 3}
@@ -1433,7 +1432,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc42392eef74480408e2bb758c8d3457, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FarmFieldGenerator
-  interactionPrefab: {fileID: 8800490417148209320, guid: e9f8fcbd3efc5cc43969351f5ca524aa, type: 3}
+  interactionPrefab: {fileID: 8800490417148209320, guid: c6d32d6f9b23ea44885823fa6f31b42f, type: 3}
   scaleFactor: 1
   twinDataLoader: {fileID: 1845547967}
 --- !u!114 &1845547967
@@ -1592,7 +1591,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1900272168}
   m_Layer: 0
-  m_Name: ---------------------------
+  m_Name: '---------------------------'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1840,7 +1839,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2130025554}
   m_Layer: 0
-  m_Name: ---------------------------
+  m_Name: '---------------------------'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
