@@ -12,13 +12,12 @@ GameObject:
   - component: {fileID: 6770944698827232554}
   - component: {fileID: 2760314298603629201}
   - component: {fileID: -6182160007936768986}
-  - component: {fileID: 7408093480082112115}
-  - component: {fileID: 565556105005643562}
   - component: {fileID: 1450531004745853422}
   - component: {fileID: 7100731700955076279}
   - component: {fileID: 7341646236756335404}
   - component: {fileID: -3518256474722827645}
   - component: {fileID: -48988628982631073}
+  - component: {fileID: -7995945395981296521}
   m_Layer: 0
   m_Name: PlantRepresentationInteractableCube
   m_TagString: Untagged
@@ -123,36 +122,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1.0000001, y: 2, z: 1.0000002}
   m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
---- !u!114 &7408093480082112115
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8800490417148209320}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4ca6c9d5014edd74e945b6095df86dc7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::HoverEffect
---- !u!114 &565556105005643562
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8800490417148209320}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Outline
-  outlineMode: 0
-  outlineColor: {r: 0, g: 0.9329295, b: 1, a: 1}
-  outlineWidth: 10
-  precomputeOutline: 0
-  bakeKeys: []
-  bakeValues: []
 --- !u!114 &1450531004745853422
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -262,3 +231,33 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Oculus.Interaction::Oculus.Interaction.Surfaces.ColliderSurface
   _collider: {fileID: -6182160007936768986}
+--- !u!114 &-7995945395981296521
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8800490417148209320}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dbd6ffd1b5fecf243b2c02d7a8796b56, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlantRuleOutlineController
+  plantIdentity: {fileID: 1450531004745853422}
+  modeController: {fileID: 0}
+  interactableEvents: {fileID: 0}
+  visualType: 1
+  outlineMode: 0
+  outlineWidth: 5
+  wireframeShader: {fileID: 4800000, guid: 7b37cfa1260c1d6408d2bd028711cb3d, type: 3}
+  wireframeWidth: 1.5
+  wireframeVisibleThroughObjects: 1
+  showOnlyInOverviewMode: 1
+  showOnlyWhileHovered: 1
+  badHealthColor: {r: 1, g: 0, b: 0, a: 1}
+  warningTagColor: {r: 1, g: 0.65, b: 0, a: 1}
+  ripeGrowthColor: {r: 0, g: 1, b: 0, a: 1}
+  lowMoistureColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  genericHoverColor: {r: 1, g: 1, b: 1, a: 1}
+  priority: 01000000000000000200000003000000
+  refreshIntervalSeconds: 1
