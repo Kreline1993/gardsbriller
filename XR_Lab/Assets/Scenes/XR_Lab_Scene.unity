@@ -466,8 +466,8 @@ MonoBehaviour:
   clusterMinScale: 0.05
   clusterMaxScale: 1
   maxCountForMaxScale: 30
-  nearIconYOffset: 0.1
-  midIconYOffset: 0.2
+  nearIconYOffset: 0
+  midIconYOffset: 0.1
   clusterIconYOffset: 0.5
   updateInterval: 0.5
 --- !u!4 &553951983
