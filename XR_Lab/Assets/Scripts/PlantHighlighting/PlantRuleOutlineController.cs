@@ -205,8 +205,11 @@ public sealed class PlantRuleOutlineController : MonoBehaviour
         if (!showOnlyInOverviewMode)
             return true;
 
-        // "show only in overview mode" is on: require overview mode
-        return modeController == null || modeController.CurrentMode == AppMode.Overview;
+        // "show only in overview mode" is on: require a valid modeController in Overview mode
+        if (modeController == null)
+            return false;
+
+        return modeController.CurrentMode == AppMode.Overview;
     }
 
     private bool TryGetRuleColor(Plant plant, out Color color)

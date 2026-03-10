@@ -71,7 +71,7 @@ public sealed class PlantEdgeWireframeRenderer : MonoBehaviour
     private void OnEnable()
     {
         InitializeIfNeeded();
-        SetOverlaysActive(true);
+
         ApplyMaterialProperties();
     }
 
