@@ -123,6 +123,9 @@ public sealed class PlantRuleOutlineController : MonoBehaviour
 
     private void Update()
     {
+        // Avoid periodic refresh work when the highlight is not currently in use.
+        if (!isHovered && !isPanelOpen)
+            return;
         if (Time.time < nextRefreshTime)
             return;
 
