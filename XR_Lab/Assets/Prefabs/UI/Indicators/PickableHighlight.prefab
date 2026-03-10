@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 853688208585881117}
   - component: {fileID: 3341768106983896099}
   m_Layer: 0
-  m_Name: BoundingBoxOverlay
+  m_Name: PickableHighlight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
