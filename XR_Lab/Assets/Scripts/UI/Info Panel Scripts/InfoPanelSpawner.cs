@@ -6,6 +6,13 @@ public class InfoPanelSpawner : MonoBehaviour
     public GameObject infoPanelPrefab;
     private GameObject spawnedPanel;
 
+    private PlantRuleOutlineController _outlineController;
+
+    private void Awake()
+    {
+        _outlineController = GetComponent<PlantRuleOutlineController>();
+    }
+
     public void TogglePanel()
     {
         if (spawnedPanel == null)
@@ -36,6 +43,8 @@ public class InfoPanelSpawner : MonoBehaviour
             spawnedPanel.transform.LookAt(Camera.main.transform);
             spawnedPanel.transform.Rotate(0, 180, 0);
 
+            _outlineController?.SetPanelOpen(true);
+
             // 3. Update the UI Text
             if (data != null)
             {
@@ -53,6 +62,8 @@ public class InfoPanelSpawner : MonoBehaviour
         else
         {
             Destroy(spawnedPanel);
+            spawnedPanel = null;
+            _outlineController?.SetPanelOpen(false);
         }
     }
 }
