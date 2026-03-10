@@ -300,6 +300,38 @@ public class PlantVisualHandle : MonoBehaviour
         SetProtectedVisual(false, default, true);
     }
 
+    /// <summary>
+    /// Returns the world-space bottom centre and total height of this plant's renderer bounds.
+    /// Used by <see cref="PlantIconLODController"/> to position icons correctly per LOD zone.
+    /// Falls back to (transform.position, 0) if no valid renderers are found.
+    /// </summary>
+    public (Vector3 bottomCentre, float height) GetWorldBounds()
+    {
+        InitializeIfNeeded();
+
+        if (rendererStates.Count == 0)
+            return (transform.position, 0f);
+
+        float minY = float.MaxValue;
+        float maxY = float.MinValue;
+
+        foreach (RendererState rs in rendererStates)
+        {
+            if (rs.renderer == null) continue;
+            Bounds b = rs.renderer.bounds;
+            if (b.min.y < minY) minY = b.min.y;
+            if (b.max.y > maxY) maxY = b.max.y;
+        }
+
+        // Guard: no valid renderers were found
+        if (minY == float.MaxValue)
+            return (transform.position, 0f);
+
+        Vector3 bottomCentre = new Vector3(transform.position.x, minY, transform.position.z);
+        float   height       = Mathf.Max(0f, maxY - minY);
+        return (bottomCentre, height);
+    }
+
     private static Color WithFullAlpha(Color color)
     {
         return new Color(color.r, color.g, color.b, 1f);
