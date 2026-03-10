@@ -47,6 +47,18 @@ public class PlantIconLODController : MonoBehaviour
     [Tooltip("Plant count at which the cluster icon reaches clusterMaxScale.")]
     public int maxCountForMaxScale = 10;
 
+    // ── Icon Y offset ────────────────────────────────────────────────────
+
+    [Header("Icon Y Offset (metres above calculated position)")]
+    [Tooltip("Extra height added to icons in the Near zone (individual, 75 % of plant height).")]
+    public float nearIconYOffset    = 0.1f;
+
+    [Tooltip("Extra height added to icons in the Mid zone (individual, plant top).")]
+    public float midIconYOffset     = 0.1f;
+
+    [Tooltip("Extra height added to cluster icons in the Far zone (above tallest plant in cluster).")]
+    public float clusterIconYOffset = 0.15f;
+
     // ── Performance ─────────────────────────────────────────────────────
 
     [Header("Performance")]
@@ -191,19 +203,19 @@ public class PlantIconLODController : MonoBehaviour
                 }
             }
 
-            // Near: icon at 75 % of plant height
+            // Near: icon at 75 % of plant height + nearIconYOffset
             foreach (PlantEntry p in nearList)
-                SpawnIcon(layer.Prefab, IconWorldPos(p, 0.75f), singlePlantScale);
+                SpawnIcon(layer.Prefab, IconWorldPos(p, 0.75f, nearIconYOffset), singlePlantScale);
 
-            // Mid: icon at plant top (100 %)
+            // Mid: icon at plant top (100 %) + midIconYOffset
             foreach (PlantEntry p in midList)
-                SpawnIcon(layer.Prefab, IconWorldPos(p, 1.0f), singlePlantScale);
+                SpawnIcon(layer.Prefab, IconWorldPos(p, 1.0f, midIconYOffset), singlePlantScale);
 
-            // Far: radius-clustered, icon scale reflects plant count
+            // Far: radius-clustered, icon scale reflects plant count, + clusterIconYOffset
             foreach (ClusterResult cluster in BuildClusters(farList))
             {
                 Vector3 pos   = new Vector3(cluster.HorizontalCentre.x,
-                                            cluster.MaxTopY,
+                                            cluster.MaxTopY + clusterIconYOffset,
                                             cluster.HorizontalCentre.z);
                 float   scale = ClusterScale(cluster.Count);
                 SpawnIcon(layer.Prefab, pos, scale);
@@ -310,11 +322,11 @@ public class PlantIconLODController : MonoBehaviour
 
     // ── Helpers ─────────────────────────────────────────────────────────
 
-    private static Vector3 IconWorldPos(PlantEntry plant, float heightFraction)
+    private static Vector3 IconWorldPos(PlantEntry plant, float heightFraction, float yOffset = 0f)
     {
         return new Vector3(
             plant.BottomCentre.x,
-            plant.BottomCentre.y + plant.Height * heightFraction,
+            plant.BottomCentre.y + plant.Height * heightFraction + yOffset,
             plant.BottomCentre.z);
     }
 

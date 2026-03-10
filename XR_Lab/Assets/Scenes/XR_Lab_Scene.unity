@@ -445,7 +445,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &553951982
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -462,10 +462,13 @@ MonoBehaviour:
   farThreshold: 5
   hysteresisBand: 0.15
   clusterRadius: 2
-  singlePlantScale: 0.5
-  clusterMinScale: 0.3
-  clusterMaxScale: 1.5
-  maxCountForMaxScale: 10
+  singlePlantScale: 0.05
+  clusterMinScale: 0.05
+  clusterMaxScale: 1
+  maxCountForMaxScale: 30
+  nearIconYOffset: 0.1
+  midIconYOffset: 0.2
+  clusterIconYOffset: 0.5
   updateInterval: 0.5
 --- !u!4 &553951983
 Transform:
