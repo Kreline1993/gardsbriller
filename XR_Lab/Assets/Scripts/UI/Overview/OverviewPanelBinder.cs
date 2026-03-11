@@ -166,10 +166,10 @@ public class OverviewPanelBinder : MonoBehaviour
             warningsDetailsText.text = expandedWarnings ? BuildPlantDetails(snapshot.warningPlants) : string.Empty;
 
         if (nextPesticidesText != null)
-            nextPesticidesText.text = $"Next Pesticides: {snapshot.nextPesticidesDate}";
+            nextPesticidesText.text = $"{snapshot.nextPesticidesDate}";
 
         if (lowestMoistureText != null)
-            lowestMoistureText.text = $"Lowest Moisture: {snapshot.lowestRowMoisture}%";
+            lowestMoistureText.text = $"{snapshot.lowestRowMoisture}%";
     }
 
     private static string BuildSummaryText(OverviewSummarySectionData summary)
