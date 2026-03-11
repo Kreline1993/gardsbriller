@@ -889,10 +889,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 2174386002281914546, guid: c40157a252f7c1b48b1a87267e0801fa, type: 3}
-      propertyPath: wristTransform
+    - target: {fileID: 1357053188208650018, guid: c40157a252f7c1b48b1a87267e0801fa, type: 3}
+      propertyPath: dataProvider
       value: 
-      objectReference: {fileID: 1696891608}
+      objectReference: {fileID: 551489250}
     - target: {fileID: 4223590566445748083, guid: c40157a252f7c1b48b1a87267e0801fa, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -973,6 +973,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4342906502724942923, guid: c40157a252f7c1b48b1a87267e0801fa, type: 3}
+      propertyPath: wristTransform
+      value: 
+      objectReference: {fileID: 1696891608}
     - target: {fileID: 7974228534324243144, guid: c40157a252f7c1b48b1a87267e0801fa, type: 3}
       propertyPath: m_Name
       value: Overview-panel
