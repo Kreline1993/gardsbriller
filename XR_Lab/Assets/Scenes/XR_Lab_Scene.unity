@@ -119,6 +119,38 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &19364333 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8720817218020069735, guid: c40157a252f7c1b48b1a87267e0801fa, type: 3}
+  m_PrefabInstance: {fileID: 1000772997}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &19364336 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2986982552556811107, guid: c40157a252f7c1b48b1a87267e0801fa, type: 3}
+  m_PrefabInstance: {fileID: 1000772997}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 19364333}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Button
+--- !u!114 &19364339
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 19364333}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a01205aaab1da240a4dbb62fdbc97a5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::OverviewSectionToggleButton
+  binder: {fileID: 513813537}
+  sectionType: 2
+  button: {fileID: 19364336}
+  verboseLogs: 0
 --- !u!1 &47664888 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4860440364606958003, guid: 0a9a7fe72c9211f4485da2bb4b650886, type: 3}
@@ -178,6 +210,38 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d42880b53e4b94c429b0b2d433c178c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PanelToggle
+--- !u!1 &293592973 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8659520925385529194, guid: c40157a252f7c1b48b1a87267e0801fa, type: 3}
+  m_PrefabInstance: {fileID: 1000772997}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &293592976 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 9035371223626860151, guid: c40157a252f7c1b48b1a87267e0801fa, type: 3}
+  m_PrefabInstance: {fileID: 1000772997}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 293592973}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Button
+--- !u!114 &293592979
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 293592973}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a01205aaab1da240a4dbb62fdbc97a5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::OverviewSectionToggleButton
+  binder: {fileID: 513813537}
+  sectionType: 1
+  button: {fileID: 293592976}
+  verboseLogs: 0
 --- !u!20 &341889590 stripped
 Camera:
   m_CorrespondingSourceObject: {fileID: 8593683647834113248, guid: 7e17be6200c63ff4a9ff385b018b5a42, type: 3}
@@ -849,6 +913,12 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 9040558082321206350, guid: c40157a252f7c1b48b1a87267e0801fa, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1000773005}
+    - targetCorrespondingSourceObject: {fileID: 8659520925385529194, guid: c40157a252f7c1b48b1a87267e0801fa, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 293592979}
+    - targetCorrespondingSourceObject: {fileID: 8720817218020069735, guid: c40157a252f7c1b48b1a87267e0801fa, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 19364339}
   m_SourcePrefab: {fileID: 100100000, guid: c40157a252f7c1b48b1a87267e0801fa, type: 3}
 --- !u!1 &1000772998 stripped
 GameObject:
