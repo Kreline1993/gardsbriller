@@ -13,7 +13,7 @@ public class PickingMenuButtons : MonoBehaviour
 
     [Header("Highlight Color")]
     [Tooltip("Normal color applied to a button when its species is toggled ON.")]
-    [SerializeField] private Color activeNormalColor = new Color(1f, 0.4f, 0.8f, 1f);
+    [SerializeField] private Color activeNormalColor = new Color(0.078f, 0.467f, 0.827f, 1f);
 
     // Original color blocks, captured at start so we can restore them.
     private ColorBlock _tomatoDefault;
