@@ -1,5 +1,9 @@
 using UnityEngine;
 
+/// <summary>
+/// DEPRECATED – layout shifting is now handled by OverviewPanelBinder.RecalculateLayout().
+/// This script can be safely removed from your prefab.
+/// </summary>
 public class AutoManualShift : MonoBehaviour
 {
     [Header("Settings")]
