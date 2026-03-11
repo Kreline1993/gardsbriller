@@ -54,6 +54,11 @@ public class ModeController : MonoBehaviour
     /// </summary>
     public event Action<string, bool> PickingSpeciesToggled;
 
+    /// <summary>
+    /// Fired when all picking highlights are cleared via ClearPickingHighlights().
+    /// </summary>
+    public event Action PickingSelectionCleared;
+
     private void Awake()
     {
         if (twinDatabase == null)
@@ -157,7 +162,10 @@ public class ModeController : MonoBehaviour
     public void ClearPickingHighlights()
     {
         if (currentState is PlantPickingModeState pickingState)
+        {
             pickingState.ClearAll();
+            PickingSelectionCleared?.Invoke();
+        }
         else
             Debug.LogWarning("[ModeController] ClearPickingHighlights called but not in PlantPicking mode.");
     }
