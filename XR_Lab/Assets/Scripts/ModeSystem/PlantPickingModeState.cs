@@ -59,6 +59,20 @@ public sealed class PlantPickingModeState : ModeStateBase
         context.PlantVisualRegistry?.ResetAll();
     }
 
+    /// <summary>
+    /// Returns true if at least one eligible plant of the given species is currently selected.
+    /// </summary>
+    public bool IsSpeciesSelected(string species)
+    {
+        foreach (var plant in _eligiblePlants)
+        {
+            if (string.Equals(plant.species, species, System.StringComparison.OrdinalIgnoreCase)
+                && _highlightState.IsSelected(plant.plantId))
+                return true;
+        }
+        return false;
+    }
+
     private void ApplyVisuals()
     {
         if (context.PlantVisualRegistry == null) return;
