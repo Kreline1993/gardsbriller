@@ -19,9 +19,13 @@ public class OverviewPanelBinder : MonoBehaviour
     [SerializeField] private TMP_Text badHealthDetailsText;
     [SerializeField] private TMP_Text warningsHeaderText;
     [SerializeField] private TMP_Text warningsDetailsText;
+    [SerializeField] private TMP_Text ripeHeaderText;
+    [SerializeField] private TMP_Text ripeDetailsText;
 
     [Header("Simple Fields (Optional)")]
     [SerializeField] private TMP_Text nextPesticidesText;
+    [SerializeField] private TMP_Text lastPesticideText;
+    [SerializeField] private TMP_Text lastWateredText;
     [SerializeField] private TMP_Text lowestMoistureText;
 
     [Header("Behavior")]
@@ -31,11 +35,13 @@ public class OverviewPanelBinder : MonoBehaviour
     private bool expandedLowMoisture = false;
     private bool expandedBadHealth = false;
     private bool expandedWarnings = false;
+    private bool expandedRipe = false;
 
     // Rule colors provided by ModeController
-    private Color lowMoistureColor = new Color(0.5f, 0f, 1f, 1f); // Default purple
-    private Color badHealthColor = new Color(1f, 0.5f, 0f, 1f);   // Default orange
-    private Color warningTagColor = new Color(1f, 0f, 0f, 1f);    // Default red
+    private Color lowMoistureColor = new Color(0.5f, 0f, 1f, 1f);
+    private Color badHealthColor = new Color(1f, 0.5f, 0f, 1f);
+    private Color warningTagColor = new Color(1f, 0f, 0f, 1f);
+    private Color ripeColor = new Color(0f, 0.8f, 0.2f, 1f);
 
     private OverviewPanelDataSnapshot currentSnapshot;
 
@@ -48,13 +54,14 @@ public class OverviewPanelBinder : MonoBehaviour
     /// <summary>
     /// Sets the colors to use for each rule category in the overview display.
     /// </summary>
-    public void SetRuleColors(Color lowMoisture, Color badHealth, Color warningTag)
+    public void SetRuleColors(Color lowMoisture, Color badHealth, Color warningTag, Color ripe = default)
     {
         lowMoistureColor = lowMoisture;
         badHealthColor = badHealth;
         warningTagColor = warningTag;
+        if (ripe != default)
+            ripeColor = ripe;
 
-        // Refresh the display with the new colors
         if (currentSnapshot != null)
             RenderAll(currentSnapshot);
     }
@@ -106,6 +113,13 @@ public class OverviewPanelBinder : MonoBehaviour
             RenderAll(currentSnapshot);
     }
 
+    public void ToggleRipeExpanded()
+    {
+        expandedRipe = !expandedRipe;
+        if (currentSnapshot != null)
+            RenderAll(currentSnapshot);
+    }
+
     private void RenderAll(OverviewPanelDataSnapshot snapshot)
     {
         if (snapshot == null)
@@ -138,6 +152,11 @@ public class OverviewPanelBinder : MonoBehaviour
         sb.AppendLine(BuildWarningsHeader(snapshot.summary.warningPlants));
         if (expandedWarnings)
             AppendPlantDetails(sb, snapshot.warningPlants);
+        sb.AppendLine();
+
+        sb.AppendLine(BuildRipeHeader(snapshot.summary.ripePlants));
+        if (expandedRipe)
+            AppendPlantDetails(sb, snapshot.ripePlants);
 
         mainText.text = sb.ToString();
     }
@@ -165,8 +184,20 @@ public class OverviewPanelBinder : MonoBehaviour
         if (warningsDetailsText != null)
             warningsDetailsText.text = expandedWarnings ? BuildPlantDetails(snapshot.warningPlants) : string.Empty;
 
+        if (ripeHeaderText != null)
+            ripeHeaderText.text = BuildRipeHeader(snapshot.summary.ripePlants);
+
+        if (ripeDetailsText != null)
+            ripeDetailsText.text = expandedRipe ? BuildPlantDetails(snapshot.ripePlants) : string.Empty;
+
         if (nextPesticidesText != null)
             nextPesticidesText.text = $"{snapshot.nextPesticidesDate}";
+
+        if (lastPesticideText != null)
+            lastPesticideText.text = $"{snapshot.lastPesticideDate}";
+
+        if (lastWateredText != null)
+            lastWateredText.text = $"{snapshot.lastWateredDate}";
 
         if (lowestMoistureText != null)
             lowestMoistureText.text = $"{snapshot.lowestRowMoisture}%";
@@ -206,6 +237,15 @@ public class OverviewPanelBinder : MonoBehaviour
         return count == 0
             ? $"{arrow} <color=green>[Warning] Plants clear</color>"
             : $"{arrow} <color=#{colorHex}>{count} [Warning] Plants need attention</color>";
+    }
+
+    private string BuildRipeHeader(int count)
+    {
+        string arrow = expandedRipe ? "▼" : "▶";
+        string colorHex = ColorUtility.ToHtmlStringRGB(ripeColor);
+        return count == 0
+            ? $"{arrow} <color=green>[Ready for Picking] No plants ready</color>"
+            : $"{arrow} <color=#{colorHex}>{count} [Ready for Picking] Plants ready to harvest</color>";
     }
 
     private static string BuildRowDetails(List<OverviewRowSectionData> rows)

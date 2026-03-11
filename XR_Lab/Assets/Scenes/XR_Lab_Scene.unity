@@ -390,7 +390,11 @@ MonoBehaviour:
   badHealthDetailsText: {fileID: 1886536370}
   warningsHeaderText: {fileID: 1000773002}
   warningsDetailsText: {fileID: 140455784}
+  ripeHeaderText: {fileID: 1179449417}
+  ripeDetailsText: {fileID: 1621461543}
   nextPesticidesText: {fileID: 1000772999}
+  lastPesticideText: {fileID: 2098521069}
+  lastWateredText: {fileID: 1101467609}
   lowestMoistureText: {fileID: 1294122232}
   refreshOnEnable: 1
 --- !u!1 &551489247
@@ -775,6 +779,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 370914853765613889, guid: c40157a252f7c1b48b1a87267e0801fa, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 800
+      objectReference: {fileID: 0}
+    - target: {fileID: 1207857538769469533, guid: c40157a252f7c1b48b1a87267e0801fa, type: 3}
+      propertyPath: m_HorizontalAlignment
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 3343395722618876544, guid: c40157a252f7c1b48b1a87267e0801fa, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -796,6 +808,10 @@ PrefabInstance:
       value: 'Next
 
         Watering date'
+      objectReference: {fileID: 0}
+    - target: {fileID: 3909689267764520707, guid: c40157a252f7c1b48b1a87267e0801fa, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 800
       objectReference: {fileID: 0}
     - target: {fileID: 4223590566445748083, guid: c40157a252f7c1b48b1a87267e0801fa, type: 3}
       propertyPath: m_Pivot.x
@@ -877,9 +893,25 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4849327046583852008, guid: c40157a252f7c1b48b1a87267e0801fa, type: 3}
+      propertyPath: m_HorizontalAlignment
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5212800551812046993, guid: c40157a252f7c1b48b1a87267e0801fa, type: 3}
+      propertyPath: m_HorizontalAlignment
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7416097508305525829, guid: c40157a252f7c1b48b1a87267e0801fa, type: 3}
+      propertyPath: m_HorizontalAlignment
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 7974228534324243144, guid: c40157a252f7c1b48b1a87267e0801fa, type: 3}
       propertyPath: m_Name
       value: Overview-panel
+      objectReference: {fileID: 0}
+    - target: {fileID: 8633932418276466880, guid: c40157a252f7c1b48b1a87267e0801fa, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 800
       objectReference: {fileID: 0}
     - target: {fileID: 8633932418276466880, guid: c40157a252f7c1b48b1a87267e0801fa, type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -890,6 +922,10 @@ PrefabInstance:
       value: 'Next
 
         fertilization date'
+      objectReference: {fileID: 0}
+    - target: {fileID: 9045487530508074352, guid: c40157a252f7c1b48b1a87267e0801fa, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 800
       objectReference: {fileID: 0}
     - target: {fileID: 9154875621428461031, guid: c40157a252f7c1b48b1a87267e0801fa, type: 3}
       propertyPath: m_AnchorMax.x
@@ -919,6 +955,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8720817218020069735, guid: c40157a252f7c1b48b1a87267e0801fa, type: 3}
       insertIndex: -1
       addedObject: {fileID: 19364339}
+    - targetCorrespondingSourceObject: {fileID: 1440094940223847686, guid: c40157a252f7c1b48b1a87267e0801fa, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1156014467}
   m_SourcePrefab: {fileID: 100100000, guid: c40157a252f7c1b48b1a87267e0801fa, type: 3}
 --- !u!1 &1000772998 stripped
 GameObject:
@@ -1001,6 +1040,60 @@ MonoBehaviour:
   sectionType: 0
   button: {fileID: 1000773001}
   verboseLogs: 0
+--- !u!114 &1101467609 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8837392806125599896, guid: c40157a252f7c1b48b1a87267e0801fa, type: 3}
+  m_PrefabInstance: {fileID: 1000772997}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
+--- !u!1 &1156014461 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1440094940223847686, guid: c40157a252f7c1b48b1a87267e0801fa, type: 3}
+  m_PrefabInstance: {fileID: 1000772997}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1156014464 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3219715352741603066, guid: c40157a252f7c1b48b1a87267e0801fa, type: 3}
+  m_PrefabInstance: {fileID: 1000772997}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1156014461}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Button
+--- !u!114 &1156014467
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1156014461}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a01205aaab1da240a4dbb62fdbc97a5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::OverviewSectionToggleButton
+  binder: {fileID: 513813537}
+  sectionType: 3
+  button: {fileID: 1156014464}
+  verboseLogs: 0
+--- !u!114 &1179449417 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4287317093856544643, guid: c40157a252f7c1b48b1a87267e0801fa, type: 3}
+  m_PrefabInstance: {fileID: 1000772997}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
 --- !u!1 &1223261590
 GameObject:
   m_ObjectHideFlags: 0
@@ -1385,6 +1478,17 @@ MonoBehaviour:
   m_SendPointerHoverToParent: 1
   _useInitialPressPositionForDrag: 1
   _exclusiveMode: 1
+--- !u!114 &1621461543 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4849327046583852008, guid: c40157a252f7c1b48b1a87267e0801fa, type: 3}
+  m_PrefabInstance: {fileID: 1000772997}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
 --- !u!1 &1638230590 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6891335915499868642, guid: 7e17be6200c63ff4a9ff385b018b5a42, type: 3}
@@ -2065,6 +2169,17 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1970361773}
   m_CullTransparentMesh: 1
+--- !u!114 &2098521069 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5812946816277100022, guid: c40157a252f7c1b48b1a87267e0801fa, type: 3}
+  m_PrefabInstance: {fileID: 1000772997}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
 --- !u!1 &2130025553
 GameObject:
   m_ObjectHideFlags: 0

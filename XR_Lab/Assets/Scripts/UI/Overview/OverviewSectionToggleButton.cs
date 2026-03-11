@@ -13,7 +13,8 @@ public class OverviewSectionToggleButton : MonoBehaviour, IPointerClickHandler, 
     {
         LowMoisture,
         BadHealth,
-        Warnings
+        Warnings,
+        ReadyForPicking
     }
 
     [SerializeField] private OverviewPanelBinder binder;
@@ -76,6 +77,9 @@ public class OverviewSectionToggleButton : MonoBehaviour, IPointerClickHandler, 
                 break;
             case SectionType.Warnings:
                 binder.ToggleWarningsExpanded();
+                break;
+            case SectionType.ReadyForPicking:
+                binder.ToggleRipeExpanded();
                 break;
         }
 
