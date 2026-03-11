@@ -50,14 +50,14 @@ public class ModeController : MonoBehaviour
     private void Awake()
     {
         if (twinDatabase == null)
-            twinDatabase = FindObjectOfType<TwinDatabase>();
+            twinDatabase = FindFirstObjectByType<TwinDatabase>();
 
         if (plantVisualRegistry == null)
-            plantVisualRegistry = FindObjectOfType<PlantVisualRegistry>();
+            plantVisualRegistry = FindFirstObjectByType<PlantVisualRegistry>();
 
         if (plantVisualRegistry == null)
         {
-            TwinGenerator twinGenerator = FindObjectOfType<TwinGenerator>();
+            TwinGenerator twinGenerator = FindFirstObjectByType<TwinGenerator>();
             if (twinGenerator != null)
             {
                 Debug.Log("[ModeController] PlantVisualRegistry not found. Adding to TwinGenerator.");

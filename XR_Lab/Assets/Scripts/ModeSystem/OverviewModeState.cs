@@ -132,7 +132,7 @@ public sealed class OverviewModeState : ModeStateBase
         }
 
         // Fallback: create a temporary controller at runtime
-        TwinGenerator gen    = UnityEngine.Object.FindObjectOfType<TwinGenerator>();
+        TwinGenerator gen    = UnityEngine.Object.FindFirstObjectByType<TwinGenerator>();
         Transform     parent = gen != null ? gen.transform : null;
 
         GameObject go = new GameObject("[PlantIconLOD_Runtime]");
@@ -181,7 +181,7 @@ public sealed class OverviewModeState : ModeStateBase
         TwinDatabase db = context.TwinDatabase;
         if (db == null) return;
 
-        TwinGenerator gen = UnityEngine.Object.FindObjectOfType<TwinGenerator>();
+        TwinGenerator gen = UnityEngine.Object.FindFirstObjectByType<TwinGenerator>();
         if (gen == null)
         {
             Debug.LogWarning("[OverviewModeState] TwinGenerator not found – cannot spawn row overlays.");
