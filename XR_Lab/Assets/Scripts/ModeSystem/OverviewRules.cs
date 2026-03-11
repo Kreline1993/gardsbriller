@@ -6,6 +6,7 @@ public static class OverviewRules
     // ── Plant condition filters ───────────────────────────────────────────
     public const string BadHealthStatus = "bad";
     public const string WarningNoteTag  = "warning";
+    public const int    RipeGrowthThreshold = 100;
 
     // ── Icon LOD defaults (mirror PlantIconLODController inspector defaults) ──
     public const float NearThreshold    = 3f;    // < 3 m  → individual icon at 75 % height

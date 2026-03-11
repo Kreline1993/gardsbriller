@@ -9,6 +9,7 @@ public class OverviewSummarySectionData
     public int lowMoistureRows;
     public int badHealthPlants;
     public int warningPlants;
+    public int ripePlants;
 }
 
 [Serializable]
@@ -37,6 +38,9 @@ public class OverviewPanelDataSnapshot
     public List<OverviewRowSectionData> lowMoistureRows = new List<OverviewRowSectionData>();
     public List<OverviewPlantSectionData> badHealthPlants = new List<OverviewPlantSectionData>();
     public List<OverviewPlantSectionData> warningPlants = new List<OverviewPlantSectionData>();
+    public List<OverviewPlantSectionData> ripePlants = new List<OverviewPlantSectionData>();
     public string nextPesticidesDate = "N/A";
+    public string lastPesticideDate = "N/A";
+    public string lastWateredDate = "N/A";
     public int lowestRowMoisture = 0;
 }
