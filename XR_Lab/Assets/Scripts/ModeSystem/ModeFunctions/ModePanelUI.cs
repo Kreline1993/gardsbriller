@@ -21,7 +21,7 @@ public class ModePanelUI : MonoBehaviour
     private void Start()
     {
         if (modeController == null)
-            modeController = FindObjectOfType<ModeController>();
+            modeController = FindFirstObjectByType<ModeController>();
 
         if (modeController == null)
         {

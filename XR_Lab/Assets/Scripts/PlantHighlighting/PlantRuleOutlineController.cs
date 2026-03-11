@@ -81,7 +81,7 @@ public sealed class PlantRuleOutlineController : MonoBehaviour
             plantIdentity = GetComponent<PlantIdentity>();
 
         if (modeController == null)
-            modeController = FindObjectOfType<ModeController>();
+            modeController = FindFirstObjectByType<ModeController>();
 
         if (interactableEvents == null)
             interactableEvents = GetComponent<InteractableUnityEventWrapper>();

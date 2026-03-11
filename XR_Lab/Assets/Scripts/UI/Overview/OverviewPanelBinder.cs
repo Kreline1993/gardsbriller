@@ -42,7 +42,7 @@ public class OverviewPanelBinder : MonoBehaviour
     private void Awake()
     {
         if (dataProvider == null)
-            dataProvider = FindObjectOfType<OverviewPanelDataProvider>();
+            dataProvider = FindFirstObjectByType<OverviewPanelDataProvider>();
     }
 
     /// <summary>
