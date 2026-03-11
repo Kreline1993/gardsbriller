@@ -22,10 +22,10 @@ public class OverviewPanelDataProvider : MonoBehaviour
     private void Awake()
     {
         if (twinDatabase == null)
-            twinDatabase = FindObjectOfType<TwinDatabase>();
+            twinDatabase = FindFirstObjectByType<TwinDatabase>();
 
         if (modeController == null)
-            modeController = FindObjectOfType<ModeController>();
+            modeController = FindFirstObjectByType<ModeController>();
     }
 
     private void OnEnable()
