@@ -9,16 +9,27 @@ public sealed class PlantPickingModeState : ModeStateBase
     private readonly PlantHighlightState _highlightState = new PlantHighlightState();
     private List<Plant> _eligiblePlants = new List<Plant>();
     private readonly Dictionary<string, Color> _speciesTints;
+    private readonly PickingProximityController _proximityController;
+    private readonly Dictionary<string, GameObject> _overlayPrefabs;
 
-    public PlantPickingModeState(ModeContext context, Dictionary<string, Color> speciesTints) : base(context)
+    public PlantPickingModeState(ModeContext context, Dictionary<string, Color> speciesTints,
+        PickingProximityController proximityController, Dictionary<string, GameObject> overlayPrefabs) : base(context)
     {
         _speciesTints = speciesTints;
+        _proximityController = proximityController;
+        _overlayPrefabs = overlayPrefabs;
     }
 
     public override void Enter()
     {
         context.PlantVisualRegistry?.ResetAll();
         _highlightState.ClearAll();
+
+        Camera cam = Camera.main;
+        if (cam == null)
+            Debug.LogWarning("[PlantPickingModeState] Camera.main is null – proximity overlays will not update.");
+        _proximityController?.Initialise(cam?.transform, context.PlantVisualRegistry,
+            _overlayPrefabs, _speciesTints);
 
         if (context.TwinDatabase == null)
         {
@@ -36,6 +47,7 @@ public sealed class PlantPickingModeState : ModeStateBase
     public override void Exit()
     {
         _highlightState.ClearAll();
+        _proximityController?.ClearPlants();
         context.PlantVisualRegistry?.ResetAll();
     }
 
@@ -57,7 +69,7 @@ public sealed class PlantPickingModeState : ModeStateBase
     public void ClearAll()
     {
         _highlightState.ClearAll();
-        context.PlantVisualRegistry?.ResetAll();
+        _proximityController?.ClearPlants();
     }
 
     /// <summary>
@@ -77,16 +89,28 @@ public sealed class PlantPickingModeState : ModeStateBase
     private void ApplyVisuals()
     {
         var selectedIds = _highlightState.SelectedIds;
-        var plantTints = new Dictionary<string, Color>();
+        var selectedPlants = new List<Plant>();
 
         foreach (var plant in _eligiblePlants)
         {
-            if (!selectedIds.Contains(plant.plantId)) continue;
-
-            Color tint = _speciesTints.TryGetValue(plant.species, out Color c) ? c : Color.white;
-            plantTints[plant.plantId] = tint;
+            if (selectedIds.Contains(plant.plantId))
+                selectedPlants.Add(plant);
         }
 
-        context.PlantVisualRegistry.ApplyProtectedSet(plantTints, false);
+        if (_proximityController != null)
+        {
+            _proximityController.SetSelectedPlants(selectedPlants);
+        }
+        else
+        {
+            // Fallback: flat colour tint for all selected plants
+            var plantTints = new Dictionary<string, Color>();
+            foreach (var plant in selectedPlants)
+            {
+                Color tint = _speciesTints.TryGetValue(plant.species, out Color c) ? c : Color.white;
+                plantTints[plant.plantId] = tint;
+            }
+            context.PlantVisualRegistry.ApplyProtectedSet(plantTints, false);
+        }
     }
 }

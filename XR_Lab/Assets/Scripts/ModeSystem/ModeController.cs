@@ -43,6 +43,15 @@ public class ModeController : MonoBehaviour
     [SerializeField] private Color tomatoPickingTint = new Color(1f, 0.4f, 0.8f, 1f);
     [SerializeField] private Color leekPickingTint = new Color(0.4f, 1f, 0.4f, 1f);
     [SerializeField] private Color radishPickingTint = new Color(0.4f, 0.6f, 1f, 1f);
+    [Tooltip("Prefab spawned over selected tomato plants within the overlay threshold distance.")]
+    [SerializeField] private GameObject tomatoPickingOverlayPrefab;
+    [Tooltip("Prefab spawned over selected leek plants within the overlay threshold distance.")]
+    [SerializeField] private GameObject leekPickingOverlayPrefab;
+    [Tooltip("Prefab spawned over selected radish plants within the overlay threshold distance.")]
+    [SerializeField] private GameObject radishPickingOverlayPrefab;
+    [Tooltip("Assign the scene GameObject that has PickingProximityController attached.")]
+    [SerializeField] private PickingProximityController pickingProximityController;
+
 
     private readonly Dictionary<AppMode, IModeState> states = new Dictionary<AppMode, IModeState>();
     private IModeState currentState;
@@ -99,7 +108,14 @@ public class ModeController : MonoBehaviour
             { "Leek",   leekPickingTint  },
             { "Radish", radishPickingTint }
         };
-        states[AppMode.PlantPicking] = new PlantPickingModeState(context, speciesTints);
+        var speciesOverlays = new Dictionary<string, GameObject>(System.StringComparer.OrdinalIgnoreCase)
+{
+    { "Tomato", tomatoPickingOverlayPrefab },
+    { "Leek",   leekPickingOverlayPrefab   },
+    { "Radish", radishPickingOverlayPrefab }
+};
+        states[AppMode.PlantPicking] = new PlantPickingModeState(context, speciesTints,
+            pickingProximityController, speciesOverlays);
         states[AppMode.Weeding] = new WeedingModeState(context, 
             weedingProtectedTint, 
             disableTouchForProtectedPlants, 
