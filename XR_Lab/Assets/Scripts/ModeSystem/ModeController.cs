@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class ModeController : MonoBehaviour
 {
     [Header("References")]
@@ -46,6 +47,17 @@ public class ModeController : MonoBehaviour
 
     public AppMode CurrentMode { get; private set; }
     public event Action<AppMode> ModeChanged;
+
+    /// <summary>
+    /// Fired after a species is toggled in PlantPicking mode.
+    /// Args: (species, isNowActive)
+    /// </summary>
+    public event Action<string, bool> PickingSpeciesToggled;
+
+    /// <summary>
+    /// Fired when all picking highlights are cleared via ClearPickingHighlights().
+    /// </summary>
+    public event Action PickingSelectionCleared;
 
     private void Awake()
     {
@@ -129,15 +141,31 @@ public class ModeController : MonoBehaviour
     public void TogglePickingSpecies(string species)
     {
         if (currentState is PlantPickingModeState pickingState)
+        {
             pickingState.ToggleSpecies(species);
+            PickingSpeciesToggled?.Invoke(species, pickingState.IsSpeciesSelected(species));
+        }
         else
             Debug.LogWarning("[ModeController] TogglePickingSpecies called but not in PlantPicking mode.");
+    }
+
+    /// <summary>
+    /// Returns true if at least one eligible plant of the given species is currently highlighted.
+    /// Safe to call from any mode (returns false if not in PlantPicking mode).
+    /// </summary>
+    public bool IsSpeciesSelected(string species)
+    {
+        return currentState is PlantPickingModeState pickingState
+               && pickingState.IsSpeciesSelected(species);
     }
 
     public void ClearPickingHighlights()
     {
         if (currentState is PlantPickingModeState pickingState)
+        {
             pickingState.ClearAll();
+            PickingSelectionCleared?.Invoke();
+        }
         else
             Debug.LogWarning("[ModeController] ClearPickingHighlights called but not in PlantPicking mode.");
     }
