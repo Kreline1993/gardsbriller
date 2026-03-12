@@ -4150,6 +4150,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: LocalizationManager
       objectReference: {fileID: 0}
+    - target: {fileID: 3948066030220785952, guid: 391746b4d05e046f1ad857954bef332a, type: 3}
+      propertyPath: meshVisualizationOption
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 4388574751220952501, guid: 391746b4d05e046f1ad857954bef332a, type: 3}
       propertyPath: m_actionButton
       value: 2
