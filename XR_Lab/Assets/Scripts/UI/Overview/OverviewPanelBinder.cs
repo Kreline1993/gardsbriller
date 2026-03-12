@@ -31,19 +31,33 @@ public class OverviewPanelBinder : MonoBehaviour
     [Header("Behavior")]
     [SerializeField] private bool refreshOnEnable = true;
 
-    // Collapsible section state
+    [Header("Expand Layout")]
+    [Tooltip("Extra padding added below each expanded section's text.")]
+    [SerializeField] private float expandPadding = 10f;
+
     private bool expandedLowMoisture = false;
     private bool expandedBadHealth = false;
     private bool expandedWarnings = false;
     private bool expandedRipe = false;
 
-    // Rule colors provided by ModeController
     private Color lowMoistureColor = new Color(0.5f, 0f, 1f, 1f);
     private Color badHealthColor = new Color(1f, 0.5f, 0f, 1f);
     private Color warningTagColor = new Color(1f, 0f, 0f, 1f);
     private Color ripeColor = new Color(0f, 0.8f, 0.2f, 1f);
 
     private OverviewPanelDataSnapshot currentSnapshot;
+
+    // Layout bookkeeping: original positions/sizes of each Content child
+    private Transform contentParent;
+    private float[] baseYPositions;
+    private float[] baseHeights;
+    private float baseContentHeight;
+    private int[] detailSectionIndex; // maps each of the 4 detail texts to a Content child index
+    private bool layoutCaptured;
+
+    // Sub-child bookkeeping: original local positions inside each section button
+    private Vector2[][] baseSectionChildPositions; // [sectionSlot 0-3][childIndex]
+    private RectTransform[][] sectionChildRects;   // [sectionSlot 0-3][childIndex]
 
     private void Awake()
     {
@@ -201,7 +215,160 @@ public class OverviewPanelBinder : MonoBehaviour
 
         if (lowestMoistureText != null)
             lowestMoistureText.text = $"{snapshot.lowestRowMoisture}%";
+
+        RecalculateLayout();
     }
+
+    #region Expand Layout
+
+    private void CaptureBaseLayout()
+    {
+        TMP_Text anyDetail = lowMoistureDetailsText ?? badHealthDetailsText
+                             ?? warningsDetailsText ?? ripeDetailsText;
+        if (anyDetail == null) return;
+
+        // detail text → section button → Content
+        contentParent = anyDetail.transform.parent.parent;
+        int count = contentParent.childCount;
+
+        baseYPositions = new float[count];
+        baseHeights = new float[count];
+
+        for (int i = 0; i < count; i++)
+        {
+            RectTransform child = contentParent.GetChild(i) as RectTransform;
+            if (child != null)
+            {
+                baseYPositions[i] = child.anchoredPosition.y;
+                baseHeights[i] = child.sizeDelta.y;
+            }
+        }
+
+        RectTransform contentRect = contentParent as RectTransform;
+        baseContentHeight = contentRect != null ? contentRect.sizeDelta.y : 0f;
+
+        detailSectionIndex = new int[4];
+        detailSectionIndex[0] = SectionIndexOf(lowMoistureDetailsText);
+        detailSectionIndex[1] = SectionIndexOf(badHealthDetailsText);
+        detailSectionIndex[2] = SectionIndexOf(warningsDetailsText);
+        detailSectionIndex[3] = SectionIndexOf(ripeDetailsText);
+
+        // Capture local positions of each section button's children (header, icon, details, etc.)
+        baseSectionChildPositions = new Vector2[4][];
+        sectionChildRects = new RectTransform[4][];
+
+        for (int d = 0; d < 4; d++)
+        {
+            int idx = detailSectionIndex[d];
+            if (idx < 0) continue;
+
+            RectTransform section = contentParent.GetChild(idx) as RectTransform;
+            if (section == null) continue;
+
+            int childCount = section.childCount;
+            baseSectionChildPositions[d] = new Vector2[childCount];
+            sectionChildRects[d] = new RectTransform[childCount];
+
+            for (int c = 0; c < childCount; c++)
+            {
+                RectTransform cr = section.GetChild(c) as RectTransform;
+                sectionChildRects[d][c] = cr;
+                baseSectionChildPositions[d][c] = cr != null ? cr.anchoredPosition : Vector2.zero;
+            }
+        }
+
+        layoutCaptured = true;
+    }
+
+    private int SectionIndexOf(TMP_Text detail)
+    {
+        if (detail == null || contentParent == null) return -1;
+        Transform sectionButton = detail.transform.parent;
+        for (int i = 0; i < contentParent.childCount; i++)
+        {
+            if (contentParent.GetChild(i) == sectionButton)
+                return i;
+        }
+        return -1;
+    }
+
+    private void RecalculateLayout()
+    {
+        if (!layoutCaptured) CaptureBaseLayout();
+        if (!layoutCaptured) return;
+
+        int childCount = contentParent.childCount;
+        TMP_Text[] detailTexts =
+        {
+            lowMoistureDetailsText, badHealthDetailsText,
+            warningsDetailsText, ripeDetailsText
+        };
+
+        // Determine how much extra height each section needs
+        float[] extraHeight = new float[childCount];
+        for (int d = 0; d < 4; d++)
+        {
+            int idx = detailSectionIndex[d];
+            if (idx < 0 || detailTexts[d] == null) continue;
+
+            if (!string.IsNullOrEmpty(detailTexts[d].text))
+            {
+                detailTexts[d].ForceMeshUpdate();
+                extraHeight[idx] = detailTexts[d].preferredHeight + expandPadding;
+            }
+        }
+
+        // Walk through children: restore base size, shift by accumulated expansion
+        float accumulatedShift = 0f;
+        for (int i = 0; i < childCount; i++)
+        {
+            RectTransform child = contentParent.GetChild(i) as RectTransform;
+            if (child == null) continue;
+
+            // A center-pivot RectTransform grows equally up and down.
+            // Shift it down so the TOP edge stays fixed and growth is purely downward.
+            float pivotCompensation = extraHeight[i] * (1f - child.pivot.y);
+
+            Vector2 pos = child.anchoredPosition;
+            pos.y = baseYPositions[i] - accumulatedShift - pivotCompensation;
+            child.anchoredPosition = pos;
+
+            Vector2 size = child.sizeDelta;
+            size.y = baseHeights[i] + extraHeight[i];
+            child.sizeDelta = size;
+
+            // The button moved down, but its children (header, icon, etc.) are
+            // positioned relative to the button's center, so they moved down too.
+            // Push them back up so they visually stay in their original spot.
+            for (int d = 0; d < 4; d++)
+            {
+                if (detailSectionIndex[d] != i) continue;
+                if (sectionChildRects[d] == null) break;
+
+                for (int c = 0; c < sectionChildRects[d].Length; c++)
+                {
+                    if (sectionChildRects[d][c] == null) continue;
+                    Vector2 basePos = baseSectionChildPositions[d][c];
+                    basePos.y += pivotCompensation;
+                    sectionChildRects[d][c].anchoredPosition = basePos;
+                }
+                break;
+            }
+
+            accumulatedShift += extraHeight[i];
+        }
+
+        // Grow the Content rect so the ScrollView knows the new total height
+        RectTransform contentRect = contentParent as RectTransform;
+        if (contentRect != null)
+        {
+            Vector2 contentSize = contentRect.sizeDelta;
+            contentSize.y = baseContentHeight + accumulatedShift;
+            contentRect.sizeDelta = contentSize;
+        }
+    }
+
+    #endregion
 
     private static string BuildSummaryText(OverviewSummarySectionData summary)
     {
