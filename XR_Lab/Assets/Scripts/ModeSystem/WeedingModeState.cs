@@ -43,6 +43,9 @@ public sealed class WeedingModeState : ModeStateBase
             context.PlantVisualRegistry.MarkAllProtected(
                 protectedTint, disableTouchForProtectedPlants);
         }
+
+        foreach (var infoPanel in Object.FindObjectsByType<InfoPanelSpawner>(FindObjectsSortMode.None))
+            infoPanel.ClosePanel();
     }
 
     public override void Exit()
