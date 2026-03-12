@@ -66,4 +66,14 @@ public class InfoPanelSpawner : MonoBehaviour
             _outlineController?.SetPanelOpen(false);
         }
     }
+
+    public void ClosePanel()
+    {
+        if (spawnedPanel != null)
+        {
+            Destroy(spawnedPanel);
+            spawnedPanel = null;
+            _outlineController?.SetPanelOpen(false);
+        }
+    }
 }
