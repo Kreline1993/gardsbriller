@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Text;
-using Oculus.Interaction.Surfaces;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -47,17 +46,6 @@ public class OverviewPanelBinder : MonoBehaviour
     [SerializeField] private TMP_Text lastPesticideText;
     [SerializeField] private TMP_Text lastWateredText;
     [SerializeField] private TMP_Text lowestMoistureText;
-
-    [Header("Interaction Surface")]
-    [Tooltip("The BoundsClipper on the ISDK Surface child (under ISDK_RayCanvasInteraction). " +
-             "Its Size/Position are updated when toggling so the ray interaction area matches only the visible content.")]
-    [SerializeField] private BoundsClipper boundsClipper;
-    [Tooltip("BoundsClipper Size when showing the full detail panel (canvas pixel units). Match your canvas size.")]
-    [SerializeField] private Vector3 expandedBoundsSize = new Vector3(1000, 1976, 0.01f);
-    [Tooltip("BoundsClipper Size when showing the compact status bar (canvas pixel units).")]
-    [SerializeField] private Vector3 collapsedBoundsSize = new Vector3(600, 100, 0.01f);
-    [Tooltip("BoundsClipper Position offset when collapsed (local space). Adjust if status bar is not canvas-centered.")]
-    [SerializeField] private Vector3 collapsedBoundsPosition = Vector3.zero;
 
     [Header("Behavior")]
     [SerializeField] private bool refreshOnEnable = true;
@@ -134,25 +122,6 @@ public class OverviewPanelBinder : MonoBehaviour
 
         if (detailPanelRoot != null)
             detailPanelRoot.SetActive(isExpanded);
-
-        UpdateBoundsClipperToActiveView();
-    }
-
-    private void UpdateBoundsClipperToActiveView()
-    {
-        if (boundsClipper == null)
-            return;
-
-        if (isExpanded)
-        {
-            boundsClipper.Position = Vector3.zero;
-            boundsClipper.Size = expandedBoundsSize;
-        }
-        else
-        {
-            boundsClipper.Position = collapsedBoundsPosition;
-            boundsClipper.Size = collapsedBoundsSize;
-        }
     }
 
     /// <summary>
