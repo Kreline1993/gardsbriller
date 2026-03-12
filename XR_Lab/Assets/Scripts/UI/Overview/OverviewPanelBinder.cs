@@ -1,12 +1,32 @@
 using System.Collections.Generic;
 using System.Text;
+using Oculus.Interaction.Surfaces;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class OverviewPanelBinder : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] private OverviewPanelDataProvider dataProvider;
+
+    [Header("Status Bar (Compact View)")]
+    [Tooltip("Root GameObject for the compact status bar. Shown when collapsed.")]
+    [SerializeField] private GameObject statusBarRoot;
+    [SerializeField] private TMP_Text statusBarMoistureCount;
+    [SerializeField] private TMP_Text statusBarHealthCount;
+    [SerializeField] private TMP_Text statusBarWarningCount;
+    [SerializeField] private TMP_Text statusBarRipeCount;
+    [SerializeField] private TMP_Text statusBarQuickStats;
+    [Tooltip("Optional background images behind each badge, tinted to match category color.")]
+    [SerializeField] private Image statusBarMoistureBadge;
+    [SerializeField] private Image statusBarHealthBadge;
+    [SerializeField] private Image statusBarWarningBadge;
+    [SerializeField] private Image statusBarRipeBadge;
+
+    [Header("Detail Panel (Full View)")]
+    [Tooltip("Root GameObject for the full detail panel. Shown when expanded.")]
+    [SerializeField] private GameObject detailPanelRoot;
 
     [Header("Combined Display (Optional)")]
     [SerializeField] private TMP_Text mainText;
@@ -28,8 +48,23 @@ public class OverviewPanelBinder : MonoBehaviour
     [SerializeField] private TMP_Text lastWateredText;
     [SerializeField] private TMP_Text lowestMoistureText;
 
+    [Header("Interaction Surface")]
+    [Tooltip("The BoundsClipper on the ISDK Surface child (under ISDK_RayCanvasInteraction). " +
+             "Its Size/Position are updated when toggling so the ray interaction area matches only the visible content.")]
+    [SerializeField] private BoundsClipper boundsClipper;
+    [Tooltip("BoundsClipper Size when showing the full detail panel (canvas pixel units). Match your canvas size.")]
+    [SerializeField] private Vector3 expandedBoundsSize = new Vector3(1000, 1976, 0.01f);
+    [Tooltip("BoundsClipper Size when showing the compact status bar (canvas pixel units).")]
+    [SerializeField] private Vector3 collapsedBoundsSize = new Vector3(600, 100, 0.01f);
+    [Tooltip("BoundsClipper Position offset when collapsed (local space). Adjust if status bar is not canvas-centered.")]
+    [SerializeField] private Vector3 collapsedBoundsPosition = Vector3.zero;
+
     [Header("Behavior")]
     [SerializeField] private bool refreshOnEnable = true;
+    [Tooltip("When true, the panel starts in compact (status bar) mode.")]
+    [SerializeField] private bool startCollapsed = true;
+
+    private bool isExpanded;
 
     [Header("Expand Layout")]
     [Tooltip("Extra padding added below each expanded section's text.")]
@@ -63,6 +98,61 @@ public class OverviewPanelBinder : MonoBehaviour
     {
         if (dataProvider == null)
             dataProvider = FindFirstObjectByType<OverviewPanelDataProvider>();
+    }
+
+    private void Start()
+    {
+        isExpanded = !startCollapsed;
+        ApplyExpandedState();
+    }
+
+    /// <summary>
+    /// Toggles between the compact status bar and the full detail panel.
+    /// Wire this to a Button.onClick in the Inspector.
+    /// </summary>
+    public void ToggleExpandCollapse()
+    {
+        isExpanded = !isExpanded;
+        ApplyExpandedState();
+    }
+
+    /// <summary>
+    /// Expands or collapses the panel from code.
+    /// </summary>
+    public void SetExpanded(bool expanded)
+    {
+        isExpanded = expanded;
+        ApplyExpandedState();
+    }
+
+    public bool IsExpanded => isExpanded;
+
+    private void ApplyExpandedState()
+    {
+        if (statusBarRoot != null)
+            statusBarRoot.SetActive(!isExpanded);
+
+        if (detailPanelRoot != null)
+            detailPanelRoot.SetActive(isExpanded);
+
+        UpdateBoundsClipperToActiveView();
+    }
+
+    private void UpdateBoundsClipperToActiveView()
+    {
+        if (boundsClipper == null)
+            return;
+
+        if (isExpanded)
+        {
+            boundsClipper.Position = Vector3.zero;
+            boundsClipper.Size = expandedBoundsSize;
+        }
+        else
+        {
+            boundsClipper.Position = collapsedBoundsPosition;
+            boundsClipper.Size = collapsedBoundsSize;
+        }
     }
 
     /// <summary>
@@ -139,8 +229,44 @@ public class OverviewPanelBinder : MonoBehaviour
         if (snapshot == null)
             return;
 
+        RenderStatusBar(snapshot);
         RenderCombined(snapshot);
         RenderSplit(snapshot);
+    }
+
+    private void RenderStatusBar(OverviewPanelDataSnapshot snapshot)
+    {
+        if (statusBarRoot == null)
+            return;
+
+        var summary = snapshot.summary;
+
+        SetBadge(statusBarMoistureCount, statusBarMoistureBadge,
+            summary.lowMoistureRows, lowMoistureColor);
+
+        SetBadge(statusBarHealthCount, statusBarHealthBadge,
+            summary.badHealthPlants, badHealthColor);
+
+        SetBadge(statusBarWarningCount, statusBarWarningBadge,
+            summary.warningPlants, warningTagColor);
+
+        SetBadge(statusBarRipeCount, statusBarRipeBadge,
+            summary.ripePlants, ripeColor);
+
+        if (statusBarQuickStats != null)
+        {
+            statusBarQuickStats.text =
+                $"Moisture: {snapshot.lowestRowMoisture}%  •  Watered: {snapshot.lastWateredDate}";
+        }
+    }
+
+    private static void SetBadge(TMP_Text countText, Image badge, int count, Color categoryColor)
+    {
+        if (countText != null)
+            countText.text = count.ToString();
+
+        if (badge != null)
+            badge.color = count > 0 ? categoryColor : Color.green;
     }
 
     private void RenderCombined(OverviewPanelDataSnapshot snapshot)

@@ -1265,6 +1265,58 @@ PrefabInstance:
       propertyPath: wristTransform
       value: 
       objectReference: {fileID: 1696891608}
+    - target: {fileID: 4936032562838962437, guid: c40157a252f7c1b48b1a87267e0801fa, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4936032562838962437, guid: c40157a252f7c1b48b1a87267e0801fa, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4936032562838962437, guid: c40157a252f7c1b48b1a87267e0801fa, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 52.96
+      objectReference: {fileID: 0}
+    - target: {fileID: 4936032562838962437, guid: c40157a252f7c1b48b1a87267e0801fa, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -50
+      objectReference: {fileID: 0}
+    - target: {fileID: 5261275404202764937, guid: c40157a252f7c1b48b1a87267e0801fa, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5261275404202764937, guid: c40157a252f7c1b48b1a87267e0801fa, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5261275404202764937, guid: c40157a252f7c1b48b1a87267e0801fa, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 158.88
+      objectReference: {fileID: 0}
+    - target: {fileID: 5261275404202764937, guid: c40157a252f7c1b48b1a87267e0801fa, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -50
+      objectReference: {fileID: 0}
+    - target: {fileID: 5383209583834023338, guid: c40157a252f7c1b48b1a87267e0801fa, type: 3}
+      propertyPath: m_PresetInfoIsWorld
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6529068088017706885, guid: c40157a252f7c1b48b1a87267e0801fa, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6529068088017706885, guid: c40157a252f7c1b48b1a87267e0801fa, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6529068088017706885, guid: c40157a252f7c1b48b1a87267e0801fa, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 105.92
+      objectReference: {fileID: 0}
+    - target: {fileID: 6529068088017706885, guid: c40157a252f7c1b48b1a87267e0801fa, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -50
+      objectReference: {fileID: 0}
     - target: {fileID: 7974228534324243144, guid: c40157a252f7c1b48b1a87267e0801fa, type: 3}
       propertyPath: m_Name
       value: Overview-panel
