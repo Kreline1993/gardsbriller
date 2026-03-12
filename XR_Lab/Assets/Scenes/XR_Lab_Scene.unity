@@ -414,7 +414,9 @@ MonoBehaviour:
   disableTouchForProtectedPlants: 1
   weedingOverlayPrefab: {fileID: 4312566435863121009, guid: 6e381599a6a7f604b96ca62061828e27, type: 3}
   hideOriginalDuringOverlay: 0
-  pickingHighlightTint: {r: 1, g: 0.4, b: 0.8, a: 1}
+  tomatoPickingTint: {r: 1, g: 0.17924517, b: 0.25557765, a: 1}
+  leekPickingTint: {r: 0.4, g: 1, b: 0.4, a: 1}
+  radishPickingTint: {r: 0.4, g: 0.6, b: 1, a: 1}
 --- !u!4 &551489249
 Transform:
   m_ObjectHideFlags: 0

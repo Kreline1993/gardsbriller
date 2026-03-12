@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public sealed class PlantPickingModeState : ModeStateBase
@@ -7,11 +8,11 @@ public sealed class PlantPickingModeState : ModeStateBase
 
     private readonly PlantHighlightState _highlightState = new PlantHighlightState();
     private List<Plant> _eligiblePlants = new List<Plant>();
-    private readonly Color _highlightTint;
+    private readonly Dictionary<string, Color> _speciesTints;
 
-    public PlantPickingModeState(ModeContext context, Color highlightTint) : base(context)
+    public PlantPickingModeState(ModeContext context, Dictionary<string, Color> speciesTints) : base(context)
     {
-        _highlightTint = highlightTint;
+        _speciesTints = speciesTints;
     }
 
     public override void Enter()
@@ -75,8 +76,17 @@ public sealed class PlantPickingModeState : ModeStateBase
 
     private void ApplyVisuals()
     {
-        if (context.PlantVisualRegistry == null) return;
-        var selected = new HashSet<string>(_highlightState.SelectedIds);
-        context.PlantVisualRegistry.ApplyProtectedSet(selected, _highlightTint, false);
+        var selectedIds = _highlightState.SelectedIds;
+        var plantTints = new Dictionary<string, Color>();
+
+        foreach (var plant in _eligiblePlants)
+        {
+            if (!selectedIds.Contains(plant.plantId)) continue;
+
+            Color tint = _speciesTints.TryGetValue(plant.species, out Color c) ? c : Color.white;
+            plantTints[plant.plantId] = tint;
+        }
+
+        context.PlantVisualRegistry.ApplyProtectedSet(plantTints, false);
     }
 }
