@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class ModeController : MonoBehaviour
 {
     [Header("References")]
@@ -17,20 +18,18 @@ public class ModeController : MonoBehaviour
     [Tooltip("Height of the bounding box spawned over low-moisture rows.")]
     [SerializeField] private float overviewRowOverlayHeight = 1.5f;
 
-    [Tooltip("Icon prefab shown above plants with bad health status.")]
+    [Tooltip("Icon prefab shown above / clustering plants with bad health status.")]
     [SerializeField] private GameObject overviewBadHealthIconPrefab;
-    [Tooltip("Height above the plant the bad health icon is placed (world units).")]
-    [SerializeField] private float overviewBadHealthIconYOffset = 0.3f;
 
-    [Tooltip("Icon prefab shown above plants with a warning note tag.")]
+    [Tooltip("Icon prefab shown above / clustering plants with a warning note tag.")]
     [SerializeField] private GameObject overviewWarningIconPrefab;
-    [Tooltip("Height above the plant the warning icon is placed (world units).")]
-    [SerializeField] private float overviewWarningIconYOffset = 0.3f;
 
-    [Tooltip("Icon prefab shown above plants with growth >= 100.")]
+    [Tooltip("Icon prefab shown above / clustering plants with growth >= 100.")]
     [SerializeField] private GameObject overviewRipeIconPrefab;
-    [Tooltip("Height above the plant the ripe icon is placed (world units).")]
-    [SerializeField] private float overviewRipeIconYOffset = 0.3f;
+
+    [Tooltip("Assign the scene GameObject that has PlantIconLODController attached. " +
+             "All LOD and cluster values are edited directly on that component.")]
+    [SerializeField] private PlantIconLODController overviewLODController;
 
     [Header("Weeding Mode")]
     [SerializeField] private Color weedingProtectedTint = Color.yellow;
@@ -49,17 +48,28 @@ public class ModeController : MonoBehaviour
     public AppMode CurrentMode { get; private set; }
     public event Action<AppMode> ModeChanged;
 
+    /// <summary>
+    /// Fired after a species is toggled in PlantPicking mode.
+    /// Args: (species, isNowActive)
+    /// </summary>
+    public event Action<string, bool> PickingSpeciesToggled;
+
+    /// <summary>
+    /// Fired when all picking highlights are cleared via ClearPickingHighlights().
+    /// </summary>
+    public event Action PickingSelectionCleared;
+
     private void Awake()
     {
         if (twinDatabase == null)
-            twinDatabase = FindObjectOfType<TwinDatabase>();
+            twinDatabase = FindFirstObjectByType<TwinDatabase>();
 
         if (plantVisualRegistry == null)
-            plantVisualRegistry = FindObjectOfType<PlantVisualRegistry>();
+            plantVisualRegistry = FindFirstObjectByType<PlantVisualRegistry>();
 
         if (plantVisualRegistry == null)
         {
-            TwinGenerator twinGenerator = FindObjectOfType<TwinGenerator>();
+            TwinGenerator twinGenerator = FindFirstObjectByType<TwinGenerator>();
             if (twinGenerator != null)
             {
                 Debug.Log("[ModeController] PlantVisualRegistry not found. Adding to TwinGenerator.");
@@ -78,11 +88,9 @@ public class ModeController : MonoBehaviour
             overviewRowOverlayPrefab,
             overviewRowOverlayHeight,
             overviewBadHealthIconPrefab,
-            overviewBadHealthIconYOffset,
             overviewWarningIconPrefab,
-            overviewWarningIconYOffset,
             overviewRipeIconPrefab,
-            overviewRipeIconYOffset);
+            overviewLODController);
         states[AppMode.PlantPicking] = new PlantPickingModeState(context, 
             pickingHighlightTint);
         states[AppMode.Weeding] = new WeedingModeState(context, 
@@ -133,15 +141,31 @@ public class ModeController : MonoBehaviour
     public void TogglePickingSpecies(string species)
     {
         if (currentState is PlantPickingModeState pickingState)
+        {
             pickingState.ToggleSpecies(species);
+            PickingSpeciesToggled?.Invoke(species, pickingState.IsSpeciesSelected(species));
+        }
         else
             Debug.LogWarning("[ModeController] TogglePickingSpecies called but not in PlantPicking mode.");
+    }
+
+    /// <summary>
+    /// Returns true if at least one eligible plant of the given species is currently highlighted.
+    /// Safe to call from any mode (returns false if not in PlantPicking mode).
+    /// </summary>
+    public bool IsSpeciesSelected(string species)
+    {
+        return currentState is PlantPickingModeState pickingState
+               && pickingState.IsSpeciesSelected(species);
     }
 
     public void ClearPickingHighlights()
     {
         if (currentState is PlantPickingModeState pickingState)
+        {
             pickingState.ClearAll();
+            PickingSelectionCleared?.Invoke();
+        }
         else
             Debug.LogWarning("[ModeController] ClearPickingHighlights called but not in PlantPicking mode.");
     }

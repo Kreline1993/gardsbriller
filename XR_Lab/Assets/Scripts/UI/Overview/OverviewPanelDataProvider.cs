@@ -22,10 +22,10 @@ public class OverviewPanelDataProvider : MonoBehaviour
     private void Awake()
     {
         if (twinDatabase == null)
-            twinDatabase = FindObjectOfType<TwinDatabase>();
+            twinDatabase = FindFirstObjectByType<TwinDatabase>();
 
         if (modeController == null)
-            modeController = FindObjectOfType<ModeController>();
+            modeController = FindFirstObjectByType<ModeController>();
     }
 
     private void OnEnable()
@@ -90,6 +90,8 @@ public class OverviewPanelDataProvider : MonoBehaviour
 
         int lowestMoisture = int.MaxValue;
         System.DateTime? earliestNextPesticide = null;
+        System.DateTime? latestPesticide = null;
+        System.DateTime? latestWatered = null;
 
         foreach (Row row in rows)
         {
@@ -111,6 +113,20 @@ public class OverviewPanelDataProvider : MonoBehaviour
                     groundMoisture = row.groundMoisture,
                     plantCount = plantCount
                 });
+            }
+
+            if (row.lastWateredDate != null)
+            {
+                try
+                {
+                    var rowWatered = ConvertDateDataToDateTime(row.lastWateredDate);
+                    if (!latestWatered.HasValue || rowWatered > latestWatered)
+                        latestWatered = rowWatered;
+                }
+                catch (System.Exception ex)
+                {
+                    Debug.LogWarning($"[OverviewPanelDataProvider] Failed to parse lastWateredDate for row {row.rowId}: {ex.Message}");
+                }
             }
 
             if (row.plants == null)
@@ -159,6 +175,34 @@ public class OverviewPanelDataProvider : MonoBehaviour
                     });
                 }
 
+                if (plant.growth >= OverviewRules.RipeGrowthThreshold)
+                {
+                    snapshot.summary.ripePlants++;
+                    snapshot.ripePlants.Add(new OverviewPlantSectionData
+                    {
+                        plantId = plant.plantId,
+                        species = plant.species,
+                        rowId = row.rowId,
+                        growth = plant.growth,
+                        healthStatus = plant.healthStatus,
+                        noteTag = plant.notes?.noteTag
+                    });
+                }
+
+                if (plant.lastPesticide != null)
+                {
+                    try
+                    {
+                        var pestDate = ConvertDateDataToDateTime(plant.lastPesticide);
+                        if (!latestPesticide.HasValue || pestDate > latestPesticide)
+                            latestPesticide = pestDate;
+                    }
+                    catch (System.Exception ex)
+                    {
+                        Debug.LogWarning($"[OverviewPanelDataProvider] Failed to parse lastPesticide for plant {plant.plantId}: {ex.Message}");
+                    }
+                }
+
                 // Track earliest next pesticide date
                 if (plant.nextPesticide != null)
                 {
@@ -179,15 +223,21 @@ public class OverviewPanelDataProvider : MonoBehaviour
         snapshot.lowMoistureRows.Sort((a, b) => string.Compare(a.rowId, b.rowId, StringComparison.Ordinal));
         snapshot.badHealthPlants.Sort((a, b) => string.Compare(a.plantId, b.plantId, StringComparison.Ordinal));
         snapshot.warningPlants.Sort((a, b) => string.Compare(a.plantId, b.plantId, StringComparison.Ordinal));
+        snapshot.ripePlants.Sort((a, b) => string.Compare(a.plantId, b.plantId, StringComparison.Ordinal));
 
-        // Set the two new simple fields
         snapshot.lowestRowMoisture = lowestMoisture == int.MaxValue ? 0 : lowestMoisture;
         snapshot.nextPesticidesDate = earliestNextPesticide.HasValue 
             ? earliestNextPesticide.Value.ToString("dd/MM/yyyy")
             : "N/A";
+        snapshot.lastPesticideDate = latestPesticide.HasValue
+            ? latestPesticide.Value.ToString("dd/MM/yyyy")
+            : "N/A";
+        snapshot.lastWateredDate = latestWatered.HasValue
+            ? latestWatered.Value.ToString("dd/MM/yyyy")
+            : "N/A";
 
 #if UNITY_EDITOR
-        Debug.Log($"[OverviewPanelDataProvider] Snapshot built - Lowest Moisture: {snapshot.lowestRowMoisture}%, Next Pesticide: {snapshot.nextPesticidesDate}, Rows: {snapshot.summary.totalRows}");
+        Debug.Log($"[OverviewPanelDataProvider] Snapshot built - Rows: {snapshot.summary.totalRows}, Ripe: {snapshot.summary.ripePlants}, Lowest Moisture: {snapshot.lowestRowMoisture}%, Next Pesticide: {snapshot.nextPesticidesDate}");
 #endif
 
         return snapshot;

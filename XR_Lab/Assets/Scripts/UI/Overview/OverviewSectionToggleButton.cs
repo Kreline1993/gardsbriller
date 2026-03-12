@@ -13,7 +13,8 @@ public class OverviewSectionToggleButton : MonoBehaviour, IPointerClickHandler, 
     {
         LowMoisture,
         BadHealth,
-        Warnings
+        Warnings,
+        ReadyForPicking
     }
 
     [SerializeField] private OverviewPanelBinder binder;
@@ -27,7 +28,7 @@ public class OverviewSectionToggleButton : MonoBehaviour, IPointerClickHandler, 
             button = GetComponent<Button>();
 
         if (binder == null)
-            binder = FindObjectOfType<OverviewPanelBinder>();
+            binder = FindFirstObjectByType<OverviewPanelBinder>();
 
         if (verboseLogs)
             Debug.Log($"[OverviewSectionToggleButton] Awake | object={name} | button={(button != null)} | binder={(binder != null)} | section={sectionType}", this);
@@ -43,7 +44,7 @@ public class OverviewSectionToggleButton : MonoBehaviour, IPointerClickHandler, 
         }
 
         if (binder == null)
-            binder = FindObjectOfType<OverviewPanelBinder>();
+            binder = FindFirstObjectByType<OverviewPanelBinder>();
 
         if (verboseLogs && binder == null)
             Debug.LogWarning($"[OverviewSectionToggleButton] Binder not found in scene for {name}.", this);
@@ -76,6 +77,9 @@ public class OverviewSectionToggleButton : MonoBehaviour, IPointerClickHandler, 
                 break;
             case SectionType.Warnings:
                 binder.ToggleWarningsExpanded();
+                break;
+            case SectionType.ReadyForPicking:
+                binder.ToggleRipeExpanded();
                 break;
         }
 
