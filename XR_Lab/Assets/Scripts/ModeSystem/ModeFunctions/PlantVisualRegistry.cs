@@ -93,25 +93,21 @@ public class PlantVisualRegistry : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Applies a protected set of plants to the visual registry.
-    /// Note: This method is not used in the current implementation.
-    /// </summary>
-    public void ApplyProtectedSet(HashSet<string> protectedPlantIds, Color protectedTint, bool disableTouchForProtected)
+    public void ApplyProtectedSet(Dictionary<string, Color> protectedPlantTints, bool disableTouchForProtected)
     {
-        if (protectedPlantIds == null)
-            protectedPlantIds = new HashSet<string>();
+        if (protectedPlantTints == null)
+            protectedPlantTints = new Dictionary<string, Color>();
 
-        Debug.Log($"[PlantVisualRegistry] Applying protected set: {protectedPlantIds.Count} protected plants, tint={protectedTint}, disableTouch={disableTouchForProtected}");
-        
+        Debug.Log($"[PlantVisualRegistry] Applying protected set: {protectedPlantTints.Count} protected plants, disableTouch={disableTouchForProtected}");
+
         foreach (KeyValuePair<string, PlantVisualHandle> pair in handlesByPlantId)
         {
             PlantVisualHandle handle = pair.Value;
             if (handle == null)
                 continue;
 
-            bool isProtected = protectedPlantIds.Contains(pair.Key);
-            handle.SetProtectedVisual(isProtected, protectedTint, disableTouchForProtected);
+            bool isProtected = protectedPlantTints.TryGetValue(pair.Key, out Color tint);
+            handle.SetProtectedVisual(isProtected, isProtected ? tint : Color.white, disableTouchForProtected);
         }
     }
 
