@@ -37,10 +37,15 @@ public class PickingProximityController : MonoBehaviour
     private readonly Dictionary<string, ProximityZone> _zoneMemory = new Dictionary<string, ProximityZone>();
 
     private float _timeSinceLastUpdate = float.MaxValue;
+    private BehaviourProfile _activeProfile = BehaviourProfile.Picking;
+    private float _activeThreshold;
+    private Color _weedingNearTint = Color.yellow;
+    private bool _lockInteractionInWeeding;
 
     // --- Internal types -----
 
     private enum ProximityZone { Overlay, Tint }
+    private enum BehaviourProfile { Picking, Weeding }
 
     private class PlantEntry
     {
@@ -62,6 +67,33 @@ public class PickingProximityController : MonoBehaviour
         _registry = registry;
         _overlayPrefabs = overlayPrefabs;
         _speciesTints = speciesTints;
+        _activeProfile = BehaviourProfile.Picking;
+        _activeThreshold = overlayThreshold;
+        _zoneMemory.Clear();
+        _timeSinceLastUpdate = float.MaxValue;
+    }
+
+    /// <summary>
+    /// Configures proximity logic for Weeding mode:
+    /// near plants are tinted with <paramref name="nearHighlightTint"/>,
+    /// far plants have no highlight, and plant interaction can be locked.
+    /// </summary>
+    public void InitialiseWeeding(
+        Transform user,
+        PlantVisualRegistry registry,
+        float nearHighlightDistance,
+        Color nearHighlightTint,
+        bool lockInteraction)
+    {
+        _userTransform = user;
+        _registry = registry;
+        _overlayPrefabs = null;
+        _speciesTints = null;
+        _activeProfile = BehaviourProfile.Weeding;
+        _activeThreshold = nearHighlightDistance;
+        _weedingNearTint = nearHighlightTint;
+        _lockInteractionInWeeding = lockInteraction;
+        _zoneMemory.Clear();
         _timeSinceLastUpdate = float.MaxValue;
     }
 
@@ -104,6 +136,9 @@ public class PickingProximityController : MonoBehaviour
                 Species = plant.species,
                 BottomCentre = bottomCentre
             });
+
+            if (_activeProfile == BehaviourProfile.Weeding && _lockInteractionInWeeding)
+                handle.DisableColliders();
         }
 
         _timeSinceLastUpdate = float.MaxValue; // force immediate update
@@ -170,6 +205,14 @@ public class PickingProximityController : MonoBehaviour
 
     private void ApplyZone(PlantVisualHandle handle, string species, ProximityZone zone)
     {
+        if (_activeProfile == BehaviourProfile.Weeding)
+        {
+            bool isNear = zone == ProximityZone.Overlay;
+            handle.DestroyIcon();
+            handle.SetProtectedVisual(isNear, _weedingNearTint, false);
+            return;
+        }
+
         if (zone == ProximityZone.Overlay)
         {
             GameObject prefab = _overlayPrefabs != null && _overlayPrefabs.TryGetValue(species, out GameObject p)
@@ -194,7 +237,7 @@ public class PickingProximityController : MonoBehaviour
     {
         if (!_zoneMemory.TryGetValue(plantId, out ProximityZone prev))
         {
-            ProximityZone initial = dist < overlayThreshold ? ProximityZone.Overlay : ProximityZone.Tint;
+            ProximityZone initial = dist < _activeThreshold ? ProximityZone.Overlay : ProximityZone.Tint;
             _zoneMemory[plantId] = initial;
             return initial;
         }
@@ -204,11 +247,11 @@ public class PickingProximityController : MonoBehaviour
         switch (prev)
         {
             case ProximityZone.Overlay:
-                if (dist > overlayThreshold + hysteresisBand) next = ProximityZone.Tint;
+                if (dist > _activeThreshold + hysteresisBand) next = ProximityZone.Tint;
                 break;
 
             case ProximityZone.Tint:
-                if (dist < overlayThreshold - hysteresisBand) next = ProximityZone.Overlay;
+                if (dist < _activeThreshold - hysteresisBand) next = ProximityZone.Overlay;
                 break;
         }
 
