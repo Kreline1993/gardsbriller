@@ -118,6 +118,7 @@ public class PickingProximityController : MonoBehaviour
             {
                 handle.DestroyIcon();
                 handle.SetProtectedVisual(false, Color.white, false);
+                handle.RestoreColliders();
             }
             _zoneMemory.Remove(entry.PlantId);
         }
@@ -157,6 +158,7 @@ public class PickingProximityController : MonoBehaviour
                 {
                     handle.DestroyIcon();
                     handle.SetProtectedVisual(false, Color.white, false);
+                    handle.RestoreColliders();
                 }
             }
         }
