@@ -12,6 +12,11 @@ public class OverviewHighlightController : MonoBehaviour
     [SerializeField] private PlantVisualRegistry plantVisualRegistry;
     [SerializeField] private TwinDatabase twinDatabase;
     [SerializeField] private ModeController modeController;
+    [SerializeField] private PlantIconLODController iconLODController;
+
+    [Header("Icon Filter")]
+    [Tooltip("When enabled, only icons for the currently highlighted rule are shown. Icons for other rules are hidden.")]
+    [SerializeField] private bool hideIconsForNonHighlightedRule = false;
 
     [Header("Colors")]
     [SerializeField] private Color lowMoistureColor = new Color(0.5f, 0f, 1f, 1f);
@@ -25,6 +30,7 @@ public class OverviewHighlightController : MonoBehaviour
         if (plantVisualRegistry == null) plantVisualRegistry = FindFirstObjectByType<PlantVisualRegistry>();
         if (twinDatabase == null) twinDatabase = FindFirstObjectByType<TwinDatabase>();
         if (modeController == null) modeController = FindFirstObjectByType<ModeController>();
+        if (iconLODController == null) iconLODController = FindFirstObjectByType<PlantIconLODController>();
     }
 
     /// <summary>
@@ -72,6 +78,32 @@ public class OverviewHighlightController : MonoBehaviour
                     tints[p.plantId] = ripeColor;
 
         plantVisualRegistry.ApplyProtectedSet(tints, false);
+
+        // Icon filter: when enabled, only show icons for the currently highlighted rule(s)
+        if (iconLODController != null && hideIconsForNonHighlightedRule)
+        {
+            var visibleKeys = new List<string>();
+            if (expandedBadHealth) visibleKeys.Add("bad_health");
+            if (expandedWarnings) visibleKeys.Add("warning");
+            if (expandedRipe) visibleKeys.Add("ripe");
+            // Low moisture has no plant-level icons (only row overlays)
+
+            if (visibleKeys.Count == 0)
+            {
+                if (expandedLowMoisture)
+                    iconLODController.SetVisibleLayers(new List<string>()); // low moisture has no plant icons: hide all
+                else
+                    iconLODController.SetVisibleLayers(null); // no section expanded: show all
+            }
+            else
+            {
+                iconLODController.SetVisibleLayers(visibleKeys);
+            }
+        }
+        else if (iconLODController != null)
+        {
+            iconLODController.SetVisibleLayers(null); // show all when toggle is off
+        }
     }
 
     /// <summary>

@@ -469,6 +469,8 @@ MonoBehaviour:
   plantVisualRegistry: {fileID: 0}
   twinDatabase: {fileID: 0}
   modeController: {fileID: 0}
+  iconLODController: {fileID: 0}
+  hideIconsForNonHighlightedRule: 1
   lowMoistureColor: {r: 0.5, g: 0, b: 1, a: 1}
   badHealthColor: {r: 1, g: 0.5, b: 0, a: 1}
   warningTagColor: {r: 1, g: 0, b: 0, a: 1}

@@ -70,6 +70,7 @@ public class PlantIconLODController : MonoBehaviour
     private Transform userTransform;
 
     private readonly List<ConditionLayer> layers      = new List<ConditionLayer>();
+    private HashSet<string>               visibleLayerKeys; // null = show all layers; empty = show none
     private readonly List<GameObject>     activeIcons = new List<GameObject>();
 
     // Zone memory for hysteresis. Key = "<layerIndex>_<plantId>" to keep layers independent.
@@ -143,7 +144,18 @@ public class PlantIconLODController : MonoBehaviour
     {
         layers.Clear();
         zoneMemory.Clear();
+        visibleLayerKeys = null;
         timeSinceLastUpdate = float.MaxValue; // force a fresh rebuild on next Enter
+    }
+
+    /// <summary>
+    /// Restricts which layers are shown. null = show all; empty = show none.
+    /// Used with overview panel "hide icons for non-highlighted rule" toggle.
+    /// </summary>
+    public void SetVisibleLayers(IEnumerable<string> layerKeys)
+    {
+        visibleLayerKeys = layerKeys == null ? null : new HashSet<string>(layerKeys);
+        timeSinceLastUpdate = float.MaxValue; // force immediate rebuild on next Update
     }
 
     // ── Unity lifecycle ─────────────────────────────────────────────────
@@ -184,6 +196,7 @@ public class PlantIconLODController : MonoBehaviour
         {
             ConditionLayer layer = layers[li];
             if (layer.Prefab == null || layer.Plants == null || layer.Plants.Count == 0) continue;
+            if (visibleLayerKeys != null && !visibleLayerKeys.Contains(layer.LayerKey)) continue;
 
             List<PlantEntry> nearList = new List<PlantEntry>();
             List<PlantEntry> midList  = new List<PlantEntry>();
