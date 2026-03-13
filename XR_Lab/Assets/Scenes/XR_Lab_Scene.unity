@@ -326,6 +326,7 @@ MonoBehaviour:
   overlayThreshold: 3
   hysteresisBand: 0.15
   updateInterval: 0.5
+  iconYOffset: 0.1
 --- !u!4 &518314011
 Transform:
   m_ObjectHideFlags: 0
@@ -381,6 +382,7 @@ GameObject:
   - component: {fileID: 551489249}
   - component: {fileID: 551489248}
   - component: {fileID: 551489250}
+  - component: {fileID: 551489251}
   m_Layer: 0
   m_Name: 'ModeController '
   m_TagString: Untagged
@@ -452,6 +454,25 @@ MonoBehaviour:
   refreshOnlyInOverviewMode: 1
   autoRefresh: 1
   refreshIntervalSeconds: 1
+--- !u!114 &551489251
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 551489247}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a59f52370fad82c4aa23e9fa30a3a277, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::OverviewHighlightController
+  plantVisualRegistry: {fileID: 0}
+  twinDatabase: {fileID: 0}
+  modeController: {fileID: 0}
+  lowMoistureColor: {r: 0.5, g: 0, b: 1, a: 1}
+  badHealthColor: {r: 1, g: 0.5, b: 0, a: 1}
+  warningTagColor: {r: 1, g: 0, b: 0, a: 1}
+  ripeColor: {r: 0, g: 0.8, b: 0.2, a: 1}
 --- !u!1 &553951981
 GameObject:
   m_ObjectHideFlags: 0
@@ -620,7 +641,7 @@ GameObject:
   m_Component:
   - component: {fileID: 643372769}
   m_Layer: 0
-  m_Name: '---------------------------'
+  m_Name: ---------------------------
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -733,7 +754,7 @@ GameObject:
   m_Component:
   - component: {fileID: 981785094}
   m_Layer: 0
-  m_Name: '---------------------------'
+  m_Name: ---------------------------
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -964,7 +985,7 @@ GameObject:
   - component: {fileID: 1309741600}
   - component: {fileID: 1309741604}
   m_Layer: 5
-  m_Name: Canvas [EDITOR-ONLY]
+  m_Name: 'Canvas [EDITOR-ONLY]'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1081,6 +1102,14 @@ PrefabInstance:
       propertyPath: dataProvider
       value: 
       objectReference: {fileID: 551489250}
+    - target: {fileID: 1357053188208650018, guid: c40157a252f7c1b48b1a87267e0801fa, type: 3}
+      propertyPath: modeController
+      value: 
+      objectReference: {fileID: 551489248}
+    - target: {fileID: 1357053188208650018, guid: c40157a252f7c1b48b1a87267e0801fa, type: 3}
+      propertyPath: highlightController
+      value: 
+      objectReference: {fileID: 551489251}
     - target: {fileID: 2986982552556811107, guid: c40157a252f7c1b48b1a87267e0801fa, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
       value: 0
@@ -2075,7 +2104,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1900272168}
   m_Layer: 0
-  m_Name: '---------------------------'
+  m_Name: ---------------------------
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2182,7 +2211,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2130025554}
   m_Layer: 0
-  m_Name: '---------------------------'
+  m_Name: ---------------------------
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3387,10 +3416,6 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8708487388076988753, guid: 969cc8acc604d5045b0bca768933c584, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 1547209950}
-    - target: {fileID: 8708487388076988753, guid: 969cc8acc604d5045b0bca768933c584, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
       value: 3
       objectReference: {fileID: 0}
@@ -3398,6 +3423,10 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_Mode
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 8708487388076988753, guid: 969cc8acc604d5045b0bca768933c584, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1547209950}
     - target: {fileID: 8708487388076988753, guid: 969cc8acc604d5045b0bca768933c584, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_Target
       value: 
