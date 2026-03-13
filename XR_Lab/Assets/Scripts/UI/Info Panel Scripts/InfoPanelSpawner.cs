@@ -76,4 +76,31 @@ public class InfoPanelSpawner : MonoBehaviour
             _outlineController?.SetPanelOpen(false);
         }
     }
+
+    /// <summary>
+    /// Closes all info panels across the scene. Call when entering a mode where plants are uninteractable.
+    /// </summary>
+    public static void CloseAllPanels()
+    {
+        foreach (var spawner in Object.FindObjectsByType<InfoPanelSpawner>(FindObjectsSortMode.None))
+            spawner.ClosePanel();
+    }
+
+    /// <summary>
+    /// Closes info panels only for plants that are NOT in the highlighted set.
+    /// Use when the interaction filter restricts interaction to highlighted plants – close orphaned
+    /// panels on plants that became uninteractable, but keep panels open on highlighted plants.
+    /// </summary>
+    public static void ClosePanelsForNonHighlighted(System.Collections.Generic.HashSet<string> highlightedPlantIds)
+    {
+        if (highlightedPlantIds == null || highlightedPlantIds.Count == 0) return;
+
+        foreach (var spawner in Object.FindObjectsByType<InfoPanelSpawner>(FindObjectsSortMode.None))
+        {
+            var identity = spawner.GetComponent<PlantIdentity>();
+            if (identity == null || string.IsNullOrEmpty(identity.plantId)) continue;
+            if (highlightedPlantIds.Contains(identity.plantId)) continue;
+            spawner.ClosePanel();
+        }
+    }
 }

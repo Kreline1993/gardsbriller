@@ -18,11 +18,17 @@ public class OverviewHighlightController : MonoBehaviour
     [Tooltip("When enabled, only icons for the currently highlighted rule are shown. Icons for other rules are hidden.")]
     [SerializeField] private bool hideIconsForNonHighlightedRule = false;
 
+    [Header("Interaction")]
+    [Tooltip("When enabled and a section is expanded, only highlighted plants are interactable. Non-highlighted plants have their colliders disabled.")]
+    [SerializeField] private bool disableInteractionForNonHighlighted = false;
+
     [Header("Colors")]
     [SerializeField] private Color lowMoistureColor = new Color(0.5f, 0f, 1f, 1f);
     [SerializeField] private Color badHealthColor = new Color(1f, 0.5f, 0f, 1f);
     [SerializeField] private Color warningTagColor = new Color(1f, 0f, 0f, 1f);
     [SerializeField] private Color ripeColor = new Color(0f, 0.8f, 0.2f, 1f);
+
+    private HashSet<string> _lastHighlightedIds;
 
     private void Awake()
     {
@@ -78,6 +84,26 @@ public class OverviewHighlightController : MonoBehaviour
                     tints[p.plantId] = ripeColor;
 
         plantVisualRegistry.ApplyProtectedSet(tints, false);
+
+        // Interaction filter: when enabled and a section is expanded, only highlighted plants are interactable
+        if (disableInteractionForNonHighlighted)
+        {
+            var highlightedIds = new HashSet<string>(tints.Keys);
+            plantVisualRegistry.SetCollidersForHighlightedOnly(highlightedIds);
+            // Only close panels when the highlighted set has changed (avoids closing on every data refresh ~1s)
+            if (highlightedIds.Count > 0)
+            {
+                bool setChanged = _lastHighlightedIds == null || !highlightedIds.SetEquals(_lastHighlightedIds);
+                _lastHighlightedIds = new HashSet<string>(highlightedIds);
+                if (setChanged)
+                    InfoPanelSpawner.ClosePanelsForNonHighlighted(highlightedIds);
+            }
+        }
+        else
+        {
+            plantVisualRegistry.RestoreAllColliders();
+            _lastHighlightedIds = null;
+        }
 
         // Icon filter: when enabled, only show icons for the currently highlighted rule(s)
         if (iconLODController != null && hideIconsForNonHighlightedRule)
