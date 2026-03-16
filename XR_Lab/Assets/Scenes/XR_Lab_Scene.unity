@@ -412,6 +412,7 @@ MonoBehaviour:
   overviewLODController: {fileID: 553951982}
   weedingProtectedTint: {r: 1, g: 0.92156863, b: 0.015686275, a: 0.46666667}
   disableTouchForProtectedPlants: 1
+  weedingHighlightDistance: 3
   weedingOverlayPrefab: {fileID: 4312566435863121009, guid: 6e381599a6a7f604b96ca62061828e27, type: 3}
   hideOriginalDuringOverlay: 0
   tomatoPickingTint: {r: 1, g: 0.17924517, b: 0.25557765, a: 0.7058824}
