@@ -7,6 +7,8 @@ public class OverviewPanelBinder : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] private OverviewPanelDataProvider dataProvider;
+    [SerializeField] private OverviewHighlightController highlightController;
+    [SerializeField] private ModeController modeController;
 
     [Header("Combined Display (Optional)")]
     [SerializeField] private TMP_Text mainText;
@@ -63,6 +65,8 @@ public class OverviewPanelBinder : MonoBehaviour
     {
         if (dataProvider == null)
             dataProvider = FindFirstObjectByType<OverviewPanelDataProvider>();
+        if (modeController == null)
+            modeController = FindFirstObjectByType<ModeController>();
     }
 
     /// <summary>
@@ -84,6 +88,8 @@ public class OverviewPanelBinder : MonoBehaviour
     {
         if (dataProvider != null)
             dataProvider.DataUpdated += HandleDataUpdated;
+        if (modeController != null)
+            modeController.ModeChanged += HandleModeChanged;
 
         if (refreshOnEnable && dataProvider != null)
         {
@@ -95,6 +101,14 @@ public class OverviewPanelBinder : MonoBehaviour
     {
         if (dataProvider != null)
             dataProvider.DataUpdated -= HandleDataUpdated;
+        if (modeController != null)
+            modeController.ModeChanged -= HandleModeChanged;
+    }
+
+    private void HandleModeChanged(AppMode mode)
+    {
+        if (mode == AppMode.Overview)
+            RefreshHighlights();
     }
 
     private void HandleDataUpdated(OverviewPanelDataSnapshot snapshot)
@@ -104,6 +118,7 @@ public class OverviewPanelBinder : MonoBehaviour
 
         currentSnapshot = snapshot;
         RenderAll(snapshot);
+        RefreshHighlights();
     }
 
     public void ToggleLowMoistureExpanded()
@@ -111,6 +126,7 @@ public class OverviewPanelBinder : MonoBehaviour
         expandedLowMoisture = !expandedLowMoisture;
         if (currentSnapshot != null)
             RenderAll(currentSnapshot);
+        RefreshHighlights();
     }
 
     public void ToggleBadHealthExpanded()
@@ -118,6 +134,7 @@ public class OverviewPanelBinder : MonoBehaviour
         expandedBadHealth = !expandedBadHealth;
         if (currentSnapshot != null)
             RenderAll(currentSnapshot);
+        RefreshHighlights();
     }
 
     public void ToggleWarningsExpanded()
@@ -125,6 +142,7 @@ public class OverviewPanelBinder : MonoBehaviour
         expandedWarnings = !expandedWarnings;
         if (currentSnapshot != null)
             RenderAll(currentSnapshot);
+        RefreshHighlights();
     }
 
     public void ToggleRipeExpanded()
@@ -132,6 +150,14 @@ public class OverviewPanelBinder : MonoBehaviour
         expandedRipe = !expandedRipe;
         if (currentSnapshot != null)
             RenderAll(currentSnapshot);
+        RefreshHighlights();
+    }
+
+    private void RefreshHighlights()
+    {
+        highlightController?.RefreshHighlights(
+            expandedLowMoisture, expandedBadHealth, expandedWarnings, expandedRipe,
+            currentSnapshot);
     }
 
     private void RenderAll(OverviewPanelDataSnapshot snapshot)
