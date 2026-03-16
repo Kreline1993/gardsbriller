@@ -125,30 +125,6 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: PanelToggle, Assembly-CSharp
-        m_MethodName: TogglePanel
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: ModeController, Assembly-CSharp
         m_MethodName: SwitchModeByName
         m_Mode: 5
@@ -157,7 +133,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: 
+          m_StringArgument:
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &4279801792163494686
@@ -1061,7 +1037,7 @@ MonoBehaviour:
     button: {fileID: 2194874927529077235}
   activeButtonColor: {r: 0.078431375, g: 0.46666667, b: 0.827451, a: 1}
   inactiveButtonColor: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
-  autoClosePanelAfterModeSelect: 0
+  autoClosePanelAfterModeSelect: 1
 --- !u!1 &6900033107339476311
 GameObject:
   m_ObjectHideFlags: 0

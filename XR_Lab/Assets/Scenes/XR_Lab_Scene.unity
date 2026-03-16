@@ -326,6 +326,7 @@ MonoBehaviour:
   overlayThreshold: 3
   hysteresisBand: 0.15
   updateInterval: 0.5
+  iconYOffset: 0.1
 --- !u!4 &518314011
 Transform:
   m_ObjectHideFlags: 0
@@ -620,7 +621,7 @@ GameObject:
   m_Component:
   - component: {fileID: 643372769}
   m_Layer: 0
-  m_Name: '---------------------------'
+  m_Name: ---------------------------
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -733,7 +734,7 @@ GameObject:
   m_Component:
   - component: {fileID: 981785094}
   m_Layer: 0
-  m_Name: '---------------------------'
+  m_Name: ---------------------------
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -964,7 +965,7 @@ GameObject:
   - component: {fileID: 1309741600}
   - component: {fileID: 1309741604}
   m_Layer: 5
-  m_Name: Canvas [EDITOR-ONLY]
+  m_Name: 'Canvas [EDITOR-ONLY]'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2075,7 +2076,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1900272168}
   m_Layer: 0
-  m_Name: '---------------------------'
+  m_Name: ---------------------------
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2182,7 +2183,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2130025554}
   m_Layer: 0
-  m_Name: '---------------------------'
+  m_Name: ---------------------------
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2943,6 +2944,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2017241699725087485, guid: d2146f84bdb809f4db2754d3041471e5, type: 3}
+      propertyPath: toastUI
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 2017241699725087485, guid: d2146f84bdb809f4db2754d3041471e5, type: 3}
       propertyPath: multisetUpdater
       value: 
       objectReference: {fileID: 8124382476681737968}
@@ -3141,7 +3146,7 @@ PrefabInstance:
     - target: {fileID: 7110963423988539043, guid: d2146f84bdb809f4db2754d3041471e5, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 5605998930250333781}
+      objectReference: {fileID: 5605998930250333782}
     - target: {fileID: 7110963423988539043, guid: d2146f84bdb809f4db2754d3041471e5, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
@@ -3294,6 +3299,10 @@ PrefabInstance:
       propertyPath: modeController
       value: 
       objectReference: {fileID: 551489248}
+    - target: {fileID: 1156686190560114324, guid: 969cc8acc604d5045b0bca768933c584, type: 3}
+      propertyPath: autoClosePanelAfterModeSelect
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2194874927529077235, guid: 969cc8acc604d5045b0bca768933c584, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
@@ -3387,10 +3396,6 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8708487388076988753, guid: 969cc8acc604d5045b0bca768933c584, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 1547209950}
-    - target: {fileID: 8708487388076988753, guid: 969cc8acc604d5045b0bca768933c584, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
       value: 3
       objectReference: {fileID: 0}
@@ -3398,6 +3403,10 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_Mode
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 8708487388076988753, guid: 969cc8acc604d5045b0bca768933c584, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1547209950}
     - target: {fileID: 8708487388076988753, guid: 969cc8acc604d5045b0bca768933c584, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_Target
       value: 
@@ -3423,6 +3432,10 @@ PrefabInstance:
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 8761629298151531651, guid: 969cc8acc604d5045b0bca768933c584, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8761629298151531651, guid: 969cc8acc604d5045b0bca768933c584, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 4413444860923382724}
@@ -3434,6 +3447,14 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_Target
       value: 
       objectReference: {fileID: 551489248}
+    - target: {fileID: 8761629298151531651, guid: 969cc8acc604d5045b0bca768933c584, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: TogglePanel
+      objectReference: {fileID: 0}
+    - target: {fileID: 8761629298151531651, guid: 969cc8acc604d5045b0bca768933c584, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: PanelToggle, Assembly-CSharp
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
