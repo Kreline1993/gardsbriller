@@ -1,16 +1,34 @@
 using UnityEngine;
-using TMPro;
 
 public class InfoPanelSpawner : MonoBehaviour
 {
     public GameObject infoPanelPrefab;
+
+    [Header("Auto Close")]
+    [SerializeField, Min(0f)] private float closeDistanceFromPlant = 2.5f;
+
     private GameObject spawnedPanel;
 
     private PlantRuleOutlineController _outlineController;
+    private Transform _viewerTransform;
 
     private void Awake()
     {
         _outlineController = GetComponent<PlantRuleOutlineController>();
+    }
+
+    private void Update()
+    {
+        if (spawnedPanel == null || closeDistanceFromPlant <= 0f)
+            return;
+
+        if (!TryGetViewerTransform(out Transform viewerTransform))
+            return;
+
+        float closeDistanceSqr = closeDistanceFromPlant * closeDistanceFromPlant;
+        float distanceToPlantSqr = (viewerTransform.position - transform.position).sqrMagnitude;
+        if (distanceToPlantSqr > closeDistanceSqr)
+            ClosePanel();
     }
 
     public void TogglePanel()
@@ -35,12 +53,18 @@ public class InfoPanelSpawner : MonoBehaviour
             Plant data = TwinDatabase.Instance.GetPlantById(id);
             Row row   = TwinDatabase.Instance.GetRowForPlant(id);
 
+            if (!TryGetViewerTransform(out Transform viewerTransform))
+            {
+                Debug.LogWarning("[InfoPanelSpawner] No viewer transform found. Ensure the scene has a MainCamera.");
+                return;
+            }
+
             // 2. Position logic
-            Vector3 directionToPlayer = (Camera.main.transform.position - transform.position).normalized;
+            Vector3 directionToPlayer = (viewerTransform.position - transform.position).normalized;
             Vector3 spawnPos = transform.position + (directionToPlayer * 0.5f) + (Vector3.up * 0.5f);
             
             spawnedPanel = Instantiate(infoPanelPrefab, spawnPos, Quaternion.identity);
-            spawnedPanel.transform.LookAt(Camera.main.transform);
+            spawnedPanel.transform.LookAt(viewerTransform);
             spawnedPanel.transform.Rotate(0, 180, 0);
 
             _outlineController?.SetPanelOpen(true);
@@ -75,6 +99,19 @@ public class InfoPanelSpawner : MonoBehaviour
             spawnedPanel = null;
             _outlineController?.SetPanelOpen(false);
         }
+    }
+
+    private bool TryGetViewerTransform(out Transform viewerTransform)
+    {
+        if (_viewerTransform == null)
+        {
+            Camera mainCamera = Camera.main;
+            if (mainCamera != null)
+                _viewerTransform = mainCamera.transform;
+        }
+
+        viewerTransform = _viewerTransform;
+        return viewerTransform != null;
     }
 
     /// <summary>
