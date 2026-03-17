@@ -418,10 +418,10 @@ MonoBehaviour:
   hideOriginalDuringOverlay: 0
   tomatoPickingTint: {r: 1, g: 0.17924517, b: 0.25557765, a: 0.7058824}
   leekPickingTint: {r: 0.4, g: 1, b: 0.4, a: 0.7058824}
-  radishPickingTint: {r: 0.4, g: 0.6, b: 1, a: 0.7058824}
-  tomatoPickingOverlayPrefab: {fileID: 8476828237768496633, guid: c07873c8900334e43ae0e7f848ad883e, type: 3}
-  leekPickingOverlayPrefab: {fileID: 4447019598221353416, guid: 5f93e64fcb16fe14dba8d3d67a6be60a, type: 3}
-  radishPickingOverlayPrefab: {fileID: 559378716478870014, guid: db398da16282b004999d128f6d19b067, type: 3}
+  radishPickingTint: {r: 0.55656374, g: 0.39999998, b: 1, a: 0.7058824}
+  tomatoPickingOverlayPrefab: {fileID: 906453245972585529, guid: 00caac431abf7f948a559001b86d5377, type: 3}
+  leekPickingOverlayPrefab: {fileID: 7432622799770361029, guid: 51a67f3bc21583a409feb699124a9203, type: 3}
+  radishPickingOverlayPrefab: {fileID: 1522549977551132946, guid: b9540c48868eed447899c59106e84332, type: 3}
   pickingProximityController: {fileID: 518314010}
 --- !u!4 &551489249
 Transform:
