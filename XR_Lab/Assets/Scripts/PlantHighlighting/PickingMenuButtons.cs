@@ -7,7 +7,7 @@ public class PickingMenuButtons : MonoBehaviour
 
     [Header("Buttons")]
     [SerializeField] private Button tomatoButton;
-    [SerializeField] private Button leekButton;
+    [SerializeField] private Button carrotButton;
     [SerializeField] private Button radishButton;
     [SerializeField] private Button clearButton;
 
@@ -20,22 +20,22 @@ public class PickingMenuButtons : MonoBehaviour
     // Unity's interaction-state machine (Selected, Highlighted, etc.) cannot
     // override our highlight after a click.
     private Color _tomatoDefaultColor;
-    private Color _leekDefaultColor;
+    private Color _carrotDefaultColor;
     private Color _radishDefaultColor;
 
     private void Start()
     {
         _tomatoDefaultColor = GetImageColor(tomatoButton);
-        _leekDefaultColor   = GetImageColor(leekButton);
+        _carrotDefaultColor   = GetImageColor(carrotButton);
         _radishDefaultColor = GetImageColor(radishButton);
 
         // Disable the Button's built-in Color Tint transition so it can't
         // fight our Image.color changes (e.g. its Selected Color overriding us).
         tomatoButton.transition = Selectable.Transition.None;
-        leekButton.transition   = Selectable.Transition.None;
+        carrotButton.transition   = Selectable.Transition.None;
         radishButton.transition = Selectable.Transition.None;
 
-        // tomatoButton, leekButton, and radishButton already call
+        // tomatoButton, carrotButton, and radishButton already call
         // ModeController.TogglePickingSpecies via their Inspector OnClick events.
         // Do NOT add AddListener here — that would double-fire and cancel the toggle.
         // clearButton calls ClearPickingHighlights via its Inspector OnClick event;
@@ -59,7 +59,7 @@ public class PickingMenuButtons : MonoBehaviour
     private void OnSelectionCleared()
     {
         SetHighlight(tomatoButton, _tomatoDefaultColor, false);
-        SetHighlight(leekButton,   _leekDefaultColor,   false);
+        SetHighlight(carrotButton,   _carrotDefaultColor,   false);
         SetHighlight(radishButton, _radishDefaultColor, false);
     }
 
@@ -68,7 +68,7 @@ public class PickingMenuButtons : MonoBehaviour
         switch (species.ToLowerInvariant())
         {
             case "tomato": SetHighlight(tomatoButton, _tomatoDefaultColor, isActive); break;
-            case "leek":   SetHighlight(leekButton,   _leekDefaultColor,   isActive); break;
+            case "carrot":   SetHighlight(carrotButton,   _carrotDefaultColor,   isActive); break;
             case "radish": SetHighlight(radishButton, _radishDefaultColor, isActive); break;
         }
     }
@@ -77,7 +77,7 @@ public class PickingMenuButtons : MonoBehaviour
     {
         // Reset all highlights whenever the mode changes.
         SetHighlight(tomatoButton, _tomatoDefaultColor, false);
-        SetHighlight(leekButton,   _leekDefaultColor,   false);
+        SetHighlight(carrotButton,   _carrotDefaultColor,   false);
         SetHighlight(radishButton, _radishDefaultColor, false);
     }
 
