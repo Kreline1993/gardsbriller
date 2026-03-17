@@ -3371,7 +3371,7 @@
           "plantName": "Radish Plant 1",
           "species": "Radish",
           "position": { "x": 3.465, "y": 0, "z": 0.33 },
-          "size": { "diameter": 0.049, "height": 0.049 },
+          "size": { "diameter": 0.07, "height": 0.07 },
           "growth": 70,
           "estimatedHarvestDate": { "day": 12, "month": 3, "year": 2026 },
           "lastWateredDate": { "day": 14, "month": 2, "year": 2026 },
