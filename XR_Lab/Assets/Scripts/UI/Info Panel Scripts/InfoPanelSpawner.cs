@@ -7,6 +7,13 @@ public class InfoPanelSpawner : MonoBehaviour
     [Header("Auto Close")]
     [SerializeField, Min(0f)] private float closeDistanceFromPlant = 2.5f;
 
+    [Header("Panel Placement")]
+    [SerializeField, Min(0f)] private float panelSideOffset = 0.35f;
+    [SerializeField] private float panelHeightAbovePlantTop = 0.15f;
+    [SerializeField] private Vector2 panelDistanceFromViewer = new Vector2(0.7f, 1.5f);
+    [SerializeField] private Vector2 viewerVerticalBand = new Vector2(-0.2f, 0.2f);
+    [SerializeField] private bool flipPanelForward = true;
+
     private GameObject spawnedPanel;
 
     private PlantRuleOutlineController _outlineController;
@@ -15,6 +22,18 @@ public class InfoPanelSpawner : MonoBehaviour
     private void Awake()
     {
         _outlineController = GetComponent<PlantRuleOutlineController>();
+    }
+
+    private void OnValidate()
+    {
+        if (panelDistanceFromViewer.x < 0f)
+            panelDistanceFromViewer.x = 0f;
+
+        if (panelDistanceFromViewer.y < panelDistanceFromViewer.x)
+            panelDistanceFromViewer.y = panelDistanceFromViewer.x;
+
+        if (viewerVerticalBand.y < viewerVerticalBand.x)
+            viewerVerticalBand.y = viewerVerticalBand.x;
     }
 
     private void Update()
@@ -60,12 +79,10 @@ public class InfoPanelSpawner : MonoBehaviour
             }
 
             // 2. Position logic
-            Vector3 directionToPlayer = (viewerTransform.position - transform.position).normalized;
-            Vector3 spawnPos = transform.position + (directionToPlayer * 0.5f) + (Vector3.up * 0.5f);
+            Vector3 spawnPos = ComputePanelSpawnPosition(viewerTransform);
             
             spawnedPanel = Instantiate(infoPanelPrefab, spawnPos, Quaternion.identity);
-            spawnedPanel.transform.LookAt(viewerTransform);
-            spawnedPanel.transform.Rotate(0, 180, 0);
+            FacePanelTowardsViewer(spawnedPanel.transform, viewerTransform);
 
             _outlineController?.SetPanelOpen(true);
 
@@ -112,6 +129,84 @@ public class InfoPanelSpawner : MonoBehaviour
 
         viewerTransform = _viewerTransform;
         return viewerTransform != null;
+    }
+
+    private Vector3 ComputePanelSpawnPosition(Transform viewerTransform)
+    {
+        Vector3 viewerPosition = viewerTransform.position;
+        Bounds plantBounds = GetPlantBounds();
+
+        Vector3 anchor = plantBounds.center;
+        anchor.y = plantBounds.max.y + panelHeightAbovePlantTop;
+
+        Vector3 toViewer = viewerPosition - anchor;
+        if (toViewer.sqrMagnitude < 0.0001f)
+            toViewer = viewerTransform.forward;
+        toViewer.Normalize();
+
+        Vector3 spawnPos = anchor + (toViewer * panelSideOffset);
+
+        float minAllowedY = viewerPosition.y + viewerVerticalBand.x;
+        float maxAllowedY = viewerPosition.y + viewerVerticalBand.y;
+        spawnPos.y = Mathf.Clamp(spawnPos.y, minAllowedY, maxAllowedY);
+
+        Vector3 viewerToPanel = spawnPos - viewerPosition;
+        float viewerDistance = viewerToPanel.magnitude;
+        if (viewerDistance < 0.0001f)
+        {
+            viewerToPanel = viewerTransform.forward;
+            viewerDistance = panelDistanceFromViewer.x;
+        }
+        else
+        {
+            viewerToPanel /= viewerDistance;
+        }
+
+        float clampedDistance = Mathf.Clamp(viewerDistance, panelDistanceFromViewer.x, panelDistanceFromViewer.y);
+        return viewerPosition + (viewerToPanel * clampedDistance);
+    }
+
+    private void FacePanelTowardsViewer(Transform panelTransform, Transform viewerTransform)
+    {
+        Vector3 lookDirection = viewerTransform.position - panelTransform.position;
+        lookDirection.y = 0f;
+
+        if (lookDirection.sqrMagnitude < 0.0001f)
+        {
+            lookDirection = viewerTransform.forward;
+            lookDirection.y = 0f;
+        }
+
+        if (lookDirection.sqrMagnitude < 0.0001f)
+            lookDirection = Vector3.forward;
+
+        panelTransform.rotation = Quaternion.LookRotation(lookDirection.normalized, Vector3.up);
+
+        if (flipPanelForward)
+            panelTransform.Rotate(0f, 180f, 0f, Space.Self);
+    }
+
+    private Bounds GetPlantBounds()
+    {
+        Renderer[] renderers = GetComponentsInChildren<Renderer>();
+        if (renderers != null && renderers.Length > 0)
+        {
+            Bounds bounds = renderers[0].bounds;
+            for (int i = 1; i < renderers.Length; i++)
+                bounds.Encapsulate(renderers[i].bounds);
+            return bounds;
+        }
+
+        Collider[] colliders = GetComponentsInChildren<Collider>();
+        if (colliders != null && colliders.Length > 0)
+        {
+            Bounds bounds = colliders[0].bounds;
+            for (int i = 1; i < colliders.Length; i++)
+                bounds.Encapsulate(colliders[i].bounds);
+            return bounds;
+        }
+
+        return new Bounds(transform.position, Vector3.zero);
     }
 
     /// <summary>
