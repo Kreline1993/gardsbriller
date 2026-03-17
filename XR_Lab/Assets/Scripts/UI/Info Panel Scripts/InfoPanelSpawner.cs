@@ -14,7 +14,18 @@ public class InfoPanelSpawner : MonoBehaviour
     [SerializeField] private Vector2 viewerVerticalBand = new Vector2(-0.2f, 0.2f);
     [SerializeField] private bool flipPanelForward = true;
 
+    [Header("Panel Tether")]
+    [SerializeField] private bool enableTether = true;
+    [SerializeField, Min(0f)] private float tetherWidth = 0.01f;
+    [SerializeField] private Color tetherColor = Color.cyan;
+    [SerializeField] private Material tetherMaterial;
+    [SerializeField] private Vector3 tetherPanelOffsetLocal = new Vector3(0f, -0.12f, 0f);
+    [SerializeField] private float tetherPlantTopOffset = 0f;
+    [SerializeField, Min(2)] private int tetherSegments = 8;
+    [SerializeField] private float tetherCurveHeight = 0.12f;
+
     private GameObject spawnedPanel;
+    private LineRenderer _tetherLine;
 
     private PlantRuleOutlineController _outlineController;
     private Transform _viewerTransform;
@@ -34,11 +45,22 @@ public class InfoPanelSpawner : MonoBehaviour
 
         if (viewerVerticalBand.y < viewerVerticalBand.x)
             viewerVerticalBand.y = viewerVerticalBand.x;
+
+        if (tetherWidth < 0f)
+            tetherWidth = 0f;
+
+        if (tetherSegments < 2)
+            tetherSegments = 2;
     }
 
     private void Update()
     {
-        if (spawnedPanel == null || closeDistanceFromPlant <= 0f)
+        if (spawnedPanel == null)
+            return;
+
+        UpdateTether();
+
+        if (closeDistanceFromPlant <= 0f)
             return;
 
         if (!TryGetViewerTransform(out Transform viewerTransform))
@@ -83,6 +105,8 @@ public class InfoPanelSpawner : MonoBehaviour
             
             spawnedPanel = Instantiate(infoPanelPrefab, spawnPos, Quaternion.identity);
             FacePanelTowardsViewer(spawnedPanel.transform, viewerTransform);
+            CreateTether();
+            UpdateTether();
 
             _outlineController?.SetPanelOpen(true);
 
@@ -102,9 +126,7 @@ public class InfoPanelSpawner : MonoBehaviour
         }
         else
         {
-            Destroy(spawnedPanel);
-            spawnedPanel = null;
-            _outlineController?.SetPanelOpen(false);
+            ClosePanel();
         }
     }
 
@@ -112,6 +134,7 @@ public class InfoPanelSpawner : MonoBehaviour
     {
         if (spawnedPanel != null)
         {
+            DestroyTether();
             Destroy(spawnedPanel);
             spawnedPanel = null;
             _outlineController?.SetPanelOpen(false);
@@ -207,6 +230,78 @@ public class InfoPanelSpawner : MonoBehaviour
         }
 
         return new Bounds(transform.position, Vector3.zero);
+    }
+
+    private Vector3 GetPlantAnchorPoint()
+    {
+        Bounds bounds = GetPlantBounds();
+        return new Vector3(bounds.center.x, bounds.max.y + tetherPlantTopOffset, bounds.center.z);
+    }
+
+    private void CreateTether()
+    {
+        if (!enableTether || spawnedPanel == null || _tetherLine != null)
+            return;
+
+        GameObject tetherObject = new GameObject("InfoPanelTether");
+        tetherObject.transform.SetParent(spawnedPanel.transform, false);
+
+        _tetherLine = tetherObject.AddComponent<LineRenderer>();
+        _tetherLine.useWorldSpace = true;
+        _tetherLine.positionCount = tetherSegments + 1;
+        _tetherLine.widthMultiplier = tetherWidth;
+        _tetherLine.startColor = tetherColor;
+        _tetherLine.endColor = tetherColor;
+        _tetherLine.numCornerVertices = 4;
+        _tetherLine.numCapVertices = 4;
+
+        if (tetherMaterial != null)
+            _tetherLine.material = tetherMaterial;
+    }
+
+    private void UpdateTether()
+    {
+        if (!enableTether)
+        {
+            DestroyTether();
+            return;
+        }
+
+        if (_tetherLine == null)
+            CreateTether();
+
+        if (_tetherLine == null || spawnedPanel == null)
+            return;
+
+        int segmentCount = Mathf.Max(2, tetherSegments);
+        if (_tetherLine.positionCount != segmentCount + 1)
+            _tetherLine.positionCount = segmentCount + 1;
+
+        _tetherLine.widthMultiplier = tetherWidth;
+        _tetherLine.startColor = tetherColor;
+        _tetherLine.endColor = tetherColor;
+
+        Vector3 panelPoint = spawnedPanel.transform.TransformPoint(tetherPanelOffsetLocal);
+        Vector3 plantPoint = GetPlantAnchorPoint();
+        Vector3 controlPoint = ((panelPoint + plantPoint) * 0.5f) + (Vector3.up * tetherCurveHeight);
+
+        for (int i = 0; i <= segmentCount; i++)
+        {
+            float t = i / (float)segmentCount;
+            Vector3 p0p1 = Vector3.Lerp(panelPoint, controlPoint, t);
+            Vector3 p1p2 = Vector3.Lerp(controlPoint, plantPoint, t);
+            Vector3 curvedPoint = Vector3.Lerp(p0p1, p1p2, t);
+            _tetherLine.SetPosition(i, curvedPoint);
+        }
+    }
+
+    private void DestroyTether()
+    {
+        if (_tetherLine == null)
+            return;
+
+        Destroy(_tetherLine.gameObject);
+        _tetherLine = null;
     }
 
     /// <summary>
