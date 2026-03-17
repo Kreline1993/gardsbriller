@@ -26,6 +26,17 @@ public class InfoPanelSpawner : MonoBehaviour
 
     private GameObject spawnedPanel;
     private LineRenderer _tetherLine;
+    private Material _tetherMaterialInstance;
+    private readonly Vector3[] _panelWorldCorners = new Vector3[4];
+
+    // Performance Caching
+    private Gradient _tetherGradient;
+    private bool _needsVisualUpdate = true;
+
+    private static readonly int BaseColorProperty = Shader.PropertyToID("_BaseColor");
+    private static readonly int ColorProperty = Shader.PropertyToID("_Color");
+    private static readonly int TintColorProperty = Shader.PropertyToID("_TintColor");
+    private static readonly int EmissionColorProperty = Shader.PropertyToID("_EmissionColor");
 
     private PlantRuleOutlineController _outlineController;
     private Transform _viewerTransform;
@@ -37,34 +48,25 @@ public class InfoPanelSpawner : MonoBehaviour
 
     private void OnValidate()
     {
-        if (panelDistanceFromViewer.x < 0f)
-            panelDistanceFromViewer.x = 0f;
+        // Clamp inspector values
+        if (panelDistanceFromViewer.x < 0f) panelDistanceFromViewer.x = 0f;
+        if (panelDistanceFromViewer.y < panelDistanceFromViewer.x) panelDistanceFromViewer.y = panelDistanceFromViewer.x;
+        if (viewerVerticalBand.y < viewerVerticalBand.x) viewerVerticalBand.y = viewerVerticalBand.x;
+        if (tetherWidth < 0f) tetherWidth = 0f;
+        if (tetherSegments < 2) tetherSegments = 2;
 
-        if (panelDistanceFromViewer.y < panelDistanceFromViewer.x)
-            panelDistanceFromViewer.y = panelDistanceFromViewer.x;
-
-        if (viewerVerticalBand.y < viewerVerticalBand.x)
-            viewerVerticalBand.y = viewerVerticalBand.x;
-
-        if (tetherWidth < 0f)
-            tetherWidth = 0f;
-
-        if (tetherSegments < 2)
-            tetherSegments = 2;
+        // Flag visual refresh
+        _needsVisualUpdate = true;
     }
 
     private void Update()
     {
-        if (spawnedPanel == null)
-            return;
+        if (spawnedPanel == null) return;
 
         UpdateTether();
 
-        if (closeDistanceFromPlant <= 0f)
-            return;
-
-        if (!TryGetViewerTransform(out Transform viewerTransform))
-            return;
+        if (closeDistanceFromPlant <= 0f) return;
+        if (!TryGetViewerTransform(out Transform viewerTransform)) return;
 
         float closeDistanceSqr = closeDistanceFromPlant * closeDistanceFromPlant;
         float distanceToPlantSqr = (viewerTransform.position - transform.position).sqrMagnitude;
@@ -76,52 +78,31 @@ public class InfoPanelSpawner : MonoBehaviour
     {
         if (spawnedPanel == null)
         {
-            // 1) Identify plant
             var identity = GetComponent<PlantIdentity>();
-            if (identity == null)
-            {
-                Debug.LogError("[InfoPanelSpa>wner] Missing PlantIdentity component on this plant prefab.");
-                return;
-            }
+            if (identity == null) return;
 
-            if (TwinDatabase.Instance == null)
-            {
-                Debug.LogError("[InfoPanelSpawner] TwinDatabase.Instance is null. Add TwinDatabase to a Services GameObject in the scene.");
-                return;
-            }
+            if (TwinDatabase.Instance == null) return;
 
             string id = identity.plantId;
             Plant data = TwinDatabase.Instance.GetPlantById(id);
             Row row   = TwinDatabase.Instance.GetRowForPlant(id);
 
-            if (!TryGetViewerTransform(out Transform viewerTransform))
-            {
-                Debug.LogWarning("[InfoPanelSpawner] No viewer transform found. Ensure the scene has a MainCamera.");
-                return;
-            }
+            if (!TryGetViewerTransform(out Transform viewerTransform)) return;
 
-            // 2. Position logic
             Vector3 spawnPos = ComputePanelSpawnPosition(viewerTransform);
-            
             spawnedPanel = Instantiate(infoPanelPrefab, spawnPos, Quaternion.identity);
             FacePanelTowardsViewer(spawnedPanel.transform, viewerTransform);
+            
+            _needsVisualUpdate = true;
             CreateTether();
             UpdateTether();
 
             _outlineController?.SetPanelOpen(true);
 
-            // 3. Update the UI Text
             if (data != null)
             {
                 InfoPanelBinder binder = spawnedPanel.GetComponent<InfoPanelBinder>();
-                if (binder != null)
-                    binder.Populate(data, row);
-                else
-                    Debug.LogWarning("[InfoPanelSpawner] InfoPanelBinder not found on panel prefab.");
-            }
-            else
-            {
-                Debug.LogWarning("[InfoPanelSpawner] No plant data found for ID: " + id);
+                if (binder != null) binder.Populate(data, row);
             }
         }
         else
@@ -146,10 +127,8 @@ public class InfoPanelSpawner : MonoBehaviour
         if (_viewerTransform == null)
         {
             Camera mainCamera = Camera.main;
-            if (mainCamera != null)
-                _viewerTransform = mainCamera.transform;
+            if (mainCamera != null) _viewerTransform = mainCamera.transform;
         }
-
         viewerTransform = _viewerTransform;
         return viewerTransform != null;
     }
@@ -158,55 +137,26 @@ public class InfoPanelSpawner : MonoBehaviour
     {
         Vector3 viewerPosition = viewerTransform.position;
         Bounds plantBounds = GetPlantBounds();
-
         Vector3 anchor = plantBounds.center;
         anchor.y = plantBounds.max.y + panelHeightAbovePlantTop;
 
-        Vector3 toViewer = viewerPosition - anchor;
-        if (toViewer.sqrMagnitude < 0.0001f)
-            toViewer = viewerTransform.forward;
-        toViewer.Normalize();
-
+        Vector3 toViewer = (viewerPosition - anchor).normalized;
         Vector3 spawnPos = anchor + (toViewer * panelSideOffset);
 
-        float minAllowedY = viewerPosition.y + viewerVerticalBand.x;
-        float maxAllowedY = viewerPosition.y + viewerVerticalBand.y;
-        spawnPos.y = Mathf.Clamp(spawnPos.y, minAllowedY, maxAllowedY);
+        spawnPos.y = Mathf.Clamp(spawnPos.y, viewerPosition.y + viewerVerticalBand.x, viewerPosition.y + viewerVerticalBand.y);
 
-        Vector3 viewerToPanel = spawnPos - viewerPosition;
-        float viewerDistance = viewerToPanel.magnitude;
-        if (viewerDistance < 0.0001f)
-        {
-            viewerToPanel = viewerTransform.forward;
-            viewerDistance = panelDistanceFromViewer.x;
-        }
-        else
-        {
-            viewerToPanel /= viewerDistance;
-        }
-
-        float clampedDistance = Mathf.Clamp(viewerDistance, panelDistanceFromViewer.x, panelDistanceFromViewer.y);
-        return viewerPosition + (viewerToPanel * clampedDistance);
+        Vector3 vToP = spawnPos - viewerPosition;
+        float dist = Mathf.Clamp(vToP.magnitude, panelDistanceFromViewer.x, panelDistanceFromViewer.y);
+        return viewerPosition + (vToP.normalized * dist);
     }
 
     private void FacePanelTowardsViewer(Transform panelTransform, Transform viewerTransform)
     {
-        Vector3 lookDirection = viewerTransform.position - panelTransform.position;
-        lookDirection.y = 0f;
-
-        if (lookDirection.sqrMagnitude < 0.0001f)
-        {
-            lookDirection = viewerTransform.forward;
-            lookDirection.y = 0f;
-        }
-
-        if (lookDirection.sqrMagnitude < 0.0001f)
-            lookDirection = Vector3.forward;
-
-        panelTransform.rotation = Quaternion.LookRotation(lookDirection.normalized, Vector3.up);
-
-        if (flipPanelForward)
-            panelTransform.Rotate(0f, 180f, 0f, Space.Self);
+        Vector3 lookDir = viewerTransform.position - panelTransform.position;
+        lookDir.y = 0f;
+        if (lookDir.sqrMagnitude < 0.0001f) lookDir = Vector3.forward;
+        panelTransform.rotation = Quaternion.LookRotation(lookDir.normalized, Vector3.up);
+        if (flipPanelForward) panelTransform.Rotate(0f, 180f, 0f, Space.Self);
     }
 
     private Bounds GetPlantBounds()
@@ -215,20 +165,9 @@ public class InfoPanelSpawner : MonoBehaviour
         if (renderers != null && renderers.Length > 0)
         {
             Bounds bounds = renderers[0].bounds;
-            for (int i = 1; i < renderers.Length; i++)
-                bounds.Encapsulate(renderers[i].bounds);
+            for (int i = 1; i < renderers.Length; i++) bounds.Encapsulate(renderers[i].bounds);
             return bounds;
         }
-
-        Collider[] colliders = GetComponentsInChildren<Collider>();
-        if (colliders != null && colliders.Length > 0)
-        {
-            Bounds bounds = colliders[0].bounds;
-            for (int i = 1; i < colliders.Length; i++)
-                bounds.Encapsulate(colliders[i].bounds);
-            return bounds;
-        }
-
         return new Bounds(transform.position, Vector3.zero);
     }
 
@@ -240,8 +179,7 @@ public class InfoPanelSpawner : MonoBehaviour
 
     private void CreateTether()
     {
-        if (!enableTether || spawnedPanel == null || _tetherLine != null)
-            return;
+        if (!enableTether || spawnedPanel == null || _tetherLine != null) return;
 
         GameObject tetherObject = new GameObject("InfoPanelTether");
         tetherObject.transform.SetParent(spawnedPanel.transform, false);
@@ -249,40 +187,35 @@ public class InfoPanelSpawner : MonoBehaviour
         _tetherLine = tetherObject.AddComponent<LineRenderer>();
         _tetherLine.useWorldSpace = true;
         _tetherLine.positionCount = tetherSegments + 1;
-        _tetherLine.widthMultiplier = tetherWidth;
-        _tetherLine.startColor = tetherColor;
-        _tetherLine.endColor = tetherColor;
         _tetherLine.numCornerVertices = 4;
         _tetherLine.numCapVertices = 4;
 
         if (tetherMaterial != null)
-            _tetherLine.material = tetherMaterial;
+        {
+            _tetherMaterialInstance = new Material(tetherMaterial);
+            _tetherLine.material = _tetherMaterialInstance;
+        }
+
+        ApplyTetherVisuals();
     }
 
     private void UpdateTether()
     {
-        if (!enableTether)
+        if (!enableTether) { DestroyTether(); return; }
+        if (_tetherLine == null) CreateTether();
+        if (_tetherLine == null || spawnedPanel == null) return;
+
+        if (_needsVisualUpdate)
         {
-            DestroyTether();
-            return;
+            ApplyTetherVisuals();
+            _needsVisualUpdate = false;
         }
 
-        if (_tetherLine == null)
-            CreateTether();
-
-        if (_tetherLine == null || spawnedPanel == null)
-            return;
-
         int segmentCount = Mathf.Max(2, tetherSegments);
-        if (_tetherLine.positionCount != segmentCount + 1)
-            _tetherLine.positionCount = segmentCount + 1;
+        if (_tetherLine.positionCount != segmentCount + 1) _tetherLine.positionCount = segmentCount + 1;
 
-        _tetherLine.widthMultiplier = tetherWidth;
-        _tetherLine.startColor = tetherColor;
-        _tetherLine.endColor = tetherColor;
-
-        Vector3 panelPoint = spawnedPanel.transform.TransformPoint(tetherPanelOffsetLocal);
         Vector3 plantPoint = GetPlantAnchorPoint();
+        Vector3 panelPoint = GetPanelBottomCenterPoint();
         Vector3 controlPoint = ((panelPoint + plantPoint) * 0.5f) + (Vector3.up * tetherCurveHeight);
 
         for (int i = 0; i <= segmentCount; i++)
@@ -290,34 +223,69 @@ public class InfoPanelSpawner : MonoBehaviour
             float t = i / (float)segmentCount;
             Vector3 p0p1 = Vector3.Lerp(panelPoint, controlPoint, t);
             Vector3 p1p2 = Vector3.Lerp(controlPoint, plantPoint, t);
-            Vector3 curvedPoint = Vector3.Lerp(p0p1, p1p2, t);
-            _tetherLine.SetPosition(i, curvedPoint);
+            _tetherLine.SetPosition(i, Vector3.Lerp(p0p1, p1p2, t));
         }
+    }
+
+    private Vector3 GetPanelBottomCenterPoint()
+    {
+        RectTransform rt = spawnedPanel.GetComponentInChildren<RectTransform>();
+        if (rt == null) return spawnedPanel.transform.TransformPoint(tetherPanelOffsetLocal);
+        rt.GetWorldCorners(_panelWorldCorners);
+        return (_panelWorldCorners[0] + _panelWorldCorners[3]) * 0.5f;
     }
 
     private void DestroyTether()
     {
-        if (_tetherLine == null)
-            return;
-
-        Destroy(_tetherLine.gameObject);
+        if (_tetherLine != null) Destroy(_tetherLine.gameObject);
         _tetherLine = null;
+        if (_tetherMaterialInstance != null) Destroy(_tetherMaterialInstance);
+        _tetherMaterialInstance = null;
     }
 
-    /// <summary>
-    /// Closes all info panels across the scene. Call when entering a mode where plants are uninteractable.
-    /// </summary>
+    private void ApplyTetherVisuals()
+    {
+        if (_tetherLine == null) return;
+
+        _tetherLine.widthMultiplier = tetherWidth;
+
+        if (_tetherGradient == null) _tetherGradient = new Gradient();
+        _tetherGradient.SetKeys(
+            new[] { new GradientColorKey(tetherColor, 0f), new GradientColorKey(tetherColor, 1f) },
+            new[] { new GradientAlphaKey(tetherColor.a, 0f), new GradientAlphaKey(tetherColor.a, 1f) }
+        );
+        _tetherLine.colorGradient = _tetherGradient;
+
+        if (_tetherMaterialInstance == null) return;
+
+        // XR/Quest Built-in RP Transparency fix
+        _tetherMaterialInstance.renderQueue = 3000; 
+        
+        SetMaterialColorIfPresent(_tetherMaterialInstance, ColorProperty, tetherColor);
+        SetMaterialColorIfPresent(_tetherMaterialInstance, BaseColorProperty, tetherColor);
+        SetMaterialColorIfPresent(_tetherMaterialInstance, TintColorProperty, tetherColor);
+
+        if (_tetherMaterialInstance.HasProperty(EmissionColorProperty))
+        {
+            _tetherMaterialInstance.SetColor(EmissionColorProperty, tetherColor * tetherColor.a);
+            _tetherMaterialInstance.EnableKeyword("_EMISSION");
+        }
+    }
+
+    private static void SetMaterialColorIfPresent(Material material, int propertyId, Color color)
+    {
+        if (material != null && material.HasProperty(propertyId))
+            material.SetColor(propertyId, color);
+    }
+
+    // --- STATIC UTILITIES FOR HIGHLIGHT CONTROLLERS ---
+
     public static void CloseAllPanels()
     {
         foreach (var spawner in Object.FindObjectsByType<InfoPanelSpawner>(FindObjectsSortMode.None))
             spawner.ClosePanel();
     }
 
-    /// <summary>
-    /// Closes info panels only for plants that are NOT in the highlighted set.
-    /// Use when the interaction filter restricts interaction to highlighted plants – close orphaned
-    /// panels on plants that became uninteractable, but keep panels open on highlighted plants.
-    /// </summary>
     public static void ClosePanelsForNonHighlighted(System.Collections.Generic.HashSet<string> highlightedPlantIds)
     {
         if (highlightedPlantIds == null || highlightedPlantIds.Count == 0) return;

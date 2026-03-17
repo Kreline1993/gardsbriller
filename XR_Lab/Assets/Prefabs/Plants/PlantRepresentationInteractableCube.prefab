@@ -151,13 +151,13 @@ MonoBehaviour:
   closeDistanceFromPlant: 5
   panelSideOffset: 0.35
   panelHeightAbovePlantTop: 0.15
-  panelDistanceFromViewer: {x: 0.7, y: 1.5}
+  panelDistanceFromViewer: {x: 0.7, y: 1}
   viewerVerticalBand: {x: -0.2, y: 0.2}
   flipPanelForward: 1
   enableTether: 1
-  tetherWidth: 0.01
-  tetherColor: {r: 0, g: 1, b: 1, a: 1}
-  tetherMaterial: {fileID: 0}
+  tetherWidth: 0.005
+  tetherColor: {r: 1, g: 1, b: 1, a: 0.07450981}
+  tetherMaterial: {fileID: 2100000, guid: b713963b0a8dc8f40a1a4d71cc7697bd, type: 2}
   tetherPanelOffsetLocal: {x: 0, y: -0.12, z: 0}
   tetherPlantTopOffset: 0
   tetherSegments: 8
