@@ -2,9 +2,36 @@ using System;
 using System.Text;
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
 
 public class InfoPanelBinder : MonoBehaviour
 {
+    private enum RuleType
+    {
+        BadHealth,
+        NoteAttached,
+        RipeGrowth,
+        LowMoisture
+    }
+
+    [Header("Heading")]
+    [SerializeField] private Image headerBackgroundImage;
+    [SerializeField] private Color defaultHeadingColor = Color.white;
+    [SerializeField] private Color noteHeadingColor    = new Color(1f, 0.55f, 0f, 1f); // orange
+    [SerializeField] private Color badHealthColor      = Color.red;
+    [SerializeField] private Color readyHarvestColor   = Color.green;
+    [SerializeField] private Color lowWaterColor       = Color.blue;
+
+    [Header("Rule Priority")]
+    [Tooltip("When multiple rules match, the first in this order wins.")]
+    [SerializeField] private RuleType[] priority =
+    {
+        RuleType.BadHealth,
+        RuleType.NoteAttached,
+        RuleType.RipeGrowth,
+        RuleType.LowMoisture
+    };
+
     [Header("Basic Info")]
     [SerializeField] private TMP_Text speciesText;
     [SerializeField] private TMP_Text idText;
@@ -33,6 +60,7 @@ public class InfoPanelBinder : MonoBehaviour
         if (speciesText != null) speciesText.text = plant.species;
         if (idText != null)      idText.text = plant.plantId;
 
+        PopulateHeadingColor(plant, row);
         PopulateGrowth(plant);
         PopulateMoisture(row);
         PopulateHealth(plant);
@@ -87,6 +115,86 @@ public class InfoPanelBinder : MonoBehaviour
         string next = FormatDate(plant.nextPesticide, "Unknown");
 
         pesticideText.text = $"Last Pesticide: {last}\nNext Pesticide: {next}";
+    }
+
+    private void PopulateHeadingColor(Plant plant, Row row)
+    {
+        if (headerBackgroundImage == null) return;
+
+        if (TryGetHeadingColor(plant, row, out Color headingColor))
+        {
+            headerBackgroundImage.color = headingColor;
+            return;
+        }
+
+        headerBackgroundImage.color = defaultHeadingColor;
+    }
+
+    private bool TryGetHeadingColor(Plant plant, Row row, out Color color)
+    {
+        RuleType[] orderedRules = (priority != null && priority.Length > 0)
+            ? priority
+            : new[] { RuleType.BadHealth, RuleType.NoteAttached, RuleType.RipeGrowth, RuleType.LowMoisture };
+
+        for (int i = 0; i < orderedRules.Length; i++)
+        {
+            RuleType rule = orderedRules[i];
+            if (!MatchesRule(plant, row, rule))
+                continue;
+
+            color = GetColorForRule(rule);
+            return true;
+        }
+
+        color = default;
+        return false;
+    }
+
+    private bool MatchesRule(Plant plant, Row row, RuleType rule)
+    {
+        switch (rule)
+        {
+            case RuleType.BadHealth:
+                return string.Equals(plant.healthStatus, OverviewRules.BadHealthStatus, StringComparison.OrdinalIgnoreCase);
+
+            case RuleType.NoteAttached:
+                return HasAttachedNote(plant);
+
+            case RuleType.RipeGrowth:
+                return plant.growth >= OverviewRules.RipeGrowthThreshold;
+
+            case RuleType.LowMoisture:
+                return row != null && row.groundMoisture < OverviewRules.LowMoistureThreshold;
+
+            default:
+                return false;
+        }
+    }
+
+    private static bool HasAttachedNote(Plant plant)
+    {
+        if (plant?.notes == null)
+            return false;
+
+        return !string.IsNullOrWhiteSpace(plant.notes.textNote)
+            || !string.IsNullOrWhiteSpace(plant.notes.noteTag);
+    }
+
+    private Color GetColorForRule(RuleType rule)
+    {
+        switch (rule)
+        {
+            case RuleType.BadHealth:
+                return badHealthColor;
+            case RuleType.NoteAttached:
+                return noteHeadingColor;
+            case RuleType.RipeGrowth:
+                return readyHarvestColor;
+            case RuleType.LowMoisture:
+                return lowWaterColor;
+            default:
+                return defaultHeadingColor;
+        }
     }
 
     private void PopulateWarnings(Plant plant, Row row)
