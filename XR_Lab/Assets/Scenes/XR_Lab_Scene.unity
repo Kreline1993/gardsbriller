@@ -417,10 +417,10 @@ MonoBehaviour:
   weedingOverlayPrefab: {fileID: 4312566435863121009, guid: 6e381599a6a7f604b96ca62061828e27, type: 3}
   hideOriginalDuringOverlay: 0
   tomatoPickingTint: {r: 1, g: 0.17924517, b: 0.25557765, a: 0.7058824}
-  leekPickingTint: {r: 0.4, g: 1, b: 0.4, a: 0.7058824}
+  carrotPickingTint: {r: 0.4, g: 1, b: 0.4, a: 0.7058824}
   radishPickingTint: {r: 0.55656374, g: 0.39999998, b: 1, a: 0.7058824}
   tomatoPickingOverlayPrefab: {fileID: 906453245972585529, guid: 00caac431abf7f948a559001b86d5377, type: 3}
-  leekPickingOverlayPrefab: {fileID: 7432622799770361029, guid: 51a67f3bc21583a409feb699124a9203, type: 3}
+  carrotPickingOverlayPrefab: {fileID: 4447019598221353416, guid: 5f93e64fcb16fe14dba8d3d67a6be60a, type: 3}
   radishPickingOverlayPrefab: {fileID: 1522549977551132946, guid: b9540c48868eed447899c59106e84332, type: 3}
   pickingProximityController: {fileID: 518314010}
 --- !u!4 &551489249
@@ -645,7 +645,7 @@ GameObject:
   m_Component:
   - component: {fileID: 643372769}
   m_Layer: 0
-  m_Name: ---------------------------
+  m_Name: '---------------------------'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -758,7 +758,7 @@ GameObject:
   m_Component:
   - component: {fileID: 981785094}
   m_Layer: 0
-  m_Name: ---------------------------
+  m_Name: '---------------------------'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -989,7 +989,7 @@ GameObject:
   - component: {fileID: 1309741600}
   - component: {fileID: 1309741604}
   m_Layer: 5
-  m_Name: 'Canvas [EDITOR-ONLY]'
+  m_Name: Canvas [EDITOR-ONLY]
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2108,7 +2108,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1900272168}
   m_Layer: 0
-  m_Name: ---------------------------
+  m_Name: '---------------------------'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2215,7 +2215,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2130025554}
   m_Layer: 0
-  m_Name: ---------------------------
+  m_Name: '---------------------------'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2494,7 +2494,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7925203929519262575, guid: 835a43bfb03274f4d903a220ba878c57, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
-      value: leek
+      value: carrot
       objectReference: {fileID: 0}
     - target: {fileID: 7925203929519262575, guid: 835a43bfb03274f4d903a220ba878c57, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
@@ -2620,7 +2620,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PickingMenuButtons
   modeController: {fileID: 551489248}
   tomatoButton: {fileID: 1166310648}
-  leekButton: {fileID: 1582967949}
+  carrotButton: {fileID: 1582967949}
   radishButton: {fileID: 992576749}
   clearButton: {fileID: 334434393}
   activeNormalColor: {r: 0.07843135, g: 0.827451, b: 0.26270184, a: 1}

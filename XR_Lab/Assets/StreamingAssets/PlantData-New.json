@@ -77,8 +77,8 @@
       "plants": [
         {
           "plantId": "plant_005",
-          "plantName": "Leek Plant 1",
-          "species": "Leek",
+          "plantName": "Carrot Plant 1",
+          "species": "Carrot",
           "position": { "x": 1.825, "y": 0, "z": 0.575 },
           "size": { "diameter": 0.09, "height": 0.55 },
           "growth": 103,
@@ -92,8 +92,8 @@
         },
         {
           "plantId": "plant_006",
-          "plantName": "Leek Plant 2",
-          "species": "Leek",
+          "plantName": "Carrot Plant 2",
+          "species": "Carrot",
           "position": { "x": 1.834, "y": 0, "z": 0.85 },
           "size": { "diameter": 0.09, "height": 0.55 },
           "growth": 100,
@@ -107,8 +107,8 @@
         },
         {
           "plantId": "plant_007",
-          "plantName": "Leek Plant 3",
-          "species": "Leek",
+          "plantName": "Carrot Plant 3",
+          "species": "Carrot",
           "position": { "x": 1.825, "y": 0, "z": 1.13 },
           "size": { "diameter": 0.076, "height": 0.468 },
           "growth": 85,
@@ -251,8 +251,8 @@
         },
         {
           "plantId": "plant_016",
-          "plantName": "Leek Plant 4 & 5",
-          "species": "Leek",
+          "plantName": "Carrot Plant 4 & 5",
+          "species": "Carrot",
           "position": { "x": 3.16, "y": 0, "z": 1.6 },
           "size": { "diameter": 0.09, "height": 0.55 },
           "growth": 100,
@@ -266,8 +266,8 @@
         },
         {
           "plantId": "plant_017",
-          "plantName": "Leek Plant 6 & 7",
-          "species": "Leek",
+          "plantName": "Carrot Plant 6 & 7",
+          "species": "Carrot",
           "position": { "x": 3.275, "y": 0, "z": 1.6 },
           "size": { "diameter": 0.09, "height": 0.55 },
           "growth": 106,

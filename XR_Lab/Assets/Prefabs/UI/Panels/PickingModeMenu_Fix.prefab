@@ -186,7 +186,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Leek
+  m_text: 'Carrot
 
 '
   m_isRightToLeft: 0
@@ -1378,7 +1378,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Leek
+  m_text: 'Carrot
 
 '
   m_isRightToLeft: 0
