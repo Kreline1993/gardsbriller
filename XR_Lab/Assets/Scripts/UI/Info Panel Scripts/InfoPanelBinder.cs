@@ -176,8 +176,14 @@ public class InfoPanelBinder : MonoBehaviour
         if (plant?.notes == null)
             return false;
 
-        return !string.IsNullOrWhiteSpace(plant.notes.textNote)
-            || !string.IsNullOrWhiteSpace(plant.notes.noteTag);
+        // Unity JsonUtility may instantiate an empty NoteData for "notes": null in JSON,
+        // since it cannot represent null for [Serializable] custom types. Treat that as "no note".
+        string text = plant.notes.textNote;
+        string tag = plant.notes.noteTag;
+        if (string.IsNullOrWhiteSpace(text) && string.IsNullOrWhiteSpace(tag))
+            return false;
+
+        return true;
     }
 
     private Color GetColorForRule(RuleType rule)
