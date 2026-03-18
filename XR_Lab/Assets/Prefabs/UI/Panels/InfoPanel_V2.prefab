@@ -3918,7 +3918,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0.078431375, g: 0.46666667, b: 0.827451, a: 1}
+  m_Color: {r: 0.14465404, g: 0.14465404, b: 0.14465404, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -4396,6 +4396,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01f0eec6d15f51d48bf21b8d662d0ae3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InfoPanelBinder
+  headerBackgroundImage: {fileID: 8456325820406579216}
+  defaultHeadingColor: {r: 0.14509805, g: 0.14509805, b: 0.14509805, a: 1}
+  noteHeadingColor: {r: 1, g: 0.5019608, b: 0, a: 1}
+  badHealthColor: {r: 1, g: 0, b: 0, a: 1}
+  readyHarvestColor: {r: 0, g: 0.8, b: 0.2, a: 1}
+  lowWaterColor: {r: 0, g: 0, b: 1, a: 1}
+  priority: 01000000000000000200000003000000
   speciesText: {fileID: 705125307375933726}
   idText: {fileID: 3468482984411313822}
   growthText: {fileID: 1002833954750878820}
