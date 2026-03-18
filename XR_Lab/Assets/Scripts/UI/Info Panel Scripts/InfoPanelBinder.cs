@@ -158,7 +158,7 @@ public class InfoPanelBinder : MonoBehaviour
                 return string.Equals(plant.healthStatus, OverviewRules.BadHealthStatus, StringComparison.OrdinalIgnoreCase);
 
             case RuleType.NoteAttached:
-                return HasAttachedNote(plant);
+                return HasWarningNote(plant);
 
             case RuleType.RipeGrowth:
                 return plant.growth >= OverviewRules.RipeGrowthThreshold;
@@ -184,6 +184,16 @@ public class InfoPanelBinder : MonoBehaviour
             return false;
 
         return true;
+    }
+
+    private static bool HasWarningNote(Plant plant)
+    {
+        if (plant?.notes == null)
+            return false;
+
+        string tag = plant.notes.noteTag;
+        return !string.IsNullOrWhiteSpace(tag) &&
+               string.Equals(tag, OverviewRules.WarningNoteTag, StringComparison.OrdinalIgnoreCase);
     }
 
     private Color GetColorForRule(RuleType rule)
