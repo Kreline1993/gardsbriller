@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: ef8f8cdf51f21c44181cc620e7aa5d0a
+guid: 6d73b8dcbf518214196866ab33ceade6
 NativeFormatImporter:
   externalObjects: {}
   mainObjectFileID: 2100000
@@ -11,5 +11,5 @@ AssetOrigin:
   productId: 293783
   packageName: Casual Vegetable Pack - Created with FastMesh Asset
   packageVersion: 1.0
-  assetPath: Assets/FastMesh/Materials/Green.mat
+  assetPath: Assets/FastMesh/Materials/GreenDark 2.mat
   uploadId: 686132

@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: ef8f8cdf51f21c44181cc620e7aa5d0a
+guid: e0f662564462ce74dafe9b3aa4c7a111
 NativeFormatImporter:
   externalObjects: {}
   mainObjectFileID: 2100000
@@ -8,8 +8,8 @@ NativeFormatImporter:
   assetBundleVariant: 
 AssetOrigin:
   serializedVersion: 1
-  productId: 293783
-  packageName: Casual Vegetable Pack - Created with FastMesh Asset
+  productId: 217666
+  packageName: Ten Power-Ups
   packageVersion: 1.0
-  assetPath: Assets/FastMesh/Materials/Green.mat
-  uploadId: 686132
+  assetPath: Assets/Materials/UI/Icons/MAT_PowerUps.mat
+  uploadId: 492303
