@@ -70,10 +70,15 @@ public class TwinDataLoader : MonoBehaviour
         // Unity's JsonUtility cannot represent null for [Serializable] custom types and may
         // instantiate an empty object instead, which can cause plants without notes to be
         // incorrectly treated as having notes (orange info panel header).
-        // Notes in middle: ", "notes": null, " -> ", "
+        //
+        // Notes in middle: ', "notes": null, ' -> ', '
         jsonString = Regex.Replace(jsonString, @",\s*""notes""\s*:\s*null\s*,", ", ");
-        // Notes as last field: ", "notes": null }" -> " }" (remove trailing comma from prev field)
+        // Notes as last field: ', "notes": null }' -> ' }' (remove trailing comma from prev field)
         jsonString = Regex.Replace(jsonString, @",\s*""notes""\s*:\s*null\s*([\s\r\n]*})", "$1");
+        // Notes as first field: '{ "notes": null, "plantId": ... }' -> '{ "plantId": ... }'
+        jsonString = Regex.Replace(jsonString, @"{\s*""notes""\s*:\s*null\s*,", "{");
+        // Notes as only field: '{ "notes": null }' -> '{}' (empty object)
+        jsonString = Regex.Replace(jsonString, @"{\s*""notes""\s*:\s*null\s*}", "{}");
 
         TwinData data = JsonUtility.FromJson<TwinData>(jsonString);
         if (data == null || data.rows == null)
