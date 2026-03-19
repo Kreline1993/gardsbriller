@@ -53,6 +53,33 @@ public class InfoPanelBinder : MonoBehaviour
     [SerializeField] private TMP_Text warningTitle;
     [SerializeField] private TMP_Text warningText;
 
+    [Header("Actions")]
+    [SerializeField] private Button closeButton;
+
+    private InfoPanelSpawner _spawner;
+
+    private void Awake()
+    {
+        if (closeButton != null)
+            closeButton.onClick.AddListener(OnCloseButtonClicked);
+    }
+
+    private void OnDestroy()
+    {
+        if (closeButton != null)
+            closeButton.onClick.RemoveListener(OnCloseButtonClicked);
+    }
+
+    public void Initialize(InfoPanelSpawner spawner)
+    {
+        _spawner = spawner;
+    }
+
+    public void OnCloseButtonClicked()
+    {
+        _spawner?.ClosePanel();
+    }
+
     public void Populate(Plant plant, Row row)
     {
         if (plant == null) return;
