@@ -30,11 +30,14 @@ public class ModeIndicator : MonoBehaviour
     [SerializeField] [Range(0.5f, 6f)] private float pulseSpeed = 2f;
     [SerializeField] [Range(0f, 1f)] private float pulseMinAlpha = 0.55f;
     [SerializeField] [Range(0f, 1f)] private float pulseMaxAlpha = 1.0f;
+    [SerializeField] [Min(0f)] private float pulseDuration = 0.9f;
 
     //Private State
 
     private Image _dot;
     private Color _targetColor;
+    private float _pulseTimeRemaining;
+    private float _pulseElapsed;
 
     private void Awake()
     {
@@ -67,10 +70,20 @@ public class ModeIndicator : MonoBehaviour
     {
         Color blended = Color.Lerp(_dot.color, _targetColor, Time.deltaTime * colorLerpSpeed);
 
-        if (enablePulse)
+        if (enablePulse && _pulseTimeRemaining > 0f)
         {
-            float t = (Mathf.Sin(Time.time * pulseSpeed) + 1f) * 0.5f;
+            _pulseTimeRemaining -= Time.deltaTime;
+            _pulseElapsed += Time.deltaTime;
+
+            float t = (Mathf.Sin(_pulseElapsed * pulseSpeed) + 1f) * 0.5f;
             blended.a = Mathf.Lerp(pulseMinAlpha, pulseMaxAlpha, t);
+
+            if (_pulseTimeRemaining <= 0f)
+                blended.a = _targetColor.a;
+        }
+        else
+        {
+            blended.a = _targetColor.a;
         }
 
         _dot.color = blended;
@@ -83,7 +96,31 @@ public class ModeIndicator : MonoBehaviour
         _targetColor = ModeToColor(mode);
 
         if (instant)
+        {
             _dot.color = _targetColor;
+            StopPulse();
+            return;
+        }
+
+        StartPulse();
+    }
+
+    private void StartPulse()
+    {
+        if (!enablePulse || pulseDuration <= 0f)
+        {
+            StopPulse();
+            return;
+        }
+
+        _pulseElapsed = 0f;
+        _pulseTimeRemaining = pulseDuration;
+    }
+
+    private void StopPulse()
+    {
+        _pulseElapsed = 0f;
+        _pulseTimeRemaining = 0f;
     }
 
     private Color ModeToColor(AppMode mode) => mode switch

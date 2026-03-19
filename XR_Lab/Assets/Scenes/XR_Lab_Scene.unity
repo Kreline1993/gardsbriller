@@ -1614,7 +1614,7 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 6647269525983367940, guid: 7e17be6200c63ff4a9ff385b018b5a42, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1799023878}
-    - targetCorrespondingSourceObject: {fileID: 1317116484293602327, guid: 7e17be6200c63ff4a9ff385b018b5a42, type: 3}
+    - targetCorrespondingSourceObject: {fileID: 6647269525983367940, guid: 7e17be6200c63ff4a9ff385b018b5a42, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1397041802}
     m_AddedComponents: []
@@ -1627,11 +1627,6 @@ Transform:
 --- !u!4 &1696891608 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7155591683317457546, guid: 7e17be6200c63ff4a9ff385b018b5a42, type: 3}
-  m_PrefabInstance: {fileID: 1696891606}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &1696891609 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 1317116484293602327, guid: 7e17be6200c63ff4a9ff385b018b5a42, type: 3}
   m_PrefabInstance: {fileID: 1696891606}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1728653816
@@ -2324,7 +2319,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 1696891609}
+    m_TransformParent: {fileID: 1696891607}
     m_Modifications:
     - target: {fileID: 18418227547175917, guid: 0a423d8376786144185836e1375fd2fa, type: 3}
       propertyPath: m_Pivot.x
@@ -2405,6 +2400,14 @@ PrefabInstance:
     - target: {fileID: 18418227547175917, guid: 0a423d8376786144185836e1375fd2fa, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1226444577491782481, guid: 0a423d8376786144185836e1375fd2fa, type: 3}
+      propertyPath: enablePulse
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1226444577491782481, guid: 0a423d8376786144185836e1375fd2fa, type: 3}
+      propertyPath: pulseDuration
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 5916001282416551680, guid: 0a423d8376786144185836e1375fd2fa, type: 3}
       propertyPath: m_Name
