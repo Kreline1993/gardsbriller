@@ -92,6 +92,9 @@ public class InfoPanelSpawner : MonoBehaviour
             Vector3 spawnPos = ComputePanelSpawnPosition(viewerTransform);
             spawnedPanel = Instantiate(infoPanelPrefab, spawnPos, Quaternion.identity);
             FacePanelTowardsViewer(spawnedPanel.transform, viewerTransform);
+
+            InfoPanelBinder binder = spawnedPanel.GetComponent<InfoPanelBinder>();
+            if (binder != null) binder.Initialize(this);
             
             _needsVisualUpdate = true;
             CreateTether();
@@ -101,7 +104,6 @@ public class InfoPanelSpawner : MonoBehaviour
 
             if (data != null)
             {
-                InfoPanelBinder binder = spawnedPanel.GetComponent<InfoPanelBinder>();
                 if (binder != null) binder.Populate(data, row);
             }
         }

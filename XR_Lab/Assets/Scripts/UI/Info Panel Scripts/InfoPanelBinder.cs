@@ -16,6 +16,7 @@ public class InfoPanelBinder : MonoBehaviour
 
     [Header("Heading")]
     [SerializeField] private Image headerBackgroundImage;
+    [SerializeField] private Image[] linkedHeadingImages;
     [SerializeField] private Color defaultHeadingColor = Color.white;
     [SerializeField] private Color noteHeadingColor    = new Color(1f, 0.55f, 0f, 1f); // orange
     [SerializeField] private Color badHealthColor      = Color.red;
@@ -52,6 +53,33 @@ public class InfoPanelBinder : MonoBehaviour
     [SerializeField] private GameObject warningContainer;
     [SerializeField] private TMP_Text warningTitle;
     [SerializeField] private TMP_Text warningText;
+
+    [Header("Actions")]
+    [SerializeField] private Button closeButton;
+
+    private InfoPanelSpawner _spawner;
+
+    private void Awake()
+    {
+        if (closeButton != null)
+            closeButton.onClick.AddListener(OnCloseButtonClicked);
+    }
+
+    private void OnDestroy()
+    {
+        if (closeButton != null)
+            closeButton.onClick.RemoveListener(OnCloseButtonClicked);
+    }
+
+    public void Initialize(InfoPanelSpawner spawner)
+    {
+        _spawner = spawner;
+    }
+
+    public void OnCloseButtonClicked()
+    {
+        _spawner?.ClosePanel();
+    }
 
     public void Populate(Plant plant, Row row)
     {
@@ -119,15 +147,28 @@ public class InfoPanelBinder : MonoBehaviour
 
     private void PopulateHeadingColor(Plant plant, Row row)
     {
-        if (headerBackgroundImage == null) return;
-
         if (TryGetHeadingColor(plant, row, out Color headingColor))
         {
-            headerBackgroundImage.color = headingColor;
+            SetHeadingColorTargets(headingColor);
             return;
         }
 
-        headerBackgroundImage.color = defaultHeadingColor;
+        SetHeadingColorTargets(defaultHeadingColor);
+    }
+
+    private void SetHeadingColorTargets(Color color)
+    {
+        if (headerBackgroundImage != null)
+            headerBackgroundImage.color = color;
+
+        if (linkedHeadingImages == null) return;
+
+        for (int i = 0; i < linkedHeadingImages.Length; i++)
+        {
+            Image target = linkedHeadingImages[i];
+            if (target != null)
+                target.color = color;
+        }
     }
 
     private bool TryGetHeadingColor(Plant plant, Row row, out Color color)
