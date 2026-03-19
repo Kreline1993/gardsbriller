@@ -517,6 +517,9 @@ MonoBehaviour:
   nearIconYOffset: 0
   midIconYOffset: 0.1
   clusterIconYOffset: 0.5
+  nearIconStackSpacing: 0.2
+  midIconStackSpacing: 0.35
+  clusterIconStackSpacing: 0.5
   updateInterval: 0.5
 --- !u!4 &553951983
 Transform:
