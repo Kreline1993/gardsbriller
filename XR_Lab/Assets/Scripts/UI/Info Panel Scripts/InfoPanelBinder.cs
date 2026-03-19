@@ -259,4 +259,16 @@ public class InfoPanelBinder : MonoBehaviour
         if (warningTitle != null) warningTitle.text = title;
         if (warningText  != null) warningText.text  = text;
     }
+
+    public void PopulateNote(Plant plant)
+    {
+        if (plant == null) return;
+
+        // Use moistureText as note content
+        if (moistureText != null)
+        {
+            string noteText = plant.notes?.textNote ?? "No notes available";
+            moistureText.text = noteText;
+        }
+    }
 }
