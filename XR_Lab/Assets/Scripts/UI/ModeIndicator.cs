@@ -14,9 +14,9 @@ public class ModeIndicator : MonoBehaviour
 
     [Header("Mode Colors")]
     [SerializeField] private Color defaultColor   = Color.white;
-    [SerializeField] private Color overviewColor  = new Color(0.55f, 0.0f, 1.00f, 1f);
-    [SerializeField] private Color pickingColor   = new Color(0.10f, 0.85f, 0.10f, 1f);
-    [SerializeField] private Color weedingColor   = new Color(1.00f, 0.85f, 0.00f, 1f);
+    [SerializeField] private Color overviewColor  = new Color(0.55f, 0.0f, 1.00f, 1f); //Purple
+    [SerializeField] private Color pickingColor   = new Color(0.10f, 0.85f, 0.10f, 1f); //Green
+    [SerializeField] private Color weedingColor   = new Color(1.00f, 0.85f, 0.00f, 1f); //Yellow
 
     //Color Transition
 
