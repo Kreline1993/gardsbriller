@@ -420,7 +420,7 @@ MonoBehaviour:
   carrotPickingTint: {r: 0.4, g: 1, b: 0.4, a: 0.7058824}
   radishPickingTint: {r: 0.55656374, g: 0.39999998, b: 1, a: 0.7058824}
   tomatoPickingOverlayPrefab: {fileID: 906453245972585529, guid: 00caac431abf7f948a559001b86d5377, type: 3}
-  carrotPickingOverlayPrefab: {fileID: 4447019598221353416, guid: 5f93e64fcb16fe14dba8d3d67a6be60a, type: 3}
+  carrotPickingOverlayPrefab: {fileID: 7432622799770361029, guid: 51a67f3bc21583a409feb699124a9203, type: 3}
   radishPickingOverlayPrefab: {fileID: 1522549977551132946, guid: b9540c48868eed447899c59106e84332, type: 3}
   pickingProximityController: {fileID: 518314010}
 --- !u!4 &551489249
@@ -1972,7 +1972,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 990d045432f619141bbc0fe72a898d82, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TwinDataLoader
-  fileName: PlantData.json
+  fileName: PlantData-New.json
 --- !u!1 &1849515172
 GameObject:
   m_ObjectHideFlags: 0
