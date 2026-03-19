@@ -19,6 +19,7 @@ public class InfoPanelSpawner : MonoBehaviour
 
     [Header("Note Panel Placement")]
     [SerializeField] private float notePanelOffsetFromInfoPanel = 0.5f;
+    [SerializeField] private float notePanelForwardOffset = 0.3f;
 
     [Header("Panel Tether")]
     [SerializeField] private bool enableTether = true;
@@ -336,14 +337,15 @@ public class InfoPanelSpawner : MonoBehaviour
 
     private Vector3 ComputeNotePanelSpawnPosition(Transform infoPanelTransform, Transform viewerTransform)
     {
-        // Position the note panel to the right of the info panel
+        // Position the note panel to the right of the info panel and forward towards the viewer
         Vector3 infoPanelPos = infoPanelTransform.position;
         Vector3 toViewer = (viewerTransform.position - infoPanelPos).normalized;
         
         // Get the right direction relative to the viewer
         Vector3 right = Vector3.Cross(Vector3.up, toViewer).normalized;
         
-        return infoPanelPos + right * notePanelOffsetFromInfoPanel;
+        // Offset to the right (closer to info panel) and forward towards viewer
+        return infoPanelPos + right * notePanelOffsetFromInfoPanel + toViewer * notePanelForwardOffset;
     }
 
     private void WireNoteCloseButton()

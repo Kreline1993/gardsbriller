@@ -48,6 +48,9 @@ public class InfoPanelBinder : MonoBehaviour
     [Header("Pesticide")]
     [SerializeField] private TMP_Text pesticideText;
 
+    [Header("Note Tag/Date")]
+    [SerializeField] private TMP_Text noteTagText;
+
     [Header("Warning")]
     [SerializeField] private GameObject warningContainer;
     [SerializeField] private TMP_Text warningTitle;
@@ -263,6 +266,13 @@ public class InfoPanelBinder : MonoBehaviour
     public void PopulateNote(Plant plant)
     {
         if (plant == null) return;
+
+        // Set the note tag/date field
+        if (noteTagText != null)
+        {
+            string tag = plant.notes?.noteTag ?? "No tag";
+            noteTagText.text = tag;
+        }
 
         // Use moistureText as note content
         if (moistureText != null)
