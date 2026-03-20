@@ -20,9 +20,9 @@ public class PlantVisualRegistry : MonoBehaviour
 
         Transform root = searchRoot != null ? searchRoot : transform;
         PlantIdentity[] identities = root.GetComponentsInChildren<PlantIdentity>(true);
-        
+
         Debug.Log($"[PlantVisualRegistry] Searching for plants under '{root.name}'. Found {identities.Length} PlantIdentity components.");
-        
+
         foreach (PlantIdentity identity in identities)
         {
             if (identity == null || string.IsNullOrEmpty(identity.plantId))
@@ -35,7 +35,7 @@ public class PlantVisualRegistry : MonoBehaviour
             handle.InitializeIfNeeded();
             handlesByPlantId[identity.plantId] = handle;
         }
-        
+
         Debug.Log($"[PlantVisualRegistry] Indexed {handlesByPlantId.Count} plants.");
     }
 
@@ -93,25 +93,21 @@ public class PlantVisualRegistry : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Applies a protected set of plants to the visual registry.
-    /// Note: This method is not used in the current implementation.
-    /// </summary>
-    public void ApplyProtectedSet(HashSet<string> protectedPlantIds, Color protectedTint, bool disableTouchForProtected)
+    public void ApplyProtectedSet(Dictionary<string, Color> protectedPlantTints, bool disableTouchForProtected)
     {
-        if (protectedPlantIds == null)
-            protectedPlantIds = new HashSet<string>();
+        if (protectedPlantTints == null)
+            protectedPlantTints = new Dictionary<string, Color>();
 
-        Debug.Log($"[PlantVisualRegistry] Applying protected set: {protectedPlantIds.Count} protected plants, tint={protectedTint}, disableTouch={disableTouchForProtected}");
-        
+        Debug.Log($"[PlantVisualRegistry] Applying protected set: {protectedPlantTints.Count} protected plants, disableTouch={disableTouchForProtected}");
+
         foreach (KeyValuePair<string, PlantVisualHandle> pair in handlesByPlantId)
         {
             PlantVisualHandle handle = pair.Value;
             if (handle == null)
                 continue;
 
-            bool isProtected = protectedPlantIds.Contains(pair.Key);
-            handle.SetProtectedVisual(isProtected, protectedTint, disableTouchForProtected);
+            bool isProtected = protectedPlantTints.TryGetValue(pair.Key, out Color tint);
+            handle.SetProtectedVisual(isProtected, isProtected ? tint : Color.white, disableTouchForProtected);
         }
     }
 
@@ -123,6 +119,42 @@ public class PlantVisualRegistry : MonoBehaviour
                 continue;
 
             pair.Value.ResetVisuals();
+        }
+    }
+
+    /// <summary>
+    /// Disables colliders on plants not in the highlighted set; restores colliders on highlighted plants.
+    /// When <paramref name="highlightedPlantIds"/> is empty, restores all colliders.
+    /// Use when a section is expanded and only highlighted plants should be interactable.
+    /// </summary>
+    public void SetCollidersForHighlightedOnly(HashSet<string> highlightedPlantIds)
+    {
+        if (highlightedPlantIds == null)
+        {
+            RestoreAllColliders();
+            return;
+        }
+
+        foreach (KeyValuePair<string, PlantVisualHandle> pair in handlesByPlantId)
+        {
+            if (pair.Value == null)
+                continue;
+
+            if (highlightedPlantIds.Count == 0 || highlightedPlantIds.Contains(pair.Key))
+                pair.Value.RestoreColliders();
+            else
+                pair.Value.DisableColliders();
+        }
+    }
+
+    /// <summary>
+    /// Restores colliders on all plants to their original state.
+    /// </summary>
+    public void RestoreAllColliders()
+    {
+        foreach (KeyValuePair<string, PlantVisualHandle> pair in handlesByPlantId)
+        {
+            pair.Value?.RestoreColliders();
         }
     }
 

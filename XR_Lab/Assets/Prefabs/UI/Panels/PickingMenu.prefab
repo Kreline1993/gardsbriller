@@ -1531,7 +1531,7 @@ GameObject:
   - component: {fileID: 2478466058512618804}
   - component: {fileID: 3944207775966954883}
   m_Layer: 5
-  m_Name: leekSelection(button)
+  m_Name: carrotSelection(button)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1743,7 +1743,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Leek
+  m_text: Carrot
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: c932cc28b31bce249979d2b4234ef5ce, type: 2}
   m_sharedMaterial: {fileID: -6638886498040467298, guid: c932cc28b31bce249979d2b4234ef5ce, type: 2}

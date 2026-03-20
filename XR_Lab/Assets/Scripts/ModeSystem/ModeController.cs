@@ -34,13 +34,25 @@ public class ModeController : MonoBehaviour
     [Header("Weeding Mode")]
     [SerializeField] private Color weedingProtectedTint = Color.yellow;
     [SerializeField] private bool disableTouchForProtectedPlants = true;
+    [SerializeField] private float weedingHighlightDistance = 2f;
     [Tooltip("Optional. When set, this prefab is spawned at each plant position with the tint applied instead of tinting the original plant.")]
     [SerializeField] private GameObject weedingOverlayPrefab;
     [Tooltip("When true, the original plant prefab is hidden while the overlay is active.")]
     [SerializeField] private bool hideOriginalDuringOverlay = true;
 
     [Header("Picking Mode")]
-    [SerializeField] private Color pickingHighlightTint = new Color(1f, 0.4f, 0.8f, 1f);
+    [SerializeField] private Color tomatoPickingTint = new Color(1f, 0.4f, 0.8f, 1f);
+    [SerializeField] private Color carrotPickingTint = new Color(0.4f, 1f, 0.4f, 1f);
+    [SerializeField] private Color radishPickingTint = new Color(0.4f, 0.6f, 1f, 1f);
+    [Tooltip("Prefab spawned over selected tomato plants within the overlay threshold distance.")]
+    [SerializeField] private GameObject tomatoPickingOverlayPrefab;
+    [Tooltip("Prefab spawned over selected carrot plants within the overlay threshold distance.")]
+    [SerializeField] private GameObject carrotPickingOverlayPrefab;
+    [Tooltip("Prefab spawned over selected radish plants within the overlay threshold distance.")]
+    [SerializeField] private GameObject radishPickingOverlayPrefab;
+    [Tooltip("Assign the scene GameObject that has PickingProximityController attached.")]
+    [SerializeField] private PickingProximityController pickingProximityController;
+
 
     private readonly Dictionary<AppMode, IModeState> states = new Dictionary<AppMode, IModeState>();
     private IModeState currentState;
@@ -91,11 +103,25 @@ public class ModeController : MonoBehaviour
             overviewWarningIconPrefab,
             overviewRipeIconPrefab,
             overviewLODController);
-        states[AppMode.PlantPicking] = new PlantPickingModeState(context, 
-            pickingHighlightTint);
+        var speciesTints = new Dictionary<string, Color>(System.StringComparer.OrdinalIgnoreCase)
+        {
+            { "Tomato", tomatoPickingTint },
+            { "Carrot",   carrotPickingTint  },
+            { "Radish", radishPickingTint }
+        };
+        var speciesOverlays = new Dictionary<string, GameObject>(System.StringComparer.OrdinalIgnoreCase)
+{
+    { "Tomato", tomatoPickingOverlayPrefab },
+    { "Carrot",   carrotPickingOverlayPrefab   },
+    { "Radish", radishPickingOverlayPrefab }
+};
+        states[AppMode.PlantPicking] = new PlantPickingModeState(context, speciesTints,
+            pickingProximityController, speciesOverlays);
         states[AppMode.Weeding] = new WeedingModeState(context, 
             weedingProtectedTint, 
             disableTouchForProtectedPlants, 
+            pickingProximityController,
+            weedingHighlightDistance,
             weedingOverlayPrefab, 
             hideOriginalDuringOverlay);
     }

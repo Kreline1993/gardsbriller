@@ -3,6 +3,7 @@ using UnityEngine.Networking;
 using System;
 using System.Collections;
 using System.IO;
+using System.Text.RegularExpressions;
 
 public class TwinDataLoader : MonoBehaviour
 {
@@ -65,6 +66,20 @@ public class TwinDataLoader : MonoBehaviour
 
     private TwinData Parse(string jsonString)
     {
+        // Remove "notes": null so JsonUtility leaves the field as null.
+        // Unity's JsonUtility cannot represent null for [Serializable] custom types and may
+        // instantiate an empty object instead, which can cause plants without notes to be
+        // incorrectly treated as having notes (orange info panel header).
+        //
+        // Notes in middle: ', "notes": null, ' -> ', '
+        jsonString = Regex.Replace(jsonString, @",\s*""notes""\s*:\s*null\s*,", ", ");
+        // Notes as last field: ', "notes": null }' -> ' }' (remove trailing comma from prev field)
+        jsonString = Regex.Replace(jsonString, @",\s*""notes""\s*:\s*null\s*([\s\r\n]*})", "$1");
+        // Notes as first field: '{ "notes": null, "plantId": ... }' -> '{ "plantId": ... }'
+        jsonString = Regex.Replace(jsonString, @"{\s*""notes""\s*:\s*null\s*,", "{");
+        // Notes as only field: '{ "notes": null }' -> '{}' (empty object)
+        jsonString = Regex.Replace(jsonString, @"{\s*""notes""\s*:\s*null\s*}", "{}");
+
         TwinData data = JsonUtility.FromJson<TwinData>(jsonString);
         if (data == null || data.rows == null)
             return null;
