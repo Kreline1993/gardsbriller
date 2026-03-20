@@ -9,6 +9,14 @@ public class OverviewPanelBinder : MonoBehaviour
     [Header("References")]
     [SerializeField] private OverviewPanelDataProvider dataProvider;
 
+    //might fix GO-245
+    [Header("Hit Bounds (ISDK)")]
+    [SerializeField] private Oculus.Interaction.Surfaces.BoundsClipper hitBoundsClipper;
+    [SerializeField] private Vector3 expandedBoundsPosition = new Vector3(0f, 0f, 0f);
+    [SerializeField] private Vector3 expandedBoundsSize = new Vector3(1000f, 1976.59f, 0.01f);
+    [SerializeField] private Vector3 collapsedBoundsPosition = new Vector3(0f, 541f, 0f);
+    [SerializeField] private Vector3 collapsedBoundsSize = new Vector3(1000f, 200f, 0.01f);
+
     [Header("Status Bar (Compact View)")]
     [Tooltip("Root GameObject for the compact status bar. Shown when collapsed.")]
     [SerializeField] private GameObject statusBarRoot;
@@ -115,6 +123,7 @@ public class OverviewPanelBinder : MonoBehaviour
 
     public bool IsExpanded => isExpanded;
 
+    //new version of ApplyExpandedState
     private void ApplyExpandedState()
     {
         if (statusBarRoot != null)
@@ -122,8 +131,13 @@ public class OverviewPanelBinder : MonoBehaviour
 
         if (detailPanelRoot != null)
             detailPanelRoot.SetActive(isExpanded);
-    }
 
+        if (hitBoundsClipper != null)
+        {
+            hitBoundsClipper.Position = isExpanded ? expandedBoundsPosition : collapsedBoundsPosition;
+            hitBoundsClipper.Size = isExpanded ? expandedBoundsSize : collapsedBoundsSize;
+        }
+    }
     /// <summary>
     /// Sets the colors to use for each rule category in the overview display.
     /// </summary>
