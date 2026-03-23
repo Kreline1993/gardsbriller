@@ -155,7 +155,8 @@ MonoBehaviour:
   panelDistanceFromViewer: {x: 0.7, y: 1}
   viewerVerticalBand: {x: -0.2, y: 0.2}
   flipPanelForward: 1
-  notePanelOffsetFromInfoPanel: 0.5
+  notePanelOffsetFromInfoPanel: 0.4
+  notePanelForwardOffset: 0.05
   enableTether: 1
   tetherWidth: 0.005
   tetherColor: {r: 1, g: 1, b: 1, a: 0.07450981}
