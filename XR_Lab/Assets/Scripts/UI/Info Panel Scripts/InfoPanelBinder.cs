@@ -271,7 +271,7 @@ public class InfoPanelBinder : MonoBehaviour
         if (noteTagText != null)
         {
             string tag = plant.notes?.noteTag ?? "No tag";
-            noteTagText.text = tag;
+            noteTagText.text = tag.ToUpper(); 
         }
 
         // Use moistureText as note content
