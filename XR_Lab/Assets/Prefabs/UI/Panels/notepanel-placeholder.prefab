@@ -739,10 +739,11 @@ MonoBehaviour:
   speciesText: {fileID: 6103988829004470756}
   idText: {fileID: 0}
   growthText: {fileID: 0}
-  moistureText: {fileID: 3787132903710810926}
+  moistureText: {fileID: 0}
   healthText: {fileID: 0}
   pesticideText: {fileID: 0}
   noteTagText: {fileID: 2498390743272695097}
+  noteContentText: {fileID: 3787132903710810926}
   warningContainer: {fileID: 0}
   warningTitle: {fileID: 0}
   warningText: {fileID: 0}

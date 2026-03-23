@@ -50,6 +50,7 @@ public class InfoPanelBinder : MonoBehaviour
 
     [Header("Note Tag/Date")]
     [SerializeField] private TMP_Text noteTagText;
+    [SerializeField] private TMP_Text noteContentText;
 
     [Header("Warning")]
     [SerializeField] private GameObject warningContainer;
@@ -274,11 +275,11 @@ public class InfoPanelBinder : MonoBehaviour
             noteTagText.text = tag.ToUpperInvariant(); 
         }
 
-        // Use moistureText as note content
-        if (moistureText != null)
+        // Set the note body/content text
+        if (noteContentText != null)
         {
             string noteText = plant.notes?.textNote ?? "No notes available";
-            moistureText.text = noteText;
+            noteContentText.text = noteText;
         }
     }
 }
