@@ -175,20 +175,8 @@ public class InfoPanelBinder : MonoBehaviour
         }
     }
 
-    private static bool HasAttachedNote(Plant plant)
-    {
-        if (plant?.notes == null)
-            return false;
-
-        // Unity JsonUtility may instantiate an empty NoteData for "notes": null in JSON,
-        // since it cannot represent null for [Serializable] custom types. Treat that as "no note".
-        string text = plant.notes.textNote;
-        string tag = plant.notes.noteTag;
-        if (string.IsNullOrWhiteSpace(text) && string.IsNullOrWhiteSpace(tag))
-            return false;
-
-        return true;
-    }
+    private static bool HasAttachedNote(Plant plant) =>
+        plant?.notes?.HasContent() ?? false;
 
     private static bool HasWarningNote(Plant plant)
     {

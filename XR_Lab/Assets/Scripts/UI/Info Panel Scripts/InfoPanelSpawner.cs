@@ -322,13 +322,8 @@ public class InfoPanelSpawner : MonoBehaviour
         }
     }
 
-    private bool HasNotes(Plant plant)
-    {
-        if (plant?.notes == null) return false;
-        string text = plant.notes.textNote;
-        string tag = plant.notes.noteTag;
-        return !string.IsNullOrWhiteSpace(text) || !string.IsNullOrWhiteSpace(tag);
-    }
+    private static bool HasNotes(Plant plant) =>
+        plant?.notes?.HasContent() ?? false;
 
     /// <summary>
     /// Toggles visibility of the spawned note panel, or spawns it on first use when deferred / after Close destroyed it.
