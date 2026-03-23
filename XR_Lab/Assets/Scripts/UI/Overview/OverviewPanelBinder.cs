@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Text;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class OverviewPanelBinder : MonoBehaviour
 {
@@ -9,6 +10,32 @@ public class OverviewPanelBinder : MonoBehaviour
     [SerializeField] private OverviewPanelDataProvider dataProvider;
     [SerializeField] private OverviewHighlightController highlightController;
     [SerializeField] private ModeController modeController;
+
+    //might fix GO-245
+    [Header("Hit Bounds (ISDK)")]
+    [SerializeField] private Oculus.Interaction.Surfaces.BoundsClipper hitBoundsClipper;
+    [SerializeField] private Vector3 expandedBoundsPosition = new Vector3(0f, 0f, 0f);
+    [SerializeField] private Vector3 expandedBoundsSize = new Vector3(1000f, 1976.59f, 0.01f);
+    [SerializeField] private Vector3 collapsedBoundsPosition = new Vector3(0f, 541f, 0f);
+    [SerializeField] private Vector3 collapsedBoundsSize = new Vector3(1000f, 200f, 0.01f);
+
+    [Header("Status Bar (Compact View)")]
+    [Tooltip("Root GameObject for the compact status bar. Shown when collapsed.")]
+    [SerializeField] private GameObject statusBarRoot;
+    [SerializeField] private TMP_Text statusBarMoistureCount;
+    [SerializeField] private TMP_Text statusBarHealthCount;
+    [SerializeField] private TMP_Text statusBarWarningCount;
+    [SerializeField] private TMP_Text statusBarRipeCount;
+    [SerializeField] private TMP_Text statusBarQuickStats;
+    [Tooltip("Optional background images behind each badge, tinted to match category color.")]
+    [SerializeField] private Image statusBarMoistureBadge;
+    [SerializeField] private Image statusBarHealthBadge;
+    [SerializeField] private Image statusBarWarningBadge;
+    [SerializeField] private Image statusBarRipeBadge;
+
+    [Header("Detail Panel (Full View)")]
+    [Tooltip("Root GameObject for the full detail panel. Shown when expanded.")]
+    [SerializeField] private GameObject detailPanelRoot;
 
     [Header("Combined Display (Optional)")]
     [SerializeField] private TMP_Text mainText;
@@ -32,6 +59,10 @@ public class OverviewPanelBinder : MonoBehaviour
 
     [Header("Behavior")]
     [SerializeField] private bool refreshOnEnable = true;
+    [Tooltip("When true, the panel starts in compact (status bar) mode.")]
+    [SerializeField] private bool startCollapsed = true;
+
+    private bool isExpanded;
 
     [Header("Expand Layout")]
     [Tooltip("Extra padding added below each expanded section's text.")]
@@ -69,6 +100,48 @@ public class OverviewPanelBinder : MonoBehaviour
             modeController = FindFirstObjectByType<ModeController>();
     }
 
+    private void Start()
+    {
+        isExpanded = !startCollapsed;
+        ApplyExpandedState();
+    }
+
+    /// <summary>
+    /// Toggles between the compact status bar and the full detail panel.
+    /// Wire this to a Button.onClick in the Inspector.
+    /// </summary>
+    public void ToggleExpandCollapse()
+    {
+        isExpanded = !isExpanded;
+        ApplyExpandedState();
+    }
+
+    /// <summary>
+    /// Expands or collapses the panel from code.
+    /// </summary>
+    public void SetExpanded(bool expanded)
+    {
+        isExpanded = expanded;
+        ApplyExpandedState();
+    }
+
+    public bool IsExpanded => isExpanded;
+
+    //new version of ApplyExpandedState
+    private void ApplyExpandedState()
+    {
+        if (statusBarRoot != null)
+            statusBarRoot.SetActive(!isExpanded);
+
+        if (detailPanelRoot != null)
+            detailPanelRoot.SetActive(isExpanded);
+
+        if (hitBoundsClipper != null)
+        {
+            hitBoundsClipper.Position = isExpanded ? expandedBoundsPosition : collapsedBoundsPosition;
+            hitBoundsClipper.Size = isExpanded ? expandedBoundsSize : collapsedBoundsSize;
+        }
+    }
     /// <summary>
     /// Sets the colors to use for each rule category in the overview display.
     /// </summary>
@@ -165,8 +238,44 @@ public class OverviewPanelBinder : MonoBehaviour
         if (snapshot == null)
             return;
 
+        RenderStatusBar(snapshot);
         RenderCombined(snapshot);
         RenderSplit(snapshot);
+    }
+
+    private void RenderStatusBar(OverviewPanelDataSnapshot snapshot)
+    {
+        if (statusBarRoot == null)
+            return;
+
+        var summary = snapshot.summary;
+
+        SetBadge(statusBarMoistureCount, statusBarMoistureBadge,
+            summary.lowMoistureRows, lowMoistureColor);
+
+        SetBadge(statusBarHealthCount, statusBarHealthBadge,
+            summary.badHealthPlants, badHealthColor);
+
+        SetBadge(statusBarWarningCount, statusBarWarningBadge,
+            summary.warningPlants, warningTagColor);
+
+        SetBadge(statusBarRipeCount, statusBarRipeBadge,
+            summary.ripePlants, ripeColor);
+
+        if (statusBarQuickStats != null)
+        {
+            statusBarQuickStats.text =
+                $"Moisture: {snapshot.lowestRowMoisture}%  •  Watered: {snapshot.lastWateredDate}";
+        }
+    }
+
+    private static void SetBadge(TMP_Text countText, Image badge, int count, Color categoryColor)
+    {
+        if (countText != null)
+            countText.text = count.ToString();
+
+        if (badge != null)
+            badge.color = count > 0 ? categoryColor : Color.green;
     }
 
     private void RenderCombined(OverviewPanelDataSnapshot snapshot)
