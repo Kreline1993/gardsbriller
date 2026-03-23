@@ -359,7 +359,6 @@ public class InfoPanelSpawner : MonoBehaviour
         InfoPanelBinder noteBinder = spawnedNotePanel.GetComponent<InfoPanelBinder>();
         if (noteBinder != null) noteBinder.PopulateNote(data);
 
-        WireNoteCloseButton();
         spawnedNotePanel.SetActive(!startHidden);
     }
 
@@ -399,23 +398,4 @@ public class InfoPanelSpawner : MonoBehaviour
         return infoPanelPos + right * notePanelOffsetFromInfoPanel + toViewer * notePanelForwardOffset;
     }
 
-    private void WireNoteCloseButton()
-    {
-        if (spawnedNotePanel == null) return;
-
-        // Find all buttons on the note panel
-        Button[] buttons = spawnedNotePanel.GetComponentsInChildren<Button>();
-        
-        foreach (Button btn in buttons)
-        {
-            // Check if this button has a text component with "Close"
-            TMPro.TextMeshProUGUI tmpText = btn.GetComponentInChildren<TMPro.TextMeshProUGUI>();
-            if (tmpText != null && tmpText.text.Equals("Close", System.StringComparison.OrdinalIgnoreCase))
-            {
-                // Wire the close button to close the note panel
-                btn.onClick.AddListener(() => { if (spawnedNotePanel != null) Destroy(spawnedNotePanel); spawnedNotePanel = null; });
-                break;
-            }
-        }
-    }
 }
