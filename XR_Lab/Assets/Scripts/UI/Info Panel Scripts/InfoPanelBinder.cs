@@ -102,11 +102,9 @@ public class InfoPanelBinder : MonoBehaviour
     private void PopulateGrowth(Plant plant)
     {
         if (growthText == null) return;
-
-        string planted  = FormatDate(plant.plantedDate, "Unknown");
-        string harvest  = FormatDate(plant.estimatedHarvestDate, "Unknown");
-
-        growthText.text = $"Date Planted: {planted}\nMaturity: {plant.growth}%\nExpected Harvest: {harvest}";
+        string planted = FormatDate(plant.plantedDate, "Unknown");
+        string harvest = FormatDate(plant.estimatedHarvestDate, "Unknown");
+        growthText.text = $"{planted}\n{plant.growth}%\n{harvest}";
     }
 
     private string FormatDate(DateData date, string fallback)
@@ -120,29 +118,24 @@ public class InfoPanelBinder : MonoBehaviour
     private void PopulateMoisture(Row row)
     {
         if (moistureText == null) return;
-
         string lastWatered = row != null ? FormatDate(row.lastWateredDate, "Unknown") : "Unknown";
         string moisture    = row != null ? $"{row.groundMoisture}%" : "Unknown";
-
-        moistureText.text = $"Last Watered: {lastWatered}\nMoisture: {moisture}";
+        moistureText.text  = $"{lastWatered}\n{moisture}";
     }
 
     private void PopulateHealth(Plant plant)
     {
         if (healthText == null) return;
-
-        string status = string.IsNullOrEmpty(plant.healthStatus) ? "Unknown" : plant.healthStatus;
-        healthText.text = $"Health Status: {status}";
+        string status   = string.IsNullOrEmpty(plant.healthStatus) ? "Unknown" : plant.healthStatus;
+        healthText.text = status;
     }
 
     private void PopulatePesticide(Plant plant)
     {
         if (pesticideText == null) return;
-
-        string last = FormatDate(plant.lastPesticide, "Unknown");
-        string next = FormatDate(plant.nextPesticide, "Unknown");
-
-        pesticideText.text = $"Last Pesticide: {last}\nNext Pesticide: {next}";
+        string last          = FormatDate(plant.lastPesticide, "Unknown");
+        string next          = FormatDate(plant.nextPesticide, "Unknown");
+        pesticideText.text   = $"{last}\n{next}";
     }
 
     private void PopulateHeadingColor(Plant plant, Row row)
