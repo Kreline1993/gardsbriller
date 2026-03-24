@@ -189,8 +189,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 22
-  m_fontSizeBase: 22
+  m_fontSize: 16
+  m_fontSizeBase: 16
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -290,10 +290,10 @@ RectTransform:
   - {fileID: 2916910703541650059}
   m_Father: {fileID: 1062092442061500384}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: 300, y: 64}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3763072319314836824
 CanvasRenderer:
@@ -468,6 +468,7 @@ GameObject:
   - component: {fileID: 4226889617336224236}
   - component: {fileID: 2908588766511803628}
   - component: {fileID: 6636089456374825461}
+  - component: {fileID: 6705190052385963637}
   m_Layer: 3
   m_Name: LocalizationToast
   m_TagString: Untagged
@@ -484,7 +485,7 @@ RectTransform:
   m_GameObject: {fileID: 8399669145039843763}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0.92}
-  m_LocalScale: {x: 0.01, y: 0.01, z: 0.01}
+  m_LocalScale: {x: 0.001, y: 0.001, z: 0.001}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 182060637946402531}
@@ -492,7 +493,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0.0976}
+  m_AnchoredPosition: {x: 0, y: 0.097595215}
   m_SizeDelta: {x: 300, y: 64}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!223 &2282938761950724058
@@ -540,7 +541,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 1
+  m_PresetInfoIsWorld: 0
 --- !u!114 &2908588766511803628
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -566,7 +567,31 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8399669145039843763}
   m_Enabled: 1
-  m_Alpha: 0
+  m_Alpha: 1
   m_Interactable: 0
   m_BlocksRaycasts: 0
   m_IgnoreParentGroups: 0
+--- !u!114 &6705190052385963637
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8399669145039843763}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e3f25f41f4cb835429dfaed32cbe03fa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LocalizationToastController
+  canvasGroup: {fileID: 6636089456374825461}
+  accentStripe: {fileID: 7979439474492498319}
+  icon: {fileID: 2237944114215908948}
+  messageText: {fileID: 784896052188708800}
+  inProgressColor: {r: 1, g: 0.75, b: 0, a: 1}
+  successColor: {r: 0.2, g: 0.8, b: 0.2, a: 1}
+  failureColor: {r: 0.9, g: 0.2, b: 0.2, a: 1}
+  inProgressIcon: {fileID: 21300000, guid: e08ecc24b9716d442a3396b68b03ad3e, type: 3}
+  successIcon: {fileID: 21300000, guid: 131cc7def17808446a4919bde705f769, type: 3}
+  failureIcon: {fileID: 21300000, guid: 63406726c2ec21d49bde7720b136965d, type: 3}
+  fadeDuration: 0.3
+  holdDuration: 2.5
