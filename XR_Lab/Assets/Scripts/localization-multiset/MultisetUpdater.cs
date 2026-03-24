@@ -12,9 +12,16 @@ public class MultisetUpdater : MonoBehaviour
     private Coroutine _timerRoutine;
 
     void Start() {
+        ResolveRuntimeReferences();
         Debug.Log($"[Multiset Updater] sendInitialApiCall={sendInitialApiCall}, enableAutomaticUpdatingOnStart={enableAutomaticUpdatingOnStart}");
         if (enableAutomaticUpdatingOnStart) {
             StartAutomaticUpdating();
+        }
+    }
+
+    private void ResolveRuntimeReferences() {
+        if (localizationToast == null || !localizationToast.gameObject.scene.IsValid()) {
+            localizationToast = FindFirstObjectByType<LocalizationToastController>();
         }
     }
 
@@ -27,6 +34,8 @@ public class MultisetUpdater : MonoBehaviour
     }
 
     public void StartAutomaticUpdating() {
+        ResolveRuntimeReferences();
+
         if (_timerRoutine == null) {
             Debug.Log("[Multiset Updater] Starting automatic localization updates.");
             localizationToast?.OnLocalizationStarted();
