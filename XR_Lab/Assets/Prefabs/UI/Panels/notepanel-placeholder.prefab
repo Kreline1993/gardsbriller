@@ -1197,7 +1197,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 4
-  m_PresetInfoIsWorld: 1
+  m_PresetInfoIsWorld: 0
 --- !u!114 &5014965345003445010
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1227,6 +1227,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01f0eec6d15f51d48bf21b8d662d0ae3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InfoPanelBinder
+  headerBackgroundImage: {fileID: 0}
+  linkedHeadingImages: []
+  defaultHeadingColor: {r: 1, g: 1, b: 1, a: 1}
+  noteHeadingColor: {r: 1, g: 0.55, b: 0, a: 1}
+  badHealthColor: {r: 1, g: 0, b: 0, a: 1}
+  readyHarvestColor: {r: 0, g: 1, b: 0, a: 1}
+  lowWaterColor: {r: 0, g: 0, b: 1, a: 1}
+  priority: 00000000010000000200000003000000
   speciesText: {fileID: 6103988829004470756}
   idText: {fileID: 0}
   growthText: {fileID: 0}
@@ -1236,6 +1244,7 @@ MonoBehaviour:
   warningContainer: {fileID: 0}
   warningTitle: {fileID: 0}
   warningText: {fileID: 0}
+  closeButton: {fileID: 0}
 --- !u!114 &256541489875778504
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1251,6 +1260,11 @@ MonoBehaviour:
   generalTab: {fileID: 8591544455310538643}
   healthTab: {fileID: 0}
   qualityTab: {fileID: 0}
+  generalButton: {fileID: 0}
+  healthButton: {fileID: 0}
+  qualityButton: {fileID: 0}
+  activeColor: {r: 0.36, g: 0.965, b: 1, a: 1}
+  inactiveColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1 &5594928546432321188
 GameObject:
   m_ObjectHideFlags: 0
@@ -1800,7 +1814,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0, y: -0.019226074}
+  m_AnchoredPosition: {x: 0, y: -0.01184082}
   m_SizeDelta: {x: 500, y: 556.58}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &563408754490310762
