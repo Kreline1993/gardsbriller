@@ -5956,8 +5956,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::OverviewPanelBinder
   dataProvider: {fileID: 0}
-  highlightController: {fileID: 0}
-  modeController: {fileID: 0}
   hitBoundsClipper: {fileID: 6881747565894944351}
   expandedBoundsPosition: {x: 0, y: 725, z: 0}
   expandedBoundsSize: {x: 500, y: 550, z: 0.01}
