@@ -17,11 +17,13 @@ public class LocalizationToastController : MonoBehaviour
     [SerializeField] private Color inProgressColor = new Color(1f, 0.75f, 0f, 1f);
     [SerializeField] private Color successColor    = new Color(0.2f, 0.8f, 0.2f, 1f);
     [SerializeField] private Color failureColor    = new Color(0.9f, 0.2f, 0.2f, 1f);
+    [SerializeField] private Color retryingColor   = new Color(1f, 0.5f, 0f, 1f);
 
     [Header("State Icons")]
     [SerializeField] private Sprite inProgressIcon;
     [SerializeField] private Sprite successIcon;
     [SerializeField] private Sprite failureIcon;
+    [SerializeField] private Sprite retryingIcon;
 
     [Header("Timing")]
     [SerializeField] private float fadeDuration = 0.3f;
@@ -31,8 +33,11 @@ public class LocalizationToastController : MonoBehaviour
     [SerializeField] private string inProgressText = "Localizing...";
     [SerializeField] private string successText = "Localization successful";
     [SerializeField] private string failureText = "Localization failed";
+    [SerializeField] private string retryingText = "Retrying localization...";
 
     private Coroutine _activeRoutine;
+    private int _retryCount;
+    private bool _waitingForResult;
 
     private void Awake()
     {
@@ -57,6 +62,7 @@ public class LocalizationToastController : MonoBehaviour
 
     private void OnDestroy()
     {
+        StopListeningForRetries();
         if (_runtimeInstance == this)
         {
             _runtimeInstance = null;
@@ -74,6 +80,9 @@ public class LocalizationToastController : MonoBehaviour
             return;
         }
 
+        _retryCount = 0;
+        _waitingForResult = true;
+        StartListeningForRetries();
         Show(inProgressText, inProgressColor, inProgressIcon, autoHide: false);
     }
 
@@ -86,6 +95,8 @@ public class LocalizationToastController : MonoBehaviour
             return;
         }
 
+        _waitingForResult = false;
+        StopListeningForRetries();
         Show(successText, successColor, successIcon, autoHide: true);
     }
 
@@ -98,7 +109,48 @@ public class LocalizationToastController : MonoBehaviour
             return;
         }
 
+        _waitingForResult = false;
+        StopListeningForRetries();
         Show(failureText, failureColor, failureIcon, autoHide: true);
+    }
+
+    // Retry detection via SDK log messages
+
+    private bool _listening;
+
+    private void StartListeningForRetries()
+    {
+        if (!_listening)
+        {
+            Application.logMessageReceived += OnLogMessage;
+            _listening = true;
+        }
+    }
+
+    private void StopListeningForRetries()
+    {
+        if (_listening)
+        {
+            Application.logMessageReceived -= OnLogMessage;
+            _listening = false;
+        }
+    }
+
+    private void OnLogMessage(string message, string stackTrace, LogType type)
+    {
+        if (!_waitingForResult) return;
+        if (type != LogType.Error) return;
+        if (!message.StartsWith("Localization Pose not found!")) return;
+
+        _retryCount++;
+        string display = _retryCount > 1
+            ? $"{retryingText} {_retryCount}"
+            : retryingText;
+
+        if (_retryCount == 1)
+            Show(display, retryingColor, retryingIcon, autoHide: false);
+        else if (messageText != null)
+            messageText.text = display;
     }
 
     // Internal

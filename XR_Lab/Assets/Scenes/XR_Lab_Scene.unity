@@ -4000,7 +4000,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 166902089980687335, guid: 391746b4d05e046f1ad857954bef332a, type: 3}
       propertyPath: firstLocalizationUntilSuccess
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 166902089980687335, guid: 391746b4d05e046f1ad857954bef332a, type: 3}
       propertyPath: LocalizationInit.m_PersistentCalls.m_Calls.Array.size
