@@ -24,8 +24,6 @@ public class InfoPanelSpawner : MonoBehaviour
     [SerializeField, Min(0f)] private float panelWidth = 0.35f;
     [Tooltip("Extra horizontal gap to leave between adjacent panels.")]
     [SerializeField, Min(0f)] private float panelGap = 0.05f;
-    [Tooltip("Maximum nudge iterations when resolving cascading overlaps.")]
-    [SerializeField, Min(1)] private int maxNudgeIterations = 6;
 
     [Header("Panel Tether")]
     [SerializeField] private bool enableTether = true;
@@ -163,33 +161,61 @@ public class InfoPanelSpawner : MonoBehaviour
         viewerRight.Normalize();
 
         float clearance = panelWidth + panelGap;
-        Vector3 pos = initialPos;
 
-        for (int iter = 0; iter < maxNudgeIterations; iter++)
+        List<float> occupiedOffsets = new List<float>();
+        foreach (var other in _openPanels)
         {
-            bool clean = true;
+            if (other == null || other.spawnedPanel == null) continue;
+            Vector3 diff = other.spawnedPanel.transform.position - initialPos;
+            occupiedOffsets.Add(Vector3.Dot(diff, viewerRight));
+        }
 
-            foreach (var other in _openPanels)
+        if (occupiedOffsets.Count == 0) return initialPos;
+        if (!IsSlotOccupied(0f, occupiedOffsets, clearance)) return initialPos;
+
+        float viewerCenterH = Vector3.Dot(initialPos - viewerTransform.position, viewerRight);
+        float bestOffset = 0f;
+        float bestDeviation = float.MaxValue;
+        bool found = false;
+
+        foreach (float occupied in occupiedOffsets)
+        {
+            float rightCandidate = occupied + clearance;
+            if (!IsSlotOccupied(rightCandidate, occupiedOffsets, clearance))
             {
-                if (other == null || other.spawnedPanel == null) continue;
-
-                Vector3 diff = pos - other.spawnedPanel.transform.position;
-                float hDist = Vector3.Dot(diff, viewerRight);
-
-                if (Mathf.Abs(hDist) < clearance)
+                float deviation = Mathf.Abs(viewerCenterH + rightCandidate);
+                if (deviation < bestDeviation)
                 {
-                    float push = clearance - Mathf.Abs(hDist);
-                    float dir = (hDist >= 0f) ? 1f : -1f;
-                    pos += viewerRight * (dir * push);
-                    clean = false;
-                    break;
+                    bestDeviation = deviation;
+                    bestOffset = rightCandidate;
+                    found = true;
                 }
             }
 
-            if (clean) break;
+            float leftCandidate = occupied - clearance;
+            if (!IsSlotOccupied(leftCandidate, occupiedOffsets, clearance))
+            {
+                float deviation = Mathf.Abs(viewerCenterH + leftCandidate);
+                if (deviation < bestDeviation)
+                {
+                    bestDeviation = deviation;
+                    bestOffset = leftCandidate;
+                    found = true;
+                }
+            }
         }
 
-        return pos;
+        return found ? initialPos + viewerRight * bestOffset : initialPos;
+    }
+
+    private static bool IsSlotOccupied(float offset, List<float> occupiedOffsets, float clearance)
+    {
+        foreach (float occupied in occupiedOffsets)
+        {
+            if (Mathf.Abs(offset - occupied) < clearance)
+                return true;
+        }
+        return false;
     }
 
     private void OnDestroy()
