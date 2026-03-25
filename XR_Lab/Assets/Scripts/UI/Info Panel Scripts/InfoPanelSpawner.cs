@@ -5,10 +5,12 @@ public class InfoPanelSpawner : MonoBehaviour
 {
     public GameObject infoPanelPrefab;
 
+    private const int DefaultMaxOpenPanels = 3;
+
     [Header("Panel Limit")]
     [Tooltip("Maximum info panels allowed open at once. When exceeded, the oldest panel is closed. Set to 0 for unlimited.")]
-    [SerializeField, Min(0)] private int maxOpenPanelsConfig = 3;
-    private static int _maxOpenPanels = 3;
+    [SerializeField, Min(0)] private int maxOpenPanelsConfig = DefaultMaxOpenPanels;
+    private static int _maxOpenPanels = DefaultMaxOpenPanels;
 
     [Header("Auto Close")]
     [SerializeField, Min(0f)] private float closeDistanceFromPlant = 2.5f;
@@ -44,7 +46,7 @@ public class InfoPanelSpawner : MonoBehaviour
     {
         _openPanels.Clear();
         _overlapBuffer.Clear();
-        _maxOpenPanels = 3;
+        _maxOpenPanels = DefaultMaxOpenPanels;
     }
 
     private GameObject spawnedPanel;
