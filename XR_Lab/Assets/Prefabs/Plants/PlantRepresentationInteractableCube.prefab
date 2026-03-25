@@ -148,12 +148,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InfoPanelSpawner
   infoPanelPrefab: {fileID: 5275418831095437995, guid: acb7f76c2489e834c87dabe24146bb0d, type: 3}
+  maxOpenPanels: 3
   closeDistanceFromPlant: 5
   panelSideOffset: 0.35
   panelHeightAbovePlantTop: 0.15
   panelDistanceFromViewer: {x: 0.7, y: 1}
   viewerVerticalBand: {x: -0.2, y: 0.2}
   flipPanelForward: 1
+  minPanelSpacing: 0.25
+  maxPlacementAttempts: 10
   enableTether: 1
   tetherWidth: 0.005
   tetherColor: {r: 1, g: 1, b: 1, a: 0.07450981}

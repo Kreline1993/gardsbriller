@@ -19,6 +19,14 @@ public class InfoPanelSpawner : MonoBehaviour
     [SerializeField] private Vector2 viewerVerticalBand = new Vector2(-0.2f, 0.2f);
     [SerializeField] private bool flipPanelForward = true;
 
+    [Header("Overlap Avoidance")]
+    [Tooltip("Approximate world-space width of an info panel. Used for horizontal overlap detection from the viewer's perspective. Set to 0 to disable.")]
+    [SerializeField, Min(0f)] private float panelWidth = 0.35f;
+    [Tooltip("Extra horizontal gap to leave between adjacent panels.")]
+    [SerializeField, Min(0f)] private float panelGap = 0.05f;
+    [Tooltip("Maximum nudge iterations when resolving cascading overlaps.")]
+    [SerializeField, Min(1)] private int maxNudgeIterations = 6;
+
     [Header("Panel Tether")]
     [SerializeField] private bool enableTether = true;
     [SerializeField, Min(0f)] private float tetherWidth = 0.01f;
@@ -99,6 +107,7 @@ public class InfoPanelSpawner : MonoBehaviour
             EnforcePanelLimit();
 
             Vector3 spawnPos = ComputePanelSpawnPosition(viewerTransform);
+            spawnPos = ResolveOverlap(spawnPos, viewerTransform);
             spawnedPanel = Instantiate(infoPanelPrefab, spawnPos, Quaternion.identity);
             FacePanelTowardsViewer(spawnedPanel.transform, viewerTransform);
 
@@ -143,6 +152,44 @@ public class InfoPanelSpawner : MonoBehaviour
 
         while (_openPanels.Count >= maxOpenPanels && _openPanels.Count > 0)
             _openPanels[0].ClosePanel();
+    }
+
+    private Vector3 ResolveOverlap(Vector3 initialPos, Transform viewerTransform)
+    {
+        if (panelWidth <= 0f || _openPanels.Count == 0) return initialPos;
+
+        Vector3 viewerRight = viewerTransform.right;
+        viewerRight.y = 0f;
+        viewerRight.Normalize();
+
+        float clearance = panelWidth + panelGap;
+        Vector3 pos = initialPos;
+
+        for (int iter = 0; iter < maxNudgeIterations; iter++)
+        {
+            bool clean = true;
+
+            foreach (var other in _openPanels)
+            {
+                if (other == null || other.spawnedPanel == null) continue;
+
+                Vector3 diff = pos - other.spawnedPanel.transform.position;
+                float hDist = Vector3.Dot(diff, viewerRight);
+
+                if (Mathf.Abs(hDist) < clearance)
+                {
+                    float push = clearance - Mathf.Abs(hDist);
+                    float dir = (hDist >= 0f) ? 1f : -1f;
+                    pos += viewerRight * (dir * push);
+                    clean = false;
+                    break;
+                }
+            }
+
+            if (clean) break;
+        }
+
+        return pos;
     }
 
     private void OnDestroy()
