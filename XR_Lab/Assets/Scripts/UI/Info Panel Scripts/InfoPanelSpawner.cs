@@ -1,8 +1,13 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class InfoPanelSpawner : MonoBehaviour
 {
     public GameObject infoPanelPrefab;
+
+    [Header("Panel Limit")]
+    [Tooltip("Maximum info panels allowed open at once. When exceeded, the oldest panel is closed. Set to 0 for unlimited.")]
+    [SerializeField, Min(0)] private int maxOpenPanels = 3;
 
     [Header("Auto Close")]
     [SerializeField, Min(0f)] private float closeDistanceFromPlant = 2.5f;
@@ -23,6 +28,8 @@ public class InfoPanelSpawner : MonoBehaviour
     [SerializeField] private float tetherPlantTopOffset = 0f;
     [SerializeField, Min(2)] private int tetherSegments = 8;
     [SerializeField] private float tetherCurveHeight = 0.12f;
+
+    private static readonly List<InfoPanelSpawner> _openPanels = new List<InfoPanelSpawner>();
 
     private GameObject spawnedPanel;
     private LineRenderer _tetherLine;
@@ -89,6 +96,8 @@ public class InfoPanelSpawner : MonoBehaviour
 
             if (!TryGetViewerTransform(out Transform viewerTransform)) return;
 
+            EnforcePanelLimit();
+
             Vector3 spawnPos = ComputePanelSpawnPosition(viewerTransform);
             spawnedPanel = Instantiate(infoPanelPrefab, spawnPos, Quaternion.identity);
             FacePanelTowardsViewer(spawnedPanel.transform, viewerTransform);
@@ -100,6 +109,7 @@ public class InfoPanelSpawner : MonoBehaviour
             CreateTether();
             UpdateTether();
 
+            _openPanels.Add(this);
             _outlineController?.SetPanelOpen(true);
 
             if (data != null)
@@ -117,11 +127,27 @@ public class InfoPanelSpawner : MonoBehaviour
     {
         if (spawnedPanel != null)
         {
+            _openPanels.Remove(this);
             DestroyTether();
             Destroy(spawnedPanel);
             spawnedPanel = null;
             _outlineController?.SetPanelOpen(false);
         }
+    }
+
+    private void EnforcePanelLimit()
+    {
+        if (maxOpenPanels <= 0) return;
+
+        _openPanels.RemoveAll(s => s == null || s.spawnedPanel == null);
+
+        while (_openPanels.Count >= maxOpenPanels && _openPanels.Count > 0)
+            _openPanels[0].ClosePanel();
+    }
+
+    private void OnDestroy()
+    {
+        _openPanels.Remove(this);
     }
 
     private bool TryGetViewerTransform(out Transform viewerTransform)
