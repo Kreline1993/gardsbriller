@@ -178,6 +178,7 @@ public class InfoPanelSpawner : MonoBehaviour
         float bestDeviation = float.MaxValue;
         bool found = false;
 
+        // Small epsilon to prevent floating point precision issues when checking for slot occupancy
         const float slotEpsilon = 0.005f;
 
         foreach (float occupied in occupiedOffsets)
