@@ -37,11 +37,13 @@ public class InfoPanelSpawner : MonoBehaviour
     [SerializeField] private float tetherCurveHeight = 0.12f;
 
     private static readonly List<InfoPanelSpawner> _openPanels = new List<InfoPanelSpawner>();
+    private static readonly List<float> _overlapBuffer = new List<float>();
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
     private static void ResetStaticFields()
     {
         _openPanels.Clear();
+        _overlapBuffer.Clear();
         _maxOpenPanels = 3;
     }
 
@@ -171,16 +173,16 @@ public class InfoPanelSpawner : MonoBehaviour
 
         float clearance = panelWidth + panelGap;
 
-        List<float> occupiedOffsets = new List<float>();
+        _overlapBuffer.Clear();
         foreach (var other in _openPanels)
         {
             if (other == null || other.spawnedPanel == null) continue;
             Vector3 diff = other.spawnedPanel.transform.position - initialPos;
-            occupiedOffsets.Add(Vector3.Dot(diff, viewerRight));
+            _overlapBuffer.Add(Vector3.Dot(diff, viewerRight));
         }
 
-        if (occupiedOffsets.Count == 0) return initialPos;
-        if (!IsSlotOccupied(0f, occupiedOffsets, clearance)) return initialPos;
+        if (_overlapBuffer.Count == 0) return initialPos;
+        if (!IsSlotOccupied(0f, _overlapBuffer, clearance)) return initialPos;
 
         float viewerCenterH = Vector3.Dot(initialPos - viewerTransform.position, viewerRight);
         float bestOffset = 0f;
@@ -190,10 +192,10 @@ public class InfoPanelSpawner : MonoBehaviour
         // Small epsilon to prevent floating point precision issues when checking for slot occupancy
         const float slotEpsilon = 0.005f;
 
-        foreach (float occupied in occupiedOffsets)
+        foreach (float occupied in _overlapBuffer)
         {
             float rightCandidate = occupied + clearance + slotEpsilon;
-            if (!IsSlotOccupied(rightCandidate, occupiedOffsets, clearance))
+            if (!IsSlotOccupied(rightCandidate, _overlapBuffer, clearance))
             {
                 float deviation = Mathf.Abs(viewerCenterH + rightCandidate);
                 if (deviation < bestDeviation)
@@ -205,7 +207,7 @@ public class InfoPanelSpawner : MonoBehaviour
             }
 
             float leftCandidate = occupied - clearance - slotEpsilon;
-            if (!IsSlotOccupied(leftCandidate, occupiedOffsets, clearance))
+            if (!IsSlotOccupied(leftCandidate, _overlapBuffer, clearance))
             {
                 float deviation = Mathf.Abs(viewerCenterH + leftCandidate);
                 if (deviation < bestDeviation)
