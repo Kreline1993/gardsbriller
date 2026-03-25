@@ -178,9 +178,11 @@ public class InfoPanelSpawner : MonoBehaviour
         float bestDeviation = float.MaxValue;
         bool found = false;
 
+        const float slotEpsilon = 0.005f;
+
         foreach (float occupied in occupiedOffsets)
         {
-            float rightCandidate = occupied + clearance;
+            float rightCandidate = occupied + clearance + slotEpsilon;
             if (!IsSlotOccupied(rightCandidate, occupiedOffsets, clearance))
             {
                 float deviation = Mathf.Abs(viewerCenterH + rightCandidate);
@@ -192,7 +194,7 @@ public class InfoPanelSpawner : MonoBehaviour
                 }
             }
 
-            float leftCandidate = occupied - clearance;
+            float leftCandidate = occupied - clearance - slotEpsilon;
             if (!IsSlotOccupied(leftCandidate, occupiedOffsets, clearance))
             {
                 float deviation = Mathf.Abs(viewerCenterH + leftCandidate);
