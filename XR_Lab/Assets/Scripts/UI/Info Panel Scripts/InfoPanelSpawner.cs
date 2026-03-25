@@ -37,6 +37,12 @@ public class InfoPanelSpawner : MonoBehaviour
 
     private static readonly List<InfoPanelSpawner> _openPanels = new List<InfoPanelSpawner>();
 
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+    private static void ResetStaticFields()
+    {
+        _openPanels.Clear();
+    }
+
     private GameObject spawnedPanel;
     private LineRenderer _tetherLine;
     private Material _tetherMaterialInstance;
