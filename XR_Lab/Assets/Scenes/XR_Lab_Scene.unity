@@ -417,7 +417,7 @@ MonoBehaviour:
   weedingOverlayPrefab: {fileID: 4312566435863121009, guid: 6e381599a6a7f604b96ca62061828e27, type: 3}
   hideOriginalDuringOverlay: 0
   tomatoPickingTint: {r: 1, g: 0.17924517, b: 0.25557765, a: 0.7058824}
-  carrotPickingTint: {r: 0.4, g: 1, b: 0.4, a: 0.7058824}
+  carrotPickingTint: {r: 1, g: 0.59240943, b: 0.13521993, a: 0.7058824}
   radishPickingTint: {r: 0.55656374, g: 0.39999998, b: 1, a: 0.7058824}
   tomatoPickingOverlayPrefab: {fileID: 906453245972585529, guid: 00caac431abf7f948a559001b86d5377, type: 3}
   carrotPickingOverlayPrefab: {fileID: 7432622799770361029, guid: 51a67f3bc21583a409feb699124a9203, type: 3}
@@ -474,8 +474,8 @@ MonoBehaviour:
   hideIconsForNonHighlightedRule: 1
   disableInteractionForNonHighlighted: 1
   lowMoistureColor: {r: 0, g: 0, b: 1, a: 1}
-  badHealthColor: {r: 1, g: 0.5, b: 0, a: 1}
-  warningTagColor: {r: 1, g: 0, b: 0, a: 1}
+  badHealthColor: {r: 1, g: 0, b: 0, a: 1}
+  warningTagColor: {r: 1, g: 0.5019608, b: 0, a: 1}
   ripeColor: {r: 0, g: 0.8, b: 0.2, a: 1}
 --- !u!1 &553951981
 GameObject:
@@ -2027,7 +2027,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 990d045432f619141bbc0fe72a898d82, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TwinDataLoader
-  fileName: PlantData-New.json
+  fileName: PlantData.json
 --- !u!1 &1849515172
 GameObject:
   m_ObjectHideFlags: 0
@@ -2463,6 +2463,22 @@ PrefabInstance:
     - target: {fileID: 1226444577491782481, guid: 0a423d8376786144185836e1375fd2fa, type: 3}
       propertyPath: pulseDuration
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1226444577491782481, guid: 0a423d8376786144185836e1375fd2fa, type: 3}
+      propertyPath: weedingColor.b
+      value: 0.015686275
+      objectReference: {fileID: 0}
+    - target: {fileID: 1226444577491782481, guid: 0a423d8376786144185836e1375fd2fa, type: 3}
+      propertyPath: weedingColor.g
+      value: 0.92156863
+      objectReference: {fileID: 0}
+    - target: {fileID: 1226444577491782481, guid: 0a423d8376786144185836e1375fd2fa, type: 3}
+      propertyPath: overviewColor.b
+      value: 0.7520189
+      objectReference: {fileID: 0}
+    - target: {fileID: 1226444577491782481, guid: 0a423d8376786144185836e1375fd2fa, type: 3}
+      propertyPath: overviewColor.r
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5916001282416551680, guid: 0a423d8376786144185836e1375fd2fa, type: 3}
       propertyPath: m_Name
