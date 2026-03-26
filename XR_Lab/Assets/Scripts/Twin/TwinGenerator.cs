@@ -37,20 +37,27 @@ public class TwinGenerator : MonoBehaviour
         GenerateFromData(loadedData);
     }
 
+    Vector3 ComputePlantLocalPosition(Plant p)
+    {
+        Vector3 pos = new Vector3(p.position.x, p.position.y, p.position.z) * scaleFactor;
+        if (p.size != null)
+            pos.y += p.size.height * scaleFactor * 0.5f;
+        return pos;
+    }
+
     void GenerateFromData(TwinData data)
     {
         TwinData = data;
         if (TwinData?.rows == null) return;
 
+        Mesh prefabMesh = interactionPrefab.GetComponentInChildren<MeshFilter>()?.sharedMesh;
+        float prefabMeshHeight = (prefabMesh != null) ? prefabMesh.bounds.size.y : 1f;
+
         foreach (Row row in TwinData.rows)
         {
             foreach (Plant p in row.plants)
             {
-                Vector3 localOffset = new Vector3(
-                    p.position.x * scaleFactor,
-                    p.position.y * scaleFactor,
-                    p.position.z * scaleFactor
-                );
+                Vector3 localOffset = ComputePlantLocalPosition(p);
                 Vector3 worldPos = transform.TransformPoint(localOffset);
 
                 GameObject ghostPlant = Instantiate(interactionPrefab, worldPos, transform.rotation, this.transform);
@@ -59,9 +66,7 @@ public class TwinGenerator : MonoBehaviour
                 {
                     float d = p.size.diameter * scaleFactor;
                     float h = p.size.height * scaleFactor;
-                    Mesh mesh = interactionPrefab.GetComponentInChildren<MeshFilter>()?.sharedMesh;
-                    float meshHeight = (mesh != null) ? mesh.bounds.size.y : 1f;
-                    ghostPlant.transform.localScale = new Vector3(d, h / meshHeight, d);
+                    ghostPlant.transform.localScale = new Vector3(d, h / prefabMeshHeight, d);
                 }
 
                 PlantIdentity identity = ghostPlant.GetComponent<PlantIdentity>();
@@ -108,7 +113,7 @@ public class TwinGenerator : MonoBehaviour
                     Gizmos.color = Color.green;
                     foreach (Plant p in row.plants)
                     {
-                        Vector3 pPos = new Vector3(p.position.x, p.position.y, p.position.z) * scaleFactor;
+                        Vector3 pPos = ComputePlantLocalPosition(p);
                         float radius = (p.size != null ? p.size.diameter : 0.1f) * scaleFactor * 0.5f;
                         Gizmos.DrawWireSphere(pPos, radius);
                     }
