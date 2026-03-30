@@ -16,6 +16,7 @@ public class InfoPanelBinder : MonoBehaviour
 
     [Header("Heading")]
     [SerializeField] private Image headerBackgroundImage;
+    [SerializeField] private Image[] linkedHeadingImages;
     [SerializeField] private Color defaultHeadingColor = Color.white;
     [SerializeField] private Color noteHeadingColor    = new Color(1f, 0.55f, 0f, 1f); // orange
     [SerializeField] private Color badHealthColor      = Color.red;
@@ -57,6 +58,33 @@ public class InfoPanelBinder : MonoBehaviour
     [SerializeField] private TMP_Text warningTitle;
     [SerializeField] private TMP_Text warningText;
 
+    [Header("Actions")]
+    [SerializeField] private Button closeButton;
+
+    private InfoPanelSpawner _spawner;
+
+    private void Awake()
+    {
+        if (closeButton != null)
+            closeButton.onClick.AddListener(OnCloseButtonClicked);
+    }
+
+    private void OnDestroy()
+    {
+        if (closeButton != null)
+            closeButton.onClick.RemoveListener(OnCloseButtonClicked);
+    }
+
+    public void Initialize(InfoPanelSpawner spawner)
+    {
+        _spawner = spawner;
+    }
+
+    public void OnCloseButtonClicked()
+    {
+        _spawner?.ClosePanel();
+    }
+
     public void Populate(Plant plant, Row row)
     {
         if (plant == null) return;
@@ -78,11 +106,9 @@ public class InfoPanelBinder : MonoBehaviour
     private void PopulateGrowth(Plant plant)
     {
         if (growthText == null) return;
-
-        string planted  = FormatDate(plant.plantedDate, "Unknown");
-        string harvest  = FormatDate(plant.estimatedHarvestDate, "Unknown");
-
-        growthText.text = $"Date Planted: {planted}\nMaturity: {plant.growth}%\nExpected Harvest: {harvest}";
+        string planted = FormatDate(plant.plantedDate, "Unknown");
+        string harvest = FormatDate(plant.estimatedHarvestDate, "Unknown");
+        growthText.text = $"{planted}\n{plant.growth}%\n{harvest}";
     }
 
     private string FormatDate(DateData date, string fallback)
@@ -96,42 +122,50 @@ public class InfoPanelBinder : MonoBehaviour
     private void PopulateMoisture(Row row)
     {
         if (moistureText == null) return;
-
         string lastWatered = row != null ? FormatDate(row.lastWateredDate, "Unknown") : "Unknown";
         string moisture    = row != null ? $"{row.groundMoisture}%" : "Unknown";
-
-        moistureText.text = $"Last Watered: {lastWatered}\nMoisture: {moisture}";
+        moistureText.text  = $"{lastWatered}\n{moisture}";
     }
 
     private void PopulateHealth(Plant plant)
     {
         if (healthText == null) return;
-
-        string status = string.IsNullOrEmpty(plant.healthStatus) ? "Unknown" : plant.healthStatus;
-        healthText.text = $"Health Status: {status}";
+        string status   = string.IsNullOrEmpty(plant.healthStatus) ? "Unknown" : plant.healthStatus;
+        healthText.text = status;
     }
 
     private void PopulatePesticide(Plant plant)
     {
         if (pesticideText == null) return;
-
-        string last = FormatDate(plant.lastPesticide, "Unknown");
-        string next = FormatDate(plant.nextPesticide, "Unknown");
-
-        pesticideText.text = $"Last Pesticide: {last}\nNext Pesticide: {next}";
+        string last          = FormatDate(plant.lastPesticide, "Unknown");
+        string next          = FormatDate(plant.nextPesticide, "Unknown");
+        pesticideText.text   = $"{last}\n{next}";
     }
 
     private void PopulateHeadingColor(Plant plant, Row row)
     {
-        if (headerBackgroundImage == null) return;
-
         if (TryGetHeadingColor(plant, row, out Color headingColor))
         {
-            headerBackgroundImage.color = headingColor;
+            SetHeadingColorTargets(headingColor);
             return;
         }
 
-        headerBackgroundImage.color = defaultHeadingColor;
+        SetHeadingColorTargets(defaultHeadingColor);
+    }
+
+    private void SetHeadingColorTargets(Color color)
+    {
+        if (headerBackgroundImage != null)
+            headerBackgroundImage.color = color;
+
+        if (linkedHeadingImages == null) return;
+
+        for (int i = 0; i < linkedHeadingImages.Length; i++)
+        {
+            Image target = linkedHeadingImages[i];
+            if (target != null)
+                target.color = color;
+        }
     }
 
     private bool TryGetHeadingColor(Plant plant, Row row, out Color color)
