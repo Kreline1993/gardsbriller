@@ -8,13 +8,20 @@ public class MultisetUpdater : MonoBehaviour
     [SerializeField] private float UpdateFrequency = 300f;
     [SerializeField , Tooltip("If enabled, an initial API call is sent immediately upon app start.")] private bool sendInitialApiCall = false;
     [SerializeField , Tooltip("If enabled, automatic updating is started automatically on app start, instead of waiting for a manual trigger.")] private bool enableAutomaticUpdatingOnStart = false;
-
+    [SerializeField] private LocalizationToastController localizationToast;
     private Coroutine _timerRoutine;
 
     void Start() {
+        ResolveRuntimeReferences();
         Debug.Log($"[Multiset Updater] sendInitialApiCall={sendInitialApiCall}, enableAutomaticUpdatingOnStart={enableAutomaticUpdatingOnStart}");
         if (enableAutomaticUpdatingOnStart) {
             StartAutomaticUpdating();
+        }
+    }
+
+    private void ResolveRuntimeReferences() {
+        if (localizationToast == null || !localizationToast.gameObject.scene.IsValid()) {
+            localizationToast = FindFirstObjectByType<LocalizationToastController>();
         }
     }
 
@@ -27,8 +34,11 @@ public class MultisetUpdater : MonoBehaviour
     }
 
     public void StartAutomaticUpdating() {
+        ResolveRuntimeReferences();
+
         if (_timerRoutine == null) {
             Debug.Log("[Multiset Updater] Starting automatic localization updates.");
+            localizationToast?.OnLocalizationStarted();
             localizationManager.LocalizeFrame();
             _timerRoutine = StartCoroutine(ManualLocalizationRoutine());
         }
@@ -44,6 +54,7 @@ public class MultisetUpdater : MonoBehaviour
         if (sendInitialApiCall) {
             // Wait for the end of the frame to ensure the camera/API are ready
             yield return new WaitForEndOfFrame();
+            localizationToast?.OnLocalizationStarted();
             localizationManager.LocalizeFrame();
             Debug.Log("[Multiset Updater] Initial Localization Sent.");
         }
@@ -53,6 +64,7 @@ public class MultisetUpdater : MonoBehaviour
         
         while (true) {
             yield return wait;
+            localizationToast?.OnLocalizationStarted();
             localizationManager.LocalizeFrame();
             Debug.Log("[Multiset Updater] Scheduled Localization Sent.");
         }
