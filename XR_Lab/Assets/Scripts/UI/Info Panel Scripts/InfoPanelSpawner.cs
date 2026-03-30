@@ -1,9 +1,11 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class InfoPanelSpawner : MonoBehaviour
 {
     public GameObject infoPanelPrefab;
+    public GameObject notePanelPrefab;
 
     private const int DefaultMaxOpenPanels = 3;
 
@@ -22,7 +24,16 @@ public class InfoPanelSpawner : MonoBehaviour
     [SerializeField] private Vector2 viewerVerticalBand = new Vector2(-0.2f, 0.2f);
     [SerializeField] private bool flipPanelForward = true;
 
-    [Header("Overlap Avoidance")]
+    [Header("Note Panel Placement")]
+    [SerializeField] private float notePanelOffsetFromInfoPanel = 0.5f;
+    [SerializeField] private float notePanelForwardOffset = 0.3f;
+    [Tooltip("If on, the note panel is not created until the Notes button is pressed the first time.")]
+    [SerializeField] private bool deferNotePanelSpawn = false;
+    [Tooltip("If on (and not deferred), the note panel is spawned hidden until the Notes button is used.")]
+    [SerializeField] private bool notePanelStartsHidden = false;
+
+    
+[Header("Overlap Avoidance")]
     [Tooltip("Approximate world-space width of an info panel. Used for horizontal overlap detection from the viewer's perspective. Set to 0 to disable.")]
     [SerializeField, Min(0f)] private float panelWidth = 0.35f;
     [Tooltip("Extra horizontal gap to leave between adjacent panels.")]
@@ -50,6 +61,7 @@ public class InfoPanelSpawner : MonoBehaviour
     }
 
     private GameObject spawnedPanel;
+    private GameObject spawnedNotePanel;
     private LineRenderer _tetherLine;
     private Material _tetherMaterialInstance;
     private readonly Vector3[] _panelWorldCorners = new Vector3[4];
@@ -87,7 +99,7 @@ public class InfoPanelSpawner : MonoBehaviour
 
     private void Update()
     {
-        if (spawnedPanel == null) return;
+        if (spawnedPanel == null && spawnedNotePanel == null) return;
 
         UpdateTether();
 
@@ -136,6 +148,12 @@ public class InfoPanelSpawner : MonoBehaviour
             {
                 if (binder != null) binder.Populate(data, row);
             }
+
+            // Spawn note panel if plant has notes (unless deferred to first Notes button press)
+            if (data != null && HasNotes(data) && notePanelPrefab != null && !deferNotePanelSpawn)
+                SpawnNotePanel(data, viewerTransform, notePanelStartsHidden);
+
+            WireNotesButton(spawnedPanel, data);
         }
         else
         {
@@ -152,6 +170,12 @@ public class InfoPanelSpawner : MonoBehaviour
             Destroy(spawnedPanel);
             spawnedPanel = null;
             _outlineController?.SetPanelOpen(false);
+        }
+
+        if (spawnedNotePanel != null)
+        {
+            Destroy(spawnedNotePanel);
+            spawnedNotePanel = null;
         }
     }
 
@@ -415,4 +439,81 @@ public class InfoPanelSpawner : MonoBehaviour
             spawner.ClosePanel();
         }
     }
+
+    private static bool HasNotes(Plant plant) =>
+        plant?.notes?.HasContent() ?? false;
+
+    /// <summary>
+    /// Toggles visibility of the spawned note panel, or spawns it on first use when deferred / after Close destroyed it.
+    /// Wire the info panel Notes button to this (on the plant's InfoPanelSpawner), not PanelToggle — the note panel is a runtime instance.
+    /// </summary>
+    public void ToggleNotePanel()
+    {
+        if (spawnedPanel == null) return;
+        if (!TryGetViewerTransform(out Transform viewerTransform)) return;
+
+        var identity = GetComponent<PlantIdentity>();
+        if (identity == null || string.IsNullOrEmpty(identity.plantId)) return;
+        if (TwinDatabase.Instance == null) return;
+
+        Plant data = TwinDatabase.Instance.GetPlantById(identity.plantId);
+        if (data == null || !HasNotes(data) || notePanelPrefab == null) return;
+
+        if (spawnedNotePanel == null)
+        {
+            SpawnNotePanel(data, viewerTransform, startHidden: false);
+            return;
+        }
+
+        spawnedNotePanel.SetActive(!spawnedNotePanel.activeSelf);
+    }
+
+    private void SpawnNotePanel(Plant data, Transform viewerTransform, bool startHidden)
+    {
+        Vector3 noteSpawnPos = ComputeNotePanelSpawnPosition(spawnedPanel.transform, viewerTransform);
+        spawnedNotePanel = Instantiate(notePanelPrefab, noteSpawnPos, Quaternion.identity);
+        FacePanelTowardsViewer(spawnedNotePanel.transform, viewerTransform);
+
+        InfoPanelBinder noteBinder = spawnedNotePanel.GetComponent<InfoPanelBinder>();
+        if (noteBinder != null) noteBinder.PopulateNote(data);
+
+        spawnedNotePanel.SetActive(!startHidden);
+    }
+
+    private void WireNotesButton(GameObject infoPanelRoot, Plant data)
+    {
+        Button notesBtn = FindNotesButton(infoPanelRoot);
+        if (notesBtn == null) return;
+
+        bool hasNotes = data != null && HasNotes(data);
+        notesBtn.interactable = hasNotes;
+        notesBtn.onClick.RemoveAllListeners();
+        if (hasNotes)
+            notesBtn.onClick.AddListener(ToggleNotePanel);
+    }
+
+    private static Button FindNotesButton(GameObject root)
+    {
+        if (root == null) return null;
+        foreach (Button btn in root.GetComponentsInChildren<Button>(true))
+        {
+            if (btn.gameObject.name == "Notes(button)")
+                return btn;
+        }
+        return null;
+    }
+
+    private Vector3 ComputeNotePanelSpawnPosition(Transform infoPanelTransform, Transform viewerTransform)
+    {
+        // Position the note panel to the right of the info panel and forward towards the viewer
+        Vector3 infoPanelPos = infoPanelTransform.position;
+        Vector3 toViewer = (viewerTransform.position - infoPanelPos).normalized;
+        
+        // Get the right direction relative to the viewer
+        Vector3 right = Vector3.Cross(Vector3.up, toViewer).normalized;
+        
+        // Offset to the right (closer to info panel) and forward towards viewer
+        return infoPanelPos + right * notePanelOffsetFromInfoPanel + toViewer * notePanelForwardOffset;
+    }
+
 }

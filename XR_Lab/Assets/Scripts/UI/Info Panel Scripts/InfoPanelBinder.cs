@@ -49,6 +49,10 @@ public class InfoPanelBinder : MonoBehaviour
     [Header("Pesticide")]
     [SerializeField] private TMP_Text pesticideText;
 
+    [Header("Note Tag/Date")]
+    [SerializeField] private TMP_Text noteTagText;
+    [SerializeField] private TMP_Text noteContentText;
+
     [Header("Warning")]
     [SerializeField] private GameObject warningContainer;
     [SerializeField] private TMP_Text warningTitle;
@@ -205,20 +209,8 @@ public class InfoPanelBinder : MonoBehaviour
         }
     }
 
-    private static bool HasAttachedNote(Plant plant)
-    {
-        if (plant?.notes == null)
-            return false;
-
-        // Unity JsonUtility may instantiate an empty NoteData for "notes": null in JSON,
-        // since it cannot represent null for [Serializable] custom types. Treat that as "no note".
-        string text = plant.notes.textNote;
-        string tag = plant.notes.noteTag;
-        if (string.IsNullOrWhiteSpace(text) && string.IsNullOrWhiteSpace(tag))
-            return false;
-
-        return true;
-    }
+    private static bool HasAttachedNote(Plant plant) =>
+        plant?.notes?.HasContent() ?? false;
 
     private static bool HasWarningNote(Plant plant)
     {
@@ -292,5 +284,24 @@ public class InfoPanelBinder : MonoBehaviour
     {
         if (warningTitle != null) warningTitle.text = title;
         if (warningText  != null) warningText.text  = text;
+    }
+
+    public void PopulateNote(Plant plant)
+    {
+        if (plant == null) return;
+
+        // Set the note tag/date field
+        if (noteTagText != null)
+        {
+            string tag = plant.notes?.noteTag ?? "No tag";
+            noteTagText.text = tag.ToUpperInvariant(); 
+        }
+
+        // Set the note body/content text
+        if (noteContentText != null)
+        {
+            string noteText = plant.notes?.textNote ?? "No notes available";
+            noteContentText.text = noteText;
+        }
     }
 }
