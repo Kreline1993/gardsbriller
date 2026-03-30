@@ -31,6 +31,13 @@ public class NoteData
 {
     public string textNote;
     public string noteTag;
+
+    /// <summary>
+    /// Returns true if this note has meaningful content (text or tag).
+    /// Handles Unity JsonUtility edge case where notes may be non-null but empty.
+    /// </summary>
+    public bool HasContent() =>
+        !string.IsNullOrWhiteSpace(textNote) || !string.IsNullOrWhiteSpace(noteTag);
 }
 
 [System.Serializable]

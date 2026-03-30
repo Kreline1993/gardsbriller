@@ -19,12 +19,13 @@ public class PanelToggle : MonoBehaviour
 
     /// <summary>
     /// Toggles the visibility of the target panel.
+    /// Reads actual state to stay in sync when other scripts (ModePanelVisibility, etc.) change visibility.
     /// </summary>
     public void TogglePanel()
     {
         if (targetPanel != null)
         {
-            isPanelActive = !isPanelActive;
+            isPanelActive = !targetPanel.activeSelf;
             targetPanel.SetActive(isPanelActive);
         }
     }

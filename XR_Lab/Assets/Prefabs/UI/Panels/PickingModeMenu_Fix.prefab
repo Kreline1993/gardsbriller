@@ -186,7 +186,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Leek
+  m_text: 'Carrot
 
 '
   m_isRightToLeft: 0
@@ -1378,7 +1378,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Leek
+  m_text: 'Carrot
 
 '
   m_isRightToLeft: 0
@@ -1677,8 +1677,8 @@ MonoBehaviour:
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
-  m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 1
+  m_DynamicPixelsPerUnit: 4
+  m_PresetInfoIsWorld: 0
 --- !u!114 &44079502272223532
 MonoBehaviour:
   m_ObjectHideFlags: 0

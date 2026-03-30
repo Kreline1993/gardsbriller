@@ -59,6 +59,16 @@ public class PlantIconLODController : MonoBehaviour
     [Tooltip("Extra height added to cluster icons in the Far zone (above tallest plant in cluster).")]
     public float clusterIconYOffset = 0.15f;
 
+    [Header("Icon Stacking")]
+    [Tooltip("Vertical gap between stacked icons in the Near zone (individual, smaller icons).")]
+    public float nearIconStackSpacing    = 0.1f;
+
+    [Tooltip("Vertical gap between stacked icons in the Mid zone (individual, full-size icons).")]
+    public float midIconStackSpacing     = 0.15f;
+
+    [Tooltip("Vertical gap between stacked cluster icons in the Far zone (scaled icons).")]
+    public float clusterIconStackSpacing = 0.25f;
+
     // ── Performance ─────────────────────────────────────────────────────
 
     [Header("Performance")]
@@ -70,6 +80,7 @@ public class PlantIconLODController : MonoBehaviour
     private Transform userTransform;
 
     private readonly List<ConditionLayer> layers      = new List<ConditionLayer>();
+    private HashSet<string>               visibleLayerKeys; // null = show all layers; empty = show none
     private readonly List<GameObject>     activeIcons = new List<GameObject>();
 
     // Zone memory for hysteresis. Key = "<layerIndex>_<plantId>" to keep layers independent.
@@ -106,6 +117,7 @@ public class PlantIconLODController : MonoBehaviour
         public Vector3 HorizontalCentre; // XZ centroid (Y is handled separately)
         public float   MaxTopY;          // highest plant top within this cluster
         public int     Count;
+        public string  SeedPlantId;      // PlantId of the cluster's seed — stable key for stacking across layers
     }
 
     // ── Initialisation API ──────────────────────────────────────────────
@@ -143,7 +155,18 @@ public class PlantIconLODController : MonoBehaviour
     {
         layers.Clear();
         zoneMemory.Clear();
+        visibleLayerKeys = null;
         timeSinceLastUpdate = float.MaxValue; // force a fresh rebuild on next Enter
+    }
+
+    /// <summary>
+    /// Restricts which layers are shown. null = show all; empty = show none.
+    /// Used with overview panel "hide icons for non-highlighted rule" toggle.
+    /// </summary>
+    public void SetVisibleLayers(IEnumerable<string> layerKeys)
+    {
+        visibleLayerKeys = layerKeys == null ? null : new HashSet<string>(layerKeys);
+        timeSinceLastUpdate = float.MaxValue; // force immediate rebuild on next Update
     }
 
     // ── Unity lifecycle ─────────────────────────────────────────────────
@@ -180,10 +203,17 @@ public class PlantIconLODController : MonoBehaviour
 
         Vector3 userPos = userTransform.position;
 
+        // Tracks how many icons have been stacked on each plant so far (keyed by PlantId).
+        Dictionary<string, int> plantIconIndex = new Dictionary<string, int>();
+
+        // Tracks how many icons have been stacked at each cluster position (keyed by rounded XZ centroid).
+        Dictionary<string, int> clusterIconIndex = new Dictionary<string, int>();
+
         for (int li = 0; li < layers.Count; li++)
         {
             ConditionLayer layer = layers[li];
             if (layer.Prefab == null || layer.Plants == null || layer.Plants.Count == 0) continue;
+            if (visibleLayerKeys != null && !visibleLayerKeys.Contains(layer.LayerKey)) continue;
 
             List<PlantEntry> nearList = new List<PlantEntry>();
             List<PlantEntry> midList  = new List<PlantEntry>();
@@ -203,22 +233,33 @@ public class PlantIconLODController : MonoBehaviour
                 }
             }
 
-            // Near: icon at 75 % of plant height + nearIconYOffset
+            // Near: icon at 75 % of plant height + nearIconYOffset, stacked vertically per condition
             foreach (PlantEntry p in nearList)
-                SpawnIcon(layer.Prefab, IconWorldPos(p, 0.75f, nearIconYOffset), singlePlantScale);
+            {
+                if (!plantIconIndex.TryGetValue(p.PlantId, out int stackIdx)) stackIdx = 0;
+                SpawnIcon(layer.Prefab, IconWorldPos(p, 0.75f, nearIconYOffset + stackIdx * nearIconStackSpacing), singlePlantScale);
+                plantIconIndex[p.PlantId] = stackIdx + 1;
+            }
 
-            // Mid: icon at plant top (100 %) + midIconYOffset
+            // Mid: icon at plant top (100 %) + midIconYOffset, stacked vertically per condition
             foreach (PlantEntry p in midList)
-                SpawnIcon(layer.Prefab, IconWorldPos(p, 1.0f, midIconYOffset), singlePlantScale);
+            {
+                if (!plantIconIndex.TryGetValue(p.PlantId, out int stackIdx)) stackIdx = 0;
+                SpawnIcon(layer.Prefab, IconWorldPos(p, 1.0f, midIconYOffset + stackIdx * midIconStackSpacing), singlePlantScale);
+                plantIconIndex[p.PlantId] = stackIdx + 1;
+            }
 
-            // Far: radius-clustered, icon scale reflects plant count, + clusterIconYOffset
+            // Far: radius-clustered, icon scale reflects plant count, + clusterIconYOffset, stacked vertically per condition
             foreach (ClusterResult cluster in BuildClusters(farList))
             {
+                string clusterKey = cluster.SeedPlantId;
+                if (!clusterIconIndex.TryGetValue(clusterKey, out int stackIdx)) stackIdx = 0;
                 Vector3 pos   = new Vector3(cluster.HorizontalCentre.x,
-                                            cluster.MaxTopY + clusterIconYOffset,
+                                            cluster.MaxTopY + clusterIconYOffset + stackIdx * clusterIconStackSpacing,
                                             cluster.HorizontalCentre.z);
                 float   scale = ClusterScale(cluster.Count);
                 SpawnIcon(layer.Prefab, pos, scale);
+                clusterIconIndex[clusterKey] = stackIdx + 1;
             }
         }
     }
@@ -272,6 +313,9 @@ public class PlantIconLODController : MonoBehaviour
     /// </summary>
     private List<ClusterResult> BuildClusters(List<PlantEntry> plants)
     {
+        // Sort by PlantId so the same plant always seeds the same cluster across different layers.
+        plants.Sort((a, b) => string.Compare(a.PlantId, b.PlantId, System.StringComparison.Ordinal));
+
         List<ClusterResult> results  = new List<ClusterResult>();
         bool[]              assigned = new bool[plants.Count];
 
@@ -294,13 +338,13 @@ public class PlantIconLODController : MonoBehaviour
                 }
             }
 
-            results.Add(ComputeCluster(members));
+            results.Add(ComputeCluster(members, plants[i].PlantId));
         }
 
         return results;
     }
 
-    private static ClusterResult ComputeCluster(List<PlantEntry> members)
+    private static ClusterResult ComputeCluster(List<PlantEntry> members, string seedPlantId)
     {
         Vector3 xzSum  = Vector3.zero;
         float   maxTop = float.MinValue;
@@ -316,7 +360,8 @@ public class PlantIconLODController : MonoBehaviour
         {
             HorizontalCentre = xzSum / members.Count,
             MaxTopY          = maxTop,
-            Count            = members.Count
+            Count            = members.Count,
+            SeedPlantId      = seedPlantId
         };
     }
 
