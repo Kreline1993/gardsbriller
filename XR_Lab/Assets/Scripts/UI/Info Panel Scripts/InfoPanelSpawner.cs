@@ -1,8 +1,16 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class InfoPanelSpawner : MonoBehaviour
 {
     public GameObject infoPanelPrefab;
+
+    private const int DefaultMaxOpenPanels = 3;
+
+    [Header("Panel Limit")]
+    [Tooltip("Maximum info panels allowed open at once. When exceeded, the oldest panel is closed. Set to 0 for unlimited.")]
+    [SerializeField, Min(0)] private int maxOpenPanelsConfig = DefaultMaxOpenPanels;
+    private static int _maxOpenPanels = DefaultMaxOpenPanels;
 
     [Header("Auto Close")]
     [SerializeField, Min(0f)] private float closeDistanceFromPlant = 2.5f;
@@ -14,6 +22,12 @@ public class InfoPanelSpawner : MonoBehaviour
     [SerializeField] private Vector2 viewerVerticalBand = new Vector2(-0.2f, 0.2f);
     [SerializeField] private bool flipPanelForward = true;
 
+    [Header("Overlap Avoidance")]
+    [Tooltip("Approximate world-space width of an info panel. Used for horizontal overlap detection from the viewer's perspective. Set to 0 to disable.")]
+    [SerializeField, Min(0f)] private float panelWidth = 0.35f;
+    [Tooltip("Extra horizontal gap to leave between adjacent panels.")]
+    [SerializeField, Min(0f)] private float panelGap = 0.05f;
+
     [Header("Panel Tether")]
     [SerializeField] private bool enableTether = true;
     [SerializeField, Min(0f)] private float tetherWidth = 0.01f;
@@ -23,6 +37,17 @@ public class InfoPanelSpawner : MonoBehaviour
     [SerializeField] private float tetherPlantTopOffset = 0f;
     [SerializeField, Min(2)] private int tetherSegments = 8;
     [SerializeField] private float tetherCurveHeight = 0.12f;
+
+    private static readonly List<InfoPanelSpawner> _openPanels = new List<InfoPanelSpawner>();
+    private static readonly List<float> _overlapBuffer = new List<float>();
+
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+    private static void ResetStaticFields()
+    {
+        _openPanels.Clear();
+        _overlapBuffer.Clear();
+        _maxOpenPanels = DefaultMaxOpenPanels;
+    }
 
     private GameObject spawnedPanel;
     private LineRenderer _tetherLine;
@@ -43,6 +68,7 @@ public class InfoPanelSpawner : MonoBehaviour
 
     private void Awake()
     {
+        _maxOpenPanels = maxOpenPanelsConfig;
         _outlineController = GetComponent<PlantRuleOutlineController>();
     }
 
@@ -89,7 +115,10 @@ public class InfoPanelSpawner : MonoBehaviour
 
             if (!TryGetViewerTransform(out Transform viewerTransform)) return;
 
+            EnforcePanelLimit();
+
             Vector3 spawnPos = ComputePanelSpawnPosition(viewerTransform);
+            spawnPos = ResolveOverlap(spawnPos, viewerTransform);
             spawnedPanel = Instantiate(infoPanelPrefab, spawnPos, Quaternion.identity);
             FacePanelTowardsViewer(spawnedPanel.transform, viewerTransform);
 
@@ -100,6 +129,7 @@ public class InfoPanelSpawner : MonoBehaviour
             CreateTether();
             UpdateTether();
 
+            _openPanels.Add(this);
             _outlineController?.SetPanelOpen(true);
 
             if (data != null)
@@ -117,11 +147,96 @@ public class InfoPanelSpawner : MonoBehaviour
     {
         if (spawnedPanel != null)
         {
+            _openPanels.Remove(this);
             DestroyTether();
             Destroy(spawnedPanel);
             spawnedPanel = null;
             _outlineController?.SetPanelOpen(false);
         }
+    }
+
+    private void EnforcePanelLimit()
+    {
+        if (_maxOpenPanels <= 0) return;
+
+        _openPanels.RemoveAll(s => s == null || s.spawnedPanel == null);
+
+        while (_openPanels.Count >= _maxOpenPanels && _openPanels.Count > 0)
+            _openPanels[0].ClosePanel();
+    }
+
+    private Vector3 ResolveOverlap(Vector3 initialPos, Transform viewerTransform)
+    {
+        if (panelWidth <= 0f || _openPanels.Count == 0) return initialPos;
+
+        Vector3 viewerRight = viewerTransform.right;
+        viewerRight.y = 0f;
+        viewerRight.Normalize();
+
+        float clearance = panelWidth + panelGap;
+
+        _overlapBuffer.Clear();
+        foreach (var other in _openPanels)
+        {
+            if (other == null || other.spawnedPanel == null) continue;
+            Vector3 diff = other.spawnedPanel.transform.position - initialPos;
+            _overlapBuffer.Add(Vector3.Dot(diff, viewerRight));
+        }
+
+        if (_overlapBuffer.Count == 0) return initialPos;
+        if (!IsSlotOccupied(0f, _overlapBuffer, clearance)) return initialPos;
+
+        float viewerCenterH = Vector3.Dot(initialPos - viewerTransform.position, viewerRight);
+        float bestOffset = 0f;
+        float bestDeviation = float.MaxValue;
+        bool found = false;
+
+        // Small epsilon to prevent floating point precision issues when checking for slot occupancy
+        const float slotEpsilon = 0.005f;
+
+        foreach (float occupied in _overlapBuffer)
+        {
+            float rightCandidate = occupied + clearance + slotEpsilon;
+            if (!IsSlotOccupied(rightCandidate, _overlapBuffer, clearance))
+            {
+                float deviation = Mathf.Abs(viewerCenterH + rightCandidate);
+                if (deviation < bestDeviation)
+                {
+                    bestDeviation = deviation;
+                    bestOffset = rightCandidate;
+                    found = true;
+                }
+            }
+
+            float leftCandidate = occupied - clearance - slotEpsilon;
+            if (!IsSlotOccupied(leftCandidate, _overlapBuffer, clearance))
+            {
+                float deviation = Mathf.Abs(viewerCenterH + leftCandidate);
+                if (deviation < bestDeviation)
+                {
+                    bestDeviation = deviation;
+                    bestOffset = leftCandidate;
+                    found = true;
+                }
+            }
+        }
+
+        return found ? initialPos + viewerRight * bestOffset : initialPos;
+    }
+
+    private static bool IsSlotOccupied(float offset, List<float> occupiedOffsets, float clearance)
+    {
+        foreach (float occupied in occupiedOffsets)
+        {
+            if (Mathf.Abs(offset - occupied) < clearance)
+                return true;
+        }
+        return false;
+    }
+
+    private void OnDestroy()
+    {
+        _openPanels.Remove(this);
     }
 
     private bool TryGetViewerTransform(out Transform viewerTransform)
