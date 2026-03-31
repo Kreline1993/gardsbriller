@@ -2779,7 +2779,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 216863214224576181, guid: 835a43bfb03274f4d903a220ba878c57, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.28
+      value: 0.196
       objectReference: {fileID: 0}
     - target: {fileID: 216863214224576181, guid: 835a43bfb03274f4d903a220ba878c57, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -2852,6 +2852,10 @@ PrefabInstance:
     - target: {fileID: 5398258534428154183, guid: 835a43bfb03274f4d903a220ba878c57, type: 3}
       propertyPath: m_PresetInfoIsWorld
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6124719784746164366, guid: 835a43bfb03274f4d903a220ba878c57, type: 3}
+      propertyPath: _size.y
+      value: 450
       objectReference: {fileID: 0}
     - target: {fileID: 6728658672150892114, guid: 835a43bfb03274f4d903a220ba878c57, type: 3}
       propertyPath: m_Colors.m_SelectedColor.a
@@ -3857,8 +3861,16 @@ PrefabInstance:
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 8761629298151531651, guid: 969cc8acc604d5045b0bca768933c584, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8761629298151531651, guid: 969cc8acc604d5045b0bca768933c584, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8761629298151531651, guid: 969cc8acc604d5045b0bca768933c584, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 8761629298151531651, guid: 969cc8acc604d5045b0bca768933c584, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -3873,12 +3885,28 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 551489248}
     - target: {fileID: 8761629298151531651, guid: 969cc8acc604d5045b0bca768933c584, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8761629298151531651, guid: 969cc8acc604d5045b0bca768933c584, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: TogglePanel
       objectReference: {fileID: 0}
     - target: {fileID: 8761629298151531651, guid: 969cc8acc604d5045b0bca768933c584, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: SetActive
+      objectReference: {fileID: 0}
+    - target: {fileID: 8761629298151531651, guid: 969cc8acc604d5045b0bca768933c584, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
       value: PanelToggle, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 8761629298151531651, guid: 969cc8acc604d5045b0bca768933c584, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: UnityEngine.GameObject, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 8761629298151531651, guid: 969cc8acc604d5045b0bca768933c584, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -4368,7 +4396,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ActivateOnFirstLocalizationSuccess
   digitalTwinRoot: {fileID: 1845547956}
-  disableOnStart: 0
+  disableOnStart: 1
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
