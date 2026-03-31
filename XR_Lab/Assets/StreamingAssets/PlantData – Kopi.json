@@ -1,0 +1,362 @@
+{
+  "rows": [
+    {
+      "rowId": "row_G",
+      "location": { "x": -4.5, "y": 0, "z": 0 },
+      "groundMoisture": 50,
+      "size": { "width": 0.75, "length": 4.033 },
+      "plants": [
+        
+      ],
+      "lastWateredDate": { "day": 3, "month": 3, "year": 2026 }
+    },
+    {
+      "rowId": "row_F",
+      "location": { "x": -3.0, "y": 0, "z": 0 },
+      "groundMoisture": 15,
+      "size": { "width": 0.75, "length": 4.033 },
+      "plants": [
+                {
+          "plantId": "plant_003",
+          "plantName": "Tomato Plant 3 (Real: Truls)",
+          "species": "Tomato",
+          "position": { "x": -2.8032, "y": 0, "z": 1.1561 },
+          "size": { "diameter": 0.26, "height": 0.5 },
+          "growth": 75,
+          "estimatedHarvestDate": { "day": 21, "month": 3, "year": 2026 },
+          "lastWateredDate": { "day": 3, "month": 3, "year": 2026 },
+          "healthStatus": "bad",
+          "notes": null,
+          "lastPesticide": { "day": 25, "month": 1, "year": 2026 },
+          "nextPesticide": { "day": 25, "month": 4, "year": 2026 },
+          "plantedDate": { "day": 10, "month": 1, "year": 2026 }
+        },
+                {
+          "plantId": "plant_008",
+          "plantName": "Tomato Plant 5 (Real: Truls)",
+          "species": "Tomato",
+          "position": { "x": -2.8067, "y": 0, "z": 1.8229 },
+          "size": { "diameter": 0.61, "height": 1.04 },
+          "growth": 55,
+          "estimatedHarvestDate": { "day": 4, "month": 4, "year": 2026 },
+          "lastWateredDate": { "day": 14, "month": 2, "year": 2026 },
+          "healthStatus": "bad",
+          "notes": null,
+          "lastPesticide": { "day": 12, "month": 2, "year": 2026 },
+          "nextPesticide": { "day": 12, "month": 4, "year": 2026 },
+          "plantedDate": { "day": 24, "month": 1, "year": 2026 }
+        }
+      ],
+      "lastWateredDate": { "day": 3, "month": 3, "year": 2026 }
+    },
+    {
+      "rowId": "row_E",
+      "location": { "x": -1.5, "y": 0, "z": 0 },
+      "groundMoisture": 38,
+      "size": { "width": 0.75, "length": 4.033 },
+      "plants": [
+        
+      ],
+      "lastWateredDate": { "day": 3, "month": 3, "year": 2026 }
+    },
+    {
+      "rowId": "row_A",
+      "location": { "x": 0, "y": 0, "z": 0 },
+      "groundMoisture": 20,
+      "size": { "width": 0.75, "length": 4.033 },
+      "plants": [
+        {
+          "plantId": "plant_001",
+          "plantName": "Tomato Plant 1 (Real: Kevin)",
+          "species": "Tomato",
+          "position": { "x": 0.325, "y": 0, "z": 0.57 },
+          "size": { "diameter": 0.27, "height": 0.30 },
+          "growth": 97,
+          "estimatedHarvestDate": { "day": 5, "month": 3, "year": 2026 },
+          "lastWateredDate": { "day": 3, "month": 3, "year": 2026 },
+          "healthStatus": "ok",
+          "notes": { "textNote": "Soil moisture low, consider watering more frequently.", "noteTag": "warning" },
+          "lastPesticide": { "day": 25, "month": 1, "year": 2026 },
+          "nextPesticide": { "day": 25, "month": 4, "year": 2026 },
+          "plantedDate": { "day": 25, "month": 12, "year": 2025 }
+        },
+        {
+          "plantId": "plant_002",
+          "plantName": "Tomato Plant 2 (Real: Truls)",
+          "species": "Tomato",
+          "position": { "x": 0.325, "y": 0, "z": 1.5 },
+          "size": { "diameter": 0.35, "height": 0.28 },
+          "growth": 62,
+          "estimatedHarvestDate": { "day": 30, "month": 3, "year": 2026 },
+          "lastWateredDate": { "day": 3, "month": 3, "year": 2026 },
+          "healthStatus": "ok",
+          "notes": null,
+          "lastPesticide": { "day": 25, "month": 1, "year": 2026 },
+          "nextPesticide": { "day": 25, "month": 4, "year": 2026 },
+          "plantedDate": { "day": 19, "month": 1, "year": 2026 }
+        },
+
+        {
+          "plantId": "plant_004",
+          "plantName": "Tomato Plant 4 (Real: Truls)",
+          "species": "Tomato",
+          "position": { "x": 0.325, "y": 0, "z": 3.3 },
+          "size": { "diameter": 0.35, "height": 0.3 },
+          "growth": 40,
+          "estimatedHarvestDate": { "day": 14, "month": 4, "year": 2026 },
+          "lastWateredDate": { "day": 3, "month": 3, "year": 2026 },
+          "healthStatus": "ok",
+          "notes": null,
+          "lastPesticide": { "day": 25, "month": 1, "year": 2026 },
+          "nextPesticide": { "day": 25, "month": 4, "year": 2026 },
+          "plantedDate": { "day": 3, "month": 2, "year": 2026 }
+        }
+      ],
+      "lastWateredDate": { "day": 3, "month": 3, "year": 2026 }
+    },
+    {
+      "rowId": "row_B",
+      "location": { "x": 1.5, "y": 0, "z": 0 },
+      "groundMoisture": 45,
+      "size": { "width": 0.75, "length": 4.033 },
+      "plants": [
+        {
+          "plantId": "plant_005",
+          "plantName": "Carrot Plant 1 (Real: Natasha)",
+          "species": "Carrot",
+          "position": { "x": 1.825, "y": 0, "z": 0.575 },
+          "size": { "diameter": 0.3, "height": 0.55 },
+          "growth": 103,
+          "estimatedHarvestDate": { "day": 27, "month": 2, "year": 2026 },
+          "lastWateredDate": { "day": 14, "month": 2, "year": 2026 },
+          "healthStatus": "ok",
+          "notes": { "textNote": "Past harvest date, beginning to bolt. Harvest immediately.", "noteTag": "warning" },
+          "lastPesticide": { "day": 12, "month": 2, "year": 2026 },
+          "nextPesticide": { "day": 12, "month": 4, "year": 2026 },
+          "plantedDate": { "day": 20, "month": 10, "year": 2025 }
+        },
+        {
+          "plantId": "plant_006",
+          "plantName": "Carrot Plant 2 (Real: Natasha)",
+          "species": "Carrot",
+          "position": { "x": 1.834, "y": 0, "z": 0.85 },
+          "size": { "diameter": 0.25, "height": 0.35 },
+          "growth": 100,
+          "estimatedHarvestDate": { "day": 3, "month": 3, "year": 2026 },
+          "lastWateredDate": { "day": 14, "month": 2, "year": 2026 },
+          "healthStatus": "good",
+          "notes": { "textNote": "Ready to harvest today.", "noteTag": "todo" },
+          "lastPesticide": { "day": 12, "month": 2, "year": 2026 },
+          "nextPesticide": { "day": 12, "month": 4, "year": 2026 },
+          "plantedDate": { "day": 24, "month": 10, "year": 2025 }
+        },
+        {
+          "plantId": "plant_007",
+          "plantName": "Carrot Plant 3 (Real: Truls)",
+          "species": "Carrot",
+          "position": { "x": 1.825, "y": 0, "z": 1.13 },
+          "size": { "diameter": 0.16, "height": 0.32 },
+          "growth": 85,
+          "estimatedHarvestDate": { "day": 25, "month": 3, "year": 2026 },
+          "lastWateredDate": { "day": 14, "month": 2, "year": 2026 },
+          "healthStatus": "good",
+          "notes": null,
+          "lastPesticide": { "day": 12, "month": 2, "year": 2026 },
+          "nextPesticide": { "day": 12, "month": 4, "year": 2026 },
+          "plantedDate": { "day": 15, "month": 11, "year": 2025 }
+        },
+
+        {
+          "plantId": "plant_009",
+          "plantName": "Tomato Plant 6 (Real: Truls)",
+          "species": "Tomato",
+          "position": { "x": 1.825, "y": 0, "z": 1.9 },
+          "size": { "diameter": 0.4, "height": 0.37 },
+          "growth": 107,
+          "estimatedHarvestDate": { "day": 26, "month": 2, "year": 2026 },
+          "lastWateredDate": { "day": 14, "month": 2, "year": 2026 },
+          "healthStatus": "bad",
+          "notes": { "textNote": "Overripe, fruit splitting and softening. Should have been harvested days ago.", "noteTag": "warning" },
+          "lastPesticide": { "day": 12, "month": 2, "year": 2026 },
+          "nextPesticide": { "day": 12, "month": 4, "year": 2026 },
+          "plantedDate": { "day": 18, "month": 12, "year": 2025 }
+        }
+      ],
+      "lastWateredDate": { "day": 14, "month": 2, "year": 2026 }
+    },
+    {
+      "rowId": "row_C",
+      "location": { "x": 3, "y": 0, "z": 0 },
+      "groundMoisture": 29,
+      "size": { "width": 0.722, "length": 4.033 },
+      "plants": [
+        {
+          "plantId": "plant_010",
+          "plantName": "Radish Plant 1 (Real: Kevin)",
+          "species": "Radish",
+          "position": { "x": 3.465, "y": 0, "z": 0.33 },
+          "size": { "diameter": 0.14, "height": 0.2 },
+          "growth": 70,
+          "estimatedHarvestDate": { "day": 12, "month": 3, "year": 2026 },
+          "lastWateredDate": { "day": 14, "month": 2, "year": 2026 },
+          "healthStatus": "good",
+          "notes": { "textNote": "Developing well, on schedule.", "noteTag": "note" },
+          "lastPesticide": { "day": 12, "month": 2, "year": 2026 },
+          "nextPesticide": { "day": 12, "month": 4, "year": 2026 },
+          "plantedDate": { "day": 10, "month": 2, "year": 2026 }
+        },
+        {
+          "plantId": "plant_011 (Real: Kevin)",
+          "plantName": "Radish Plant 2",
+          "species": "Radish",
+          "position": { "x": 3.395, "y": 0, "z": 0.33 },
+          "size": { "diameter": 0.14, "height": 0.2 },
+          "growth": 108,
+          "estimatedHarvestDate": { "day": 1, "month": 3, "year": 2026 },
+          "lastWateredDate": { "day": 14, "month": 2, "year": 2026 },
+          "healthStatus": "bad",
+          "notes": { "textNote": "Overripe, root becoming woody and cracking. Harvest or remove immediately.", "noteTag": "warning" },
+          "lastPesticide": { "day": 12, "month": 2, "year": 2026 },
+          "nextPesticide": { "day": 12, "month": 4, "year": 2026 },
+          "plantedDate": { "day": 30, "month": 1, "year": 2026 }
+        },
+        {
+          "plantId": "plant_012",
+          "plantName": "Radish Plant 3 (Real: Truls)",
+          "species": "Radish",
+          "position": { "x": 3.31, "y": 0, "z": 0.33 },
+          "size": { "diameter": 0.18, "height": 0.23 },
+          "growth": 100,
+          "estimatedHarvestDate": { "day": 3, "month": 3, "year": 2026 },
+          "lastWateredDate": { "day": 14, "month": 2, "year": 2026 },
+          "healthStatus": "good",
+          "notes": { "textNote": "Ready to harvest today.", "noteTag": "todo" },
+          "lastPesticide": { "day": 12, "month": 2, "year": 2026 },
+          "nextPesticide": { "day": 12, "month": 4, "year": 2026 },
+          "plantedDate": { "day": 1, "month": 2, "year": 2026 }
+        },
+        {
+          "plantId": "plant_013",
+          "plantName": "Radish Plant 4 (Real: Truls)",
+          "species": "Radish",
+          "position": { "x": 3.343, "y": 0, "z": 0.72 },
+          "size": { "diameter": 0.22, "height": 0.16 },
+          "growth": 104,
+          "estimatedHarvestDate": { "day": 2, "month": 3, "year": 2026 },
+          "lastWateredDate": { "day": 14, "month": 2, "year": 2026 },
+          "healthStatus": "ok",
+          "notes": { "textNote": "Slightly past peak, still salvageable. Harvest soon.", "noteTag": "warning" },
+          "lastPesticide": { "day": 12, "month": 2, "year": 2026 },
+          "nextPesticide": { "day": 12, "month": 4, "year": 2026 },
+          "plantedDate": { "day": 31, "month": 1, "year": 2026 }
+        },
+        {
+          "plantId": "plant_014",
+          "plantName": "Radish Plant 5 & 6",
+          "species": "Radish",
+          "position": { "x": 3.256, "y": 0, "z": 0.898 },
+          "size": { "diameter": 0.063, "height": 0.063 },
+          "growth": 90,
+          "estimatedHarvestDate": { "day": 6, "month": 3, "year": 2026 },
+          "lastWateredDate": { "day": 14, "month": 2, "year": 2026 },
+          "healthStatus": "good",
+          "notes": { "textNote": "Almost ready, harvest in a few days.", "noteTag": "todo" },
+          "lastPesticide": { "day": 12, "month": 2, "year": 2026 },
+          "nextPesticide": { "day": 12, "month": 4, "year": 2026 },
+          "plantedDate": { "day": 4, "month": 2, "year": 2026 }
+        },
+        {
+          "plantId": "plant_015",
+          "plantName": "Radish Plant 7 & 8",
+          "species": "Radish",
+          "position": { "x": 3.486, "y": 0, "z": 0.865 },
+          "size": { "diameter": 0.032, "height": 0.032 },
+          "growth": 45,
+          "estimatedHarvestDate": { "day": 19, "month": 3, "year": 2026 },
+          "lastWateredDate": { "day": 14, "month": 2, "year": 2026 },
+          "healthStatus": "good",
+          "notes": null,
+          "lastPesticide": { "day": 12, "month": 2, "year": 2026 },
+          "nextPesticide": { "day": 12, "month": 4, "year": 2026 },
+          "plantedDate": { "day": 17, "month": 2, "year": 2026 }
+        },
+        {
+          "plantId": "plant_016",
+          "plantName": "Carrot Plant 4 & 5 (Real: Truls)",
+          "species": "Carrot",
+          "position": { "x": 3.16, "y": 0, "z": 1.6 },
+          "size": { "diameter": 0.16, "height": 0.24 },
+          "growth": 100,
+          "estimatedHarvestDate": { "day": 3, "month": 3, "year": 2026 },
+          "lastWateredDate": { "day": 14, "month": 2, "year": 2026 },
+          "healthStatus": "good",
+          "notes": { "textNote": "Ready to harvest today.", "noteTag": "todo" },
+          "lastPesticide": { "day": 12, "month": 2, "year": 2026 },
+          "nextPesticide": { "day": 12, "month": 4, "year": 2026 },
+          "plantedDate": { "day": 24, "month": 10, "year": 2025 }
+        },
+        {
+          "plantId": "plant_017",
+          "plantName": "Carrot Plant 6 & 7",
+          "species": "Carrot",
+          "position": { "x": 3.275, "y": 0, "z": 1.6 },
+          "size": { "diameter": 0.09, "height": 0.55 },
+          "growth": 106,
+          "estimatedHarvestDate": { "day": 22, "month": 2, "year": 2026 },
+          "lastWateredDate": { "day": 14, "month": 2, "year": 2026 },
+          "healthStatus": "ok",
+          "notes": { "textNote": "Starting to yellow at the tips, overdue for harvest.", "noteTag": "warning" },
+          "lastPesticide": { "day": 12, "month": 2, "year": 2026 },
+          "nextPesticide": { "day": 12, "month": 4, "year": 2026 },
+          "plantedDate": { "day": 15, "month": 10, "year": 2025 }
+        },
+        {
+          "plantId": "plant_018",
+          "plantName": "Tomato Plant 7",
+          "species": "Tomato",
+          "position": { "x": 3.213, "y": 0, "z": 1.72 },
+          "size": { "diameter": 0.101, "height": 1.014 },
+          "growth": 78,
+          "estimatedHarvestDate": { "day": 18, "month": 3, "year": 2026 },
+          "lastWateredDate": { "day": 14, "month": 2, "year": 2026 },
+          "healthStatus": "good",
+          "notes": null,
+          "lastPesticide": { "day": 12, "month": 2, "year": 2026 },
+          "nextPesticide": { "day": 12, "month": 4, "year": 2026 },
+          "plantedDate": { "day": 7, "month": 1, "year": 2026 }
+        }
+      ],
+      "lastWateredDate": { "day": 14, "month": 2, "year": 2026 }
+    },
+    {
+      "rowId": "row_D",
+      "location": { "x": 4.5, "y": 0, "z": 0 },
+      "groundMoisture": 55,
+      "size": { "width": 0.75, "length": 4.033 },
+      "plants": [
+        
+      ],
+      "lastWateredDate": { "day": 3, "month": 3, "year": 2026 }
+    },
+    {
+      "rowId": "row_H",
+      "location": { "x": 6.0, "y": 0, "z": 0 },
+      "groundMoisture": 22,
+      "size": { "width": 0.75, "length": 4.033 },
+      "plants": [
+        
+      ],
+      "lastWateredDate": { "day": 1, "month": 3, "year": 2026 }
+    },
+    {
+      "rowId": "row_I",
+      "location": { "x": 7.5, "y": 0, "z": 0 },
+      "groundMoisture": 48,
+      "size": { "width": 0.75, "length": 4.033 },
+      "plants": [
+       
+      ],
+      "lastWateredDate": { "day": 3, "month": 3, "year": 2026 }
+    }
+  ]
+}
