@@ -787,6 +787,62 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &572063898
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 572063900}
+  - component: {fileID: 572063899}
+  m_Layer: 0
+  m_Name: _LocalizationBootstrap
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &572063899
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 572063898}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 46f9e38edb338e842b2db90493012c17, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::XRLab.Localization.LocalizationModeBootstrap
+  mode: 0
+  multisetComponents:
+  - {fileID: 7564069497203477064}
+  - {fileID: 8124382476681737973}
+  - {fileID: 8124382476681737972}
+  - {fileID: 8124382476681737971}
+  - {fileID: 8124382476681737970}
+  - {fileID: 8124382476681737968}
+  - {fileID: 8124382476681737969}
+  qrComponents:
+  - {fileID: 597862804}
+  digitalTwinRoot: {fileID: 1845547956}
+--- !u!4 &572063900
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 572063898}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -345.9853, y: 126.68348, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &574821885
 GameObject:
   m_ObjectHideFlags: 0
@@ -830,6 +886,50 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0.12872, y: -1.17, z: 4.47133}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &597862803
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 597862805}
+  - component: {fileID: 597862804}
+  m_Layer: 0
+  m_Name: _QrLocalization
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &597862804
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 597862803}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ced3dbc9df3947646a2c1711f727556b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::XRLab.Localization.QrLocalizationProvider
+--- !u!4 &597862805
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 597862803}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -4397,6 +4497,50 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ActivateOnFirstLocalizationSuccess
   digitalTwinRoot: {fileID: 1845547956}
   disableOnStart: 1
+--- !u!114 &8124382476681737970 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3948066030220785952, guid: 391746b4d05e046f1ad857954bef332a, type: 3}
+  m_PrefabInstance: {fileID: 8124382476681737966}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8124382476681737967}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1654975246, guid: cda977b25375841f1a8e0a133b2effa4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &8124382476681737971 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5698539775961510825, guid: 391746b4d05e046f1ad857954bef332a, type: 3}
+  m_PrefabInstance: {fileID: 8124382476681737966}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8124382476681737967}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad91b01d7b8ff4dd996b774bd7b9f061, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &8124382476681737972 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6179494905434331977, guid: 391746b4d05e046f1ad857954bef332a, type: 3}
+  m_PrefabInstance: {fileID: 8124382476681737966}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8124382476681737967}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08bd37078d6c74e8ba696aa5c82bdbc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &8124382476681737973 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4388574751220952501, guid: 391746b4d05e046f1ad857954bef332a, type: 3}
+  m_PrefabInstance: {fileID: 8124382476681737966}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8124382476681737967}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b3eb92acc96441148b99036b0fd328a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -4422,3 +4566,5 @@ SceneRoots:
   - {fileID: 553951983}
   - {fileID: 1450571753}
   - {fileID: 518314011}
+  - {fileID: 572063900}
+  - {fileID: 597862805}
