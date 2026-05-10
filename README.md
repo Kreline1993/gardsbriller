@@ -4,6 +4,9 @@ An XR / mixed-reality application for **Meta Quest** that lets the user walk thr
 
 The project is the active iteration of the *Gårdsbriller* ("farm glasses") project and lives in the [`XR_Lab/`](./XR_Lab) folder. The two other folders in this repo (`Simple digital twin/` and `XR_lab_multiset/`) are older prototypes kept for reference only.
 
+<img width="2559" height="1439" alt="image" src="https://github.com/user-attachments/assets/a5f525d9-b247-4cd5-b782-0f2345f80901" />
+
+
 ## Contents
 
 - [Gårdsbriller](#gårdsbriller)
