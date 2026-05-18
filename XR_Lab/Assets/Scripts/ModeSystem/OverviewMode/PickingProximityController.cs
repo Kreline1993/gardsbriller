@@ -114,7 +114,7 @@ public class PickingProximityController : MonoBehaviour
         {
             if (newIds.Contains(entry.PlantId)) continue;
 
-            if (_registry.HandlesByPlantId.TryGetValue(entry.PlantId, out PlantVisualHandle handle))
+            if (_registry.TryGetHandle(entry.PlantId, out PlantVisualHandle handle))
             {
                 handle.DestroyIcon();
                 handle.SetProtectedVisual(false, Color.white, false);
@@ -127,10 +127,12 @@ public class PickingProximityController : MonoBehaviour
         _selectedPlants.Clear();
         foreach (Plant plant in plants)
         {
-            if (!_registry.HandlesByPlantId.TryGetValue(plant.plantId, out PlantVisualHandle handle))
+            if (!_registry.TryGetHandle(plant.plantId, out PlantVisualHandle handle))
                 continue;
 
-            (Vector3 bottomCentre, float _) = handle.GetWorldBounds();
+            if (!_registry.TryGetWorldBounds(plant.plantId, out Vector3 bottomCentre, out _))
+                continue;
+
             _selectedPlants.Add(new PlantEntry
             {
                 PlantId = plant.plantId,
@@ -154,7 +156,7 @@ public class PickingProximityController : MonoBehaviour
         {
             foreach (PlantEntry entry in _selectedPlants)
             {
-                if (_registry.HandlesByPlantId.TryGetValue(entry.PlantId, out PlantVisualHandle handle))
+                if (_registry.TryGetHandle(entry.PlantId, out PlantVisualHandle handle))
                 {
                     handle.DestroyIcon();
                     handle.SetProtectedVisual(false, Color.white, false);
@@ -190,7 +192,7 @@ public class PickingProximityController : MonoBehaviour
 
         foreach (PlantEntry entry in _selectedPlants)
         {
-            if (!_registry.HandlesByPlantId.TryGetValue(entry.PlantId, out PlantVisualHandle handle))
+            if (!_registry.TryGetHandle(entry.PlantId, out PlantVisualHandle handle))
                 continue;
 
             float dist = Vector3.Distance(userPos, entry.BottomCentre);

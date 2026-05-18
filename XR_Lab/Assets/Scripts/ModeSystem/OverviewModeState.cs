@@ -155,11 +155,9 @@ public sealed class OverviewModeState : ModeStateBase
 
         foreach (Plant plant in plants)
         {
-            if (!registry.HandlesByPlantId.TryGetValue(plant.plantId, out PlantVisualHandle handle)
-                || handle == null)
+            if (!registry.TryGetWorldBounds(plant.plantId, out Vector3 bottomCentre, out float height))
                 continue;
 
-            var (bottomCentre, height) = handle.GetWorldBounds();
             entries.Add(new PlantIconLODController.PlantEntry
             {
                 PlantId      = plant.plantId,

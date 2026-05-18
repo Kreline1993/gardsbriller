@@ -5,8 +5,10 @@ public class PlantVisualRegistry : MonoBehaviour
 {
     [SerializeField] private Transform searchRoot;
 
+    private readonly Dictionary<string, PlantAnchor> anchorsByPlantId = new Dictionary<string, PlantAnchor>();
     private readonly Dictionary<string, PlantVisualHandle> handlesByPlantId = new Dictionary<string, PlantVisualHandle>();
 
+    public IReadOnlyDictionary<string, PlantAnchor> AnchorsByPlantId => anchorsByPlantId;
     public IReadOnlyDictionary<string, PlantVisualHandle> HandlesByPlantId => handlesByPlantId;
 
     private void Awake()
@@ -16,27 +18,86 @@ public class PlantVisualRegistry : MonoBehaviour
 
     public void RebuildIndex()
     {
+        anchorsByPlantId.Clear();
         handlesByPlantId.Clear();
 
         Transform root = searchRoot != null ? searchRoot : transform;
-        PlantIdentity[] identities = root.GetComponentsInChildren<PlantIdentity>(true);
+        PlantAnchor[] anchors = root.GetComponentsInChildren<PlantAnchor>(true);
 
-        Debug.Log($"[PlantVisualRegistry] Searching for plants under '{root.name}'. Found {identities.Length} PlantIdentity components.");
+        Debug.Log($"[PlantVisualRegistry] Searching for plant anchors under '{root.name}'. Found {anchors.Length} anchors.");
 
-        foreach (PlantIdentity identity in identities)
+        foreach (PlantAnchor anchor in anchors)
         {
-            if (identity == null || string.IsNullOrEmpty(identity.plantId))
-                continue;
-
-            PlantVisualHandle handle = identity.GetComponent<PlantVisualHandle>();
-            if (handle == null)
-                handle = identity.gameObject.AddComponent<PlantVisualHandle>();
-
-            handle.InitializeIfNeeded();
-            handlesByPlantId[identity.plantId] = handle;
+            RegisterAnchor(anchor);
         }
 
-        Debug.Log($"[PlantVisualRegistry] Indexed {handlesByPlantId.Count} plants.");
+        Debug.Log($"[PlantVisualRegistry] Indexed {anchorsByPlantId.Count} plants.");
+    }
+
+    public void RegisterAnchors(IEnumerable<PlantAnchor> anchors)
+    {
+        if (anchors == null)
+            return;
+
+        foreach (PlantAnchor anchor in anchors)
+        {
+            RegisterAnchor(anchor);
+        }
+
+        Debug.Log($"[PlantVisualRegistry] Indexed {anchorsByPlantId.Count} plants after anchor registration.");
+    }
+
+    public void RegisterAnchor(PlantAnchor anchor)
+    {
+        if (anchor == null || string.IsNullOrEmpty(anchor.PlantId))
+            return;
+
+        anchorsByPlantId[anchor.PlantId] = anchor;
+
+        PlantVisualHandle handle = anchor.GetComponent<PlantVisualHandle>();
+        if (handle == null)
+            handle = anchor.gameObject.AddComponent<PlantVisualHandle>();
+
+        handle.InitializeIfNeeded();
+        handlesByPlantId[anchor.PlantId] = handle;
+    }
+
+    public bool TryGetAnchor(string plantId, out PlantAnchor anchor)
+    {
+        anchor = null;
+        return !string.IsNullOrEmpty(plantId) && anchorsByPlantId.TryGetValue(plantId, out anchor);
+    }
+
+    public bool TryGetHandle(string plantId, out PlantVisualHandle handle)
+    {
+        handle = null;
+        return !string.IsNullOrEmpty(plantId) && handlesByPlantId.TryGetValue(plantId, out handle);
+    }
+
+    public bool TryGetLiveHandle(string plantId, out PlantVisualHandle handle)
+    {
+        handle = null;
+        return TryGetHandle(plantId, out handle)
+            && TryGetAnchor(plantId, out PlantAnchor anchor)
+            && anchor != null
+            && anchor.HasActiveInteractable;
+    }
+
+    public bool HasSpawnedInteractable(string plantId)
+    {
+        return TryGetAnchor(plantId, out PlantAnchor anchor) && anchor != null && anchor.HasActiveInteractable;
+    }
+
+    public bool TryGetWorldBounds(string plantId, out Vector3 bottomCentre, out float height)
+    {
+        bottomCentre = default;
+        height = 0f;
+
+        if (!TryGetAnchor(plantId, out PlantAnchor anchor) || anchor == null)
+            return false;
+
+        (bottomCentre, height) = anchor.GetWorldBounds();
+        return true;
     }
 
     /// <summary>
@@ -210,6 +271,7 @@ public class PlantVisualRegistry : MonoBehaviour
                 pair.Value.DisableColliders();
         }
     }
+
     /// <summary>
     /// Spawns coloured overlays ONLY for plants present in the alert map.
     /// Plants with no alert condition are left untouched.
@@ -233,12 +295,14 @@ public class PlantVisualRegistry : MonoBehaviour
                 handle.DisableColliders();
         }
     }
+
     /// <summary>
     /// Spawns a icon above appropriate plants/>.
     /// </summary>
     public void ApplyIcons(GameObject iconPrefab, HashSet<string> plantIds, float yOffset = 0.3f)
     {
-        if (iconPrefab == null || plantIds == null) return;
+        if (iconPrefab == null || plantIds == null)
+            return;
 
         Debug.Log($"[PlantVisualRegistry] Spawning icons for {plantIds.Count} plants.");
 

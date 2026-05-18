@@ -2218,8 +2218,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FarmFieldGenerator
   interactionPrefab: {fileID: 8800490417148209320, guid: c6d32d6f9b23ea44885823fa6f31b42f, type: 3}
+  baseVisualPrefab: {fileID: 0}
   scaleFactor: 1
   twinDataLoader: {fileID: 1845547967}
+  plantVisualRegistry: {fileID: 0}
+  interactionSpawnController: {fileID: 0}
+  interactionSpawnDistance: 10
+  interactionDespawnDistance: 12
+  interactionUpdateInterval: 0.5
 --- !u!114 &1845547967
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4396,7 +4402,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ActivateOnFirstLocalizationSuccess
   digitalTwinRoot: {fileID: 1845547956}
-  disableOnStart: 1
+  disableOnStart: 0
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

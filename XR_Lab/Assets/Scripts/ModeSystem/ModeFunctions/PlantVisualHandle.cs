@@ -19,13 +19,28 @@ public class PlantVisualHandle : MonoBehaviour
         public bool originalEnabled;
     }
 
-    private readonly List<RendererState> rendererStates = new List<RendererState>();
-    private readonly List<ColliderState> colliderStates = new List<ColliderState>();
-    private readonly MaterialPropertyBlock propertyBlock = new MaterialPropertyBlock();
-
-    private GameObject spawnedOverlay;
+    private readonly List<RendererState> baseRendererStates = new List<RendererState>();
+    private readonly List<ColliderState> baseColliderStates = new List<ColliderState>();
+    private readonly List<RendererState> activeRendererStates = new List<RendererState>();
+    private readonly List<ColliderState> activeColliderStates = new List<ColliderState>();
+    private MaterialPropertyBlock propertyBlock;
     private readonly List<GameObject> spawnedIcons = new List<GameObject>();
-    private bool originalRenderersHidden;
+
+    private PlantAnchor anchor;
+    private Transform baseVisualRoot;
+    private GameObject activeInteractable;
+    private GameObject spawnedOverlay;
+    private Transform overlayParent;
+
+    private GameObject overlayPrefab;
+    private Color overlayTint = Color.white;
+    private bool overlayHideOriginal = true;
+
+    private bool currentVisible;
+    private bool currentProtected;
+    private Color currentProtectedTint = Color.white;
+    private bool disableTouchForProtected;
+    private bool forceCollidersDisabled;
     private bool initialized;
 
     private void Awake()
@@ -33,136 +48,79 @@ public class PlantVisualHandle : MonoBehaviour
         InitializeIfNeeded();
     }
 
+    private void OnDestroy()
+    {
+        DestroyOverlayInstance();
+        DestroyIcon();
+    }
+
+    public void Configure(PlantAnchor owner, Transform baseVisual)
+    {
+        anchor = owner;
+        baseVisualRoot = baseVisual;
+        initialized = false;
+        InitializeIfNeeded();
+        RefreshPresentation();
+    }
+
+    public void AttachInteractable(GameObject interactable)
+    {
+        activeInteractable = interactable;
+        CacheActiveStates();
+        RefreshPresentation();
+    }
+
+    public void DetachInteractable()
+    {
+        activeInteractable = null;
+        activeRendererStates.Clear();
+        activeColliderStates.Clear();
+        RefreshPresentation();
+    }
+
     public void InitializeIfNeeded()
     {
         if (initialized)
             return;
 
-        rendererStates.Clear();
-        colliderStates.Clear();
+        if (anchor == null)
+            anchor = GetComponent<PlantAnchor>();
 
-        Renderer[] renderers = GetComponentsInChildren<Renderer>(true);
-        foreach (Renderer renderer in renderers)
-        {
-            if (renderer == null)
-                continue;
+        if (baseVisualRoot == null && anchor != null)
+            baseVisualRoot = anchor.BaseVisualRoot;
 
-            Material sharedMaterial = renderer.sharedMaterial;
-            if (sharedMaterial == null)
-                continue;
+        if (propertyBlock == null)
+            propertyBlock = new MaterialPropertyBlock();
 
-            RendererState state = new RendererState
-            {
-                renderer = renderer,
-                hasBaseColor = sharedMaterial.HasProperty("_BaseColor"),
-                hasColor = sharedMaterial.HasProperty("_Color"),
-                originalBaseColor = sharedMaterial.HasProperty("_BaseColor") ? sharedMaterial.GetColor("_BaseColor") : default,
-                originalColor = sharedMaterial.HasProperty("_Color") ? sharedMaterial.GetColor("_Color") : default
-            };
-
-            rendererStates.Add(state);
-        }
-
-        Collider[] colliders = GetComponentsInChildren<Collider>(true);
-        foreach (Collider collider in colliders)
-        {
-            if (collider == null)
-                continue;
-
-            colliderStates.Add(new ColliderState
-            {
-                collider = collider,
-                originalEnabled = collider.enabled
-            });
-        }
-
+        CacheBaseStates();
+        CacheActiveStates();
         initialized = true;
     }
 
-    /// <summary>
-    /// Makes the plant visible (alpha forced to 1) or restores original opacity.
-    /// Useful for modes that need to reveal normally-transparent plants without tinting.
-    /// </summary>
     public void SetVisible(bool visible)
     {
-        InitializeIfNeeded();
-
-        for (int i = 0; i < rendererStates.Count; i++)
-        {
-            RendererState state = rendererStates[i];
-            if (state.renderer == null)
-                continue;
-
-            state.renderer.GetPropertyBlock(propertyBlock);
-
-            if (state.hasBaseColor)
-            {
-                Color color = visible ? WithFullAlpha(state.originalBaseColor) : state.originalBaseColor;
-                propertyBlock.SetColor("_BaseColor", color);
-            }
-
-            if (state.hasColor)
-            {
-                Color color = visible ? WithFullAlpha(state.originalColor) : state.originalColor;
-                propertyBlock.SetColor("_Color", color);
-            }
-
-            state.renderer.SetPropertyBlock(propertyBlock);
-        }
+        currentVisible = visible;
+        RefreshPresentation();
     }
 
     public void SetProtectedVisual(bool isProtected, Color protectedTint, bool disableTouchForProtected)
     {
-        InitializeIfNeeded();
-
-        for (int index = 0; index < rendererStates.Count; index++)
-        {
-            RendererState rendererState = rendererStates[index];
-            if (rendererState.renderer == null)
-                continue;
-
-            rendererState.renderer.GetPropertyBlock(propertyBlock);
-
-            if (rendererState.hasBaseColor)
-                propertyBlock.SetColor("_BaseColor", isProtected ? protectedTint : rendererState.originalBaseColor);
-
-            if (rendererState.hasColor)
-                propertyBlock.SetColor("_Color", isProtected ? protectedTint : rendererState.originalColor);
-
-            rendererState.renderer.SetPropertyBlock(propertyBlock);
-        }
-
-        if (!disableTouchForProtected)
-            return;
-
-        for (int index = 0; index < colliderStates.Count; index++)
-        {
-            ColliderState colliderState = colliderStates[index];
-            if (colliderState.collider == null)
-                continue;
-
-            colliderState.collider.enabled = isProtected ? false : colliderState.originalEnabled;
-        }
+        currentProtected = isProtected;
+        currentProtectedTint = protectedTint;
+        this.disableTouchForProtected = disableTouchForProtected;
+        RefreshPresentation();
     }
 
     public void DisableColliders()
     {
-        InitializeIfNeeded();
-
-        for (int i = 0; i < colliderStates.Count; i++)
-        {
-            if (colliderStates[i].collider != null)
-                colliderStates[i].collider.enabled = false;
-        }
+        forceCollidersDisabled = true;
+        RefreshPresentation();
     }
 
     public void RestoreColliders()
     {
-        for (int i = 0; i < colliderStates.Count; i++)
-        {
-            if (colliderStates[i].collider != null)
-                colliderStates[i].collider.enabled = colliderStates[i].originalEnabled;
-        }
+        forceCollidersDisabled = false;
+        RefreshPresentation();
     }
 
     /// <summary>
@@ -172,68 +130,18 @@ public class PlantVisualHandle : MonoBehaviour
     /// </summary>
     public void SpawnOverlay(GameObject prefab, Color tint, bool hideOriginal = true)
     {
-        DestroyOverlay();
-
-        if (prefab == null)
-            return;
-
-        InitializeIfNeeded();
-
-        originalRenderersHidden = hideOriginal;
-        if (hideOriginal)
-            SetOriginalRenderersEnabled(false);
-
-        spawnedOverlay = Object.Instantiate(prefab, transform.position, transform.rotation, transform);
-
-        Vector3 scale = prefab.transform.localScale;
-        MeshFilter parentMF = GetComponent<MeshFilter>();
-        MeshFilter overlayMF = spawnedOverlay.GetComponent<MeshFilter>();
-        if (parentMF != null && overlayMF != null
-            && parentMF.sharedMesh != null && overlayMF.sharedMesh != null)
-        {
-            Vector3 parentBounds = parentMF.sharedMesh.bounds.size;
-            Vector3 overlayBounds = overlayMF.sharedMesh.bounds.size;
-            scale = new Vector3(
-                overlayBounds.x > 0 ? scale.x * (parentBounds.x / overlayBounds.x) : scale.x,
-                overlayBounds.y > 0 ? scale.y * (parentBounds.y / overlayBounds.y) : scale.y,
-                overlayBounds.z > 0 ? scale.z * (parentBounds.z / overlayBounds.z) : scale.z
-            );
-        }
-        spawnedOverlay.transform.localScale = scale;
-
-        MaterialPropertyBlock block = new MaterialPropertyBlock();
-        Renderer[] overlayRenderers = spawnedOverlay.GetComponentsInChildren<Renderer>(true);
-        foreach (Renderer renderer in overlayRenderers)
-        {
-            if (renderer == null)
-                continue;
-
-            renderer.GetPropertyBlock(block);
-
-            Material mat = renderer.sharedMaterial;
-            if (mat != null && mat.HasProperty("_BaseColor"))
-                block.SetColor("_BaseColor", tint);
-
-            if (mat != null && mat.HasProperty("_Color"))
-                block.SetColor("_Color", tint);
-
-            renderer.SetPropertyBlock(block);
-        }
+        overlayPrefab = prefab;
+        overlayTint = tint;
+        overlayHideOriginal = hideOriginal;
+        RefreshPresentation();
     }
 
     public void DestroyOverlay()
     {
-        if (spawnedOverlay == null)
-            return;
-
-        Object.Destroy(spawnedOverlay);
-        spawnedOverlay = null;
-
-        if (originalRenderersHidden)
-        {
-            SetOriginalRenderersEnabled(true);
-            originalRenderersHidden = false;
-        }
+        overlayPrefab = null;
+        overlayParent = null;
+        DestroyOverlayInstance();
+        RefreshPresentation();
     }
 
     /// <summary>
@@ -247,25 +155,14 @@ public class PlantVisualHandle : MonoBehaviour
 
         InitializeIfNeeded();
 
-        float worldTopY = transform.position.y;
-        foreach (RendererState rs in rendererStates)
-        {
-            if (rs.renderer == null) continue;
-            float top = rs.renderer.bounds.max.y;
-            if (top > worldTopY) worldTopY = top;
-        }
-
-        Vector3 worldTopPoint = new Vector3(transform.position.x, worldTopY, transform.position.z);
-        float localTopY = transform.InverseTransformPoint(worldTopPoint).y;
+        float worldTopY = GetWorldTopY();
+        Vector3 worldTopPoint = new Vector3(transform.position.x, worldTopY + yOffset, transform.position.z);
 
         GameObject icon = Object.Instantiate(prefab, transform);
+        icon.transform.localPosition = transform.InverseTransformPoint(worldTopPoint);
+        icon.transform.localRotation = Quaternion.identity;
 
         Vector3 parentScale = transform.lossyScale;
-        icon.transform.localPosition = new Vector3(
-            0f,
-            localTopY + (parentScale.y > 0f ? yOffset / parentScale.y : yOffset),
-            0f);
-        icon.transform.localRotation = Quaternion.identity;
         icon.transform.localScale = new Vector3(
             parentScale.x > 0f ? prefab.transform.localScale.x / parentScale.x : prefab.transform.localScale.x,
             parentScale.y > 0f ? prefab.transform.localScale.y / parentScale.y : prefab.transform.localScale.y,
@@ -281,55 +178,318 @@ public class PlantVisualHandle : MonoBehaviour
             if (icon != null)
                 Object.Destroy(icon);
         }
-        spawnedIcons.Clear();
-    }
 
-    private void SetOriginalRenderersEnabled(bool enabled)
-    {
-        for (int i = 0; i < rendererStates.Count; i++)
-        {
-            if (rendererStates[i].renderer != null)
-                rendererStates[i].renderer.enabled = enabled;
-        }
+        spawnedIcons.Clear();
     }
 
     public void ResetVisuals()
     {
-        DestroyOverlay();
-        DestroyIcon();                          
-        SetProtectedVisual(false, default, true);
+        currentVisible = false;
+        currentProtected = false;
+        currentProtectedTint = Color.white;
+        disableTouchForProtected = false;
+        forceCollidersDisabled = false;
+        overlayPrefab = null;
+        overlayParent = null;
+        DestroyOverlayInstance();
+        DestroyIcon();
+        RefreshPresentation();
     }
 
     /// <summary>
     /// Returns the world-space bottom centre and total height of this plant's renderer bounds.
-    /// Used by <see cref="PlantIconLODController"/> to position icons correctly per LOD zone.
-    /// Falls back to (transform.position, 0) if no valid renderers are found.
+    /// Falls back to cached anchor bounds when no live renderers are available.
     /// </summary>
     public (Vector3 bottomCentre, float height) GetWorldBounds()
     {
         InitializeIfNeeded();
 
-        if (rendererStates.Count == 0)
-            return (transform.position, 0f);
+        if (anchor != null)
+            return anchor.GetWorldBounds();
+
+        if (TryGetWorldBoundsFromRenderers(GetCurrentRendererStates(), out Vector3 bottomCentre, out float height))
+            return (bottomCentre, height);
+
+        return (transform.position, 0f);
+    }
+
+    private void CacheBaseStates()
+    {
+        baseRendererStates.Clear();
+        baseColliderStates.Clear();
+
+        Transform root = baseVisualRoot != null ? baseVisualRoot : transform;
+        CacheStates(root, baseRendererStates, baseColliderStates);
+    }
+
+    private void CacheActiveStates()
+    {
+        activeRendererStates.Clear();
+        activeColliderStates.Clear();
+
+        if (activeInteractable == null)
+            return;
+
+        CacheStates(activeInteractable.transform, activeRendererStates, activeColliderStates);
+    }
+
+    private void RefreshPresentation()
+    {
+        InitializeIfNeeded();
+
+        bool hasActiveInteractable = activeInteractable != null;
+        bool hasOverlay = overlayPrefab != null;
+
+        bool hideBaseRenderers = hasActiveInteractable || (hasOverlay && overlayHideOriginal && !hasActiveInteractable);
+        bool hideActiveRenderers = hasActiveInteractable && hasOverlay && overlayHideOriginal;
+
+        SetRenderersEnabled(baseRendererStates, !hideBaseRenderers);
+        SetRenderersEnabled(activeRendererStates, hasActiveInteractable && !hideActiveRenderers);
+
+        ApplyRendererProperties(baseRendererStates, !hasActiveInteractable && currentProtected, currentProtectedTint, currentVisible);
+        ApplyRendererProperties(activeRendererStates, hasActiveInteractable && currentProtected, currentProtectedTint, currentVisible);
+
+        ApplyColliderStates(baseColliderStates, hasActiveInteractable || forceCollidersDisabled || (currentProtected && disableTouchForProtected));
+        ApplyColliderStates(activeColliderStates, forceCollidersDisabled || (currentProtected && disableTouchForProtected));
+
+        if (hasOverlay)
+            EnsureOverlay();
+        else
+            DestroyOverlayInstance();
+    }
+
+    private void EnsureOverlay()
+    {
+        Transform target = GetOverlayTarget();
+        if (target == null || overlayPrefab == null)
+        {
+            DestroyOverlayInstance();
+            return;
+        }
+
+        if (spawnedOverlay != null && overlayParent == target && MatchesExistingOverlayPrefab())
+        {
+            ApplyOverlayTint(spawnedOverlay, overlayTint);
+            return;
+        }
+
+        DestroyOverlayInstance();
+
+        spawnedOverlay = Object.Instantiate(overlayPrefab, target);
+        spawnedOverlay.transform.localPosition = Vector3.zero;
+        spawnedOverlay.transform.localRotation = Quaternion.identity;
+        MatchOverlayScale(target, spawnedOverlay.transform);
+        ApplyOverlayTint(spawnedOverlay, overlayTint);
+        overlayParent = target;
+    }
+
+    private Transform GetOverlayTarget()
+    {
+        if (activeInteractable != null)
+            return activeInteractable.transform;
+
+        return baseVisualRoot != null ? baseVisualRoot : transform;
+    }
+
+    private bool MatchesExistingOverlayPrefab()
+    {
+        return spawnedOverlay != null
+            && overlayPrefab != null
+            && spawnedOverlay.name.StartsWith(overlayPrefab.name, System.StringComparison.Ordinal);
+    }
+
+    private void DestroyOverlayInstance()
+    {
+        if (spawnedOverlay == null)
+            return;
+
+        Object.Destroy(spawnedOverlay);
+        spawnedOverlay = null;
+        overlayParent = null;
+    }
+
+    private List<RendererState> GetCurrentRendererStates()
+    {
+        return activeInteractable != null ? activeRendererStates : baseRendererStates;
+    }
+
+    private float GetWorldTopY()
+    {
+        if (TryGetWorldBoundsFromRenderers(GetCurrentRendererStates(), out Vector3 bottomCentre, out float height))
+            return bottomCentre.y + height;
+
+        if (anchor != null)
+        {
+            (bottomCentre, height) = anchor.GetWorldBounds();
+            return bottomCentre.y + height;
+        }
+
+        return transform.position.y;
+    }
+
+    private static void CacheStates(Transform root, List<RendererState> renderers, List<ColliderState> colliders)
+    {
+        if (root == null)
+            return;
+
+        Renderer[] foundRenderers = root.GetComponentsInChildren<Renderer>(true);
+        foreach (Renderer renderer in foundRenderers)
+        {
+            if (renderer == null)
+                continue;
+
+            Material sharedMaterial = renderer.sharedMaterial;
+            renderers.Add(new RendererState
+            {
+                renderer = renderer,
+                hasBaseColor = sharedMaterial != null && sharedMaterial.HasProperty("_BaseColor"),
+                hasColor = sharedMaterial != null && sharedMaterial.HasProperty("_Color"),
+                originalBaseColor = sharedMaterial != null && sharedMaterial.HasProperty("_BaseColor") ? sharedMaterial.GetColor("_BaseColor") : default,
+                originalColor = sharedMaterial != null && sharedMaterial.HasProperty("_Color") ? sharedMaterial.GetColor("_Color") : default
+            });
+        }
+
+        Collider[] foundColliders = root.GetComponentsInChildren<Collider>(true);
+        foreach (Collider collider in foundColliders)
+        {
+            if (collider == null)
+                continue;
+
+            colliders.Add(new ColliderState
+            {
+                collider = collider,
+                originalEnabled = collider.enabled
+            });
+        }
+    }
+
+    private void ApplyRendererProperties(List<RendererState> rendererStates, bool isProtected, Color protectedTint, bool visible)
+    {
+        if (propertyBlock == null)
+            propertyBlock = new MaterialPropertyBlock();
+
+        for (int index = 0; index < rendererStates.Count; index++)
+        {
+            RendererState rendererState = rendererStates[index];
+            if (rendererState.renderer == null)
+                continue;
+
+            rendererState.renderer.GetPropertyBlock(propertyBlock);
+
+            if (rendererState.hasBaseColor)
+            {
+                Color baseColor = isProtected ? protectedTint : rendererState.originalBaseColor;
+                propertyBlock.SetColor("_BaseColor", visible ? WithFullAlpha(baseColor) : baseColor);
+            }
+
+            if (rendererState.hasColor)
+            {
+                Color color = isProtected ? protectedTint : rendererState.originalColor;
+                propertyBlock.SetColor("_Color", visible ? WithFullAlpha(color) : color);
+            }
+
+            rendererState.renderer.SetPropertyBlock(propertyBlock);
+        }
+    }
+
+    private static void ApplyColliderStates(List<ColliderState> colliderStates, bool disable)
+    {
+        for (int index = 0; index < colliderStates.Count; index++)
+        {
+            ColliderState colliderState = colliderStates[index];
+            if (colliderState.collider == null)
+                continue;
+
+            colliderState.collider.enabled = disable ? false : colliderState.originalEnabled;
+        }
+    }
+
+    private static void SetRenderersEnabled(List<RendererState> rendererStates, bool enabled)
+    {
+        for (int index = 0; index < rendererStates.Count; index++)
+        {
+            if (rendererStates[index].renderer != null)
+                rendererStates[index].renderer.enabled = enabled;
+        }
+    }
+
+    private static bool TryGetWorldBoundsFromRenderers(List<RendererState> rendererStates, out Vector3 bottomCentre, out float height)
+    {
+        bottomCentre = default;
+        height = 0f;
 
         float minY = float.MaxValue;
         float maxY = float.MinValue;
+        float minX = float.MaxValue;
+        float maxX = float.MinValue;
+        float minZ = float.MaxValue;
+        float maxZ = float.MinValue;
 
-        foreach (RendererState rs in rendererStates)
+        bool foundRenderer = false;
+        for (int index = 0; index < rendererStates.Count; index++)
         {
-            if (rs.renderer == null) continue;
-            Bounds b = rs.renderer.bounds;
-            if (b.min.y < minY) minY = b.min.y;
-            if (b.max.y > maxY) maxY = b.max.y;
+            Renderer renderer = rendererStates[index].renderer;
+            if (renderer == null)
+                continue;
+
+            Bounds bounds = renderer.bounds;
+            minY = Mathf.Min(minY, bounds.min.y);
+            maxY = Mathf.Max(maxY, bounds.max.y);
+            minX = Mathf.Min(minX, bounds.min.x);
+            maxX = Mathf.Max(maxX, bounds.max.x);
+            minZ = Mathf.Min(minZ, bounds.min.z);
+            maxZ = Mathf.Max(maxZ, bounds.max.z);
+            foundRenderer = true;
         }
 
-        // Guard: no valid renderers were found
-        if (minY == float.MaxValue)
-            return (transform.position, 0f);
+        if (!foundRenderer)
+            return false;
 
-        Vector3 bottomCentre = new Vector3(transform.position.x, minY, transform.position.z);
-        float   height       = Mathf.Max(0f, maxY - minY);
-        return (bottomCentre, height);
+        bottomCentre = new Vector3((minX + maxX) * 0.5f, minY, (minZ + maxZ) * 0.5f);
+        height = Mathf.Max(0f, maxY - minY);
+        return true;
+    }
+
+    private static void MatchOverlayScale(Transform target, Transform overlay)
+    {
+        Vector3 scale = overlay.localScale;
+        MeshFilter targetMeshFilter = target.GetComponent<MeshFilter>();
+        MeshFilter overlayMeshFilter = overlay.GetComponent<MeshFilter>();
+
+        if (targetMeshFilter != null && overlayMeshFilter != null
+            && targetMeshFilter.sharedMesh != null && overlayMeshFilter.sharedMesh != null)
+        {
+            Vector3 targetBounds = targetMeshFilter.sharedMesh.bounds.size;
+            Vector3 overlayBounds = overlayMeshFilter.sharedMesh.bounds.size;
+            scale = new Vector3(
+                overlayBounds.x > 0f ? scale.x * (targetBounds.x / overlayBounds.x) : scale.x,
+                overlayBounds.y > 0f ? scale.y * (targetBounds.y / overlayBounds.y) : scale.y,
+                overlayBounds.z > 0f ? scale.z * (targetBounds.z / overlayBounds.z) : scale.z);
+        }
+
+        overlay.localScale = scale;
+    }
+
+    private static void ApplyOverlayTint(GameObject overlay, Color tint)
+    {
+        if (overlay == null)
+            return;
+
+        MaterialPropertyBlock block = new MaterialPropertyBlock();
+        Renderer[] overlayRenderers = overlay.GetComponentsInChildren<Renderer>(true);
+        foreach (Renderer renderer in overlayRenderers)
+        {
+            if (renderer == null)
+                continue;
+
+            renderer.GetPropertyBlock(block);
+            Material mat = renderer.sharedMaterial;
+            if (mat != null && mat.HasProperty("_BaseColor"))
+                block.SetColor("_BaseColor", tint);
+            if (mat != null && mat.HasProperty("_Color"))
+                block.SetColor("_Color", tint);
+            renderer.SetPropertyBlock(block);
+        }
     }
 
     private static Color WithFullAlpha(Color color)

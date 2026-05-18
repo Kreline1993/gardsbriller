@@ -258,8 +258,14 @@ public class InfoPanelSpawner : MonoBehaviour
         return false;
     }
 
+    private void OnDisable()
+    {
+        ClosePanel();
+    }
+
     private void OnDestroy()
     {
+        ClosePanel();
         _openPanels.Remove(this);
     }
 
